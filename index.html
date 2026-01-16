@@ -1,0 +1,40 @@
+<!DOCTYPE html> 
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Komunikaty PKP – Polski / English</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="tabs">
+    <div id="tabPL" class="tab active">🇵🇱 Polski</div>
+    <div id="tabEN" class="tab">🇬🇧 English</div>
+  </div>
+
+  <main class="accordion-container">
+
+    <!-- Sekcja: POLSKI -->
+    <div id="sectionPL" class="section active">
+      <div data-load="pl/komunikat1.html"></div>
+      <div data-load="pl/komunikat2.html"></div>
+      <div data-load="pl/komunikat3.html"></div>
+      <div data-load="pl/komunikat4.html"></div>
+      <div data-load="pl/komunikat5.html"></div>
+    </div>
+
+    <!-- Sekcja: ENGLISH -->
+    <div id="sectionEN" class="section">
+      <div data-load="en/announcement1.html"></div>
+      <div data-load="en/announcement2.html"></div>
+      <div data-load="en/announcement3.html"></div>
+      <div data-load="en/announcement4.html"></div>
+      <div data-load="en/announcement5.html"></div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
