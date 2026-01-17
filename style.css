@@ -118,4 +118,13 @@ em { font-style:italic; font-size:0.9rem; }
   }
 }
 
+.airport-table-wrapper {
+  overflow-x: auto;
+}
+
+.airport-table {
+  width: 100%;
+  table-layout: auto;
+}
+
 
