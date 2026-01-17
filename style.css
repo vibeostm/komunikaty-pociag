@@ -52,7 +52,7 @@ html { font-size: 100%; }
   width: 100%;
 }
 
-/* === AKORDEONY GŁÓWNE === */
+/* === Główne nagłówki akordeonów === */
 .accordion-header {
   width: 100%;
   text-align: left;
@@ -71,7 +71,7 @@ html { font-size: 100%; }
   align-items: center;
 }
 
-/* === PODSEKCJE: AUTOMATYCZNY KOLOR ZGODNY Z TŁEM ROZWIJANEGO BLOKU === */
+/* === Podsekcje z dopasowanymi kolorami === */
 .accordion-subheader {
   width: 100%;
   text-align: left;
@@ -89,15 +89,45 @@ html { font-size: 100%; }
   transition: background 0.2s ease;
 }
 
-.green-toggle    { background: #c8e6c9; } /* jasnozielony */
-.orange-toggle   { background: #fcd5b4; }
-.cyan-toggle     { background: #c5e0dc; }
-.yellow-toggle   { background: #fff2cc; }
-.connection-toggle { background: #c5e0dc; } /* traktuj jak cyan */
+/* Kolory podsekcji – stałe (nie szarzeją po kliknięciu ani hoverze) */
+.green-toggle {
+  background-color: #c8e6c9;
+}
+.green-toggle:hover,
+.green-toggle.active {
+  background-color: #c8e6c9;
+}
 
-.accordion-header:hover,
-.accordion-subheader:hover {
-  background: #dcdcdc;
+.orange-toggle {
+  background-color: #fcd5b4;
+}
+.orange-toggle:hover,
+.orange-toggle.active {
+  background-color: #fcd5b4;
+}
+
+.cyan-toggle {
+  background-color: #c5e0dc;
+}
+.cyan-toggle:hover,
+.cyan-toggle.active {
+  background-color: #c5e0dc;
+}
+
+.yellow-toggle {
+  background-color: #fff2cc;
+}
+.yellow-toggle:hover,
+.yellow-toggle.active {
+  background-color: #fff2cc;
+}
+
+.connection-toggle {
+  background-color: #c5e0dc;
+}
+.connection-toggle:hover,
+.connection-toggle.active {
+  background-color: #c5e0dc;
 }
 
 .arrow-icon {
@@ -110,10 +140,11 @@ html { font-size: 100%; }
   transform: rotate(90deg);
 }
 
+/* === Ciało sekcji === */
 .accordion-body,
 .accordion-subbody {
   display: none;
-  padding: 1rem 1.5rem; /* lekkie wcięcie dla czytelności */
+  padding: 1rem 1.5rem; /* lekkie wcięcie */
   background: white;
   border: 1px solid #ccc;
   border-top: none;
@@ -126,7 +157,7 @@ html { font-size: 100%; }
   display: block;
 }
 
-/* === BLOKI TREŚCI === */
+/* === Bloki kolorowe === */
 .green {
   background: #e2f0d9;
   border-left: 5px solid #a8d08d;
@@ -175,7 +206,7 @@ html { font-size: 100%; }
   display: block;
 }
 
-/* === TABELKI LOTNISK === */
+/* === TABELA LOTNISK === */
 .airport-table-wrapper {
   width: 100%;
   overflow-x: auto;
