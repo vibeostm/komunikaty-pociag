@@ -114,6 +114,7 @@ html { font-size: 100%; }
   display: block;
 }
 
+/* Kolorowe bloki */
 .green { background: #e2f0d9; border-left: 5px solid #a8d08d; padding: 1rem; }
 .cyan { background: #d9f0ed; border-left: 5px solid #7ab8b3; padding: 1rem; }
 .orange { background: #fcd5b4; border-left: 5px solid #f7931e; padding: 1rem; }
@@ -139,7 +140,7 @@ html { font-size: 100%; }
 .section.active { display: block; }
 
 /* ================================
-   TABELKI LOTNISK – Elastyczne
+   TABELKI LOTNISK – Elastyczne i czytelne
 ================================== */
 .airport-table-wrapper {
   width: 100%;
@@ -153,7 +154,6 @@ html { font-size: 100%; }
   border-collapse: collapse;
   font-size: 0.85rem;
   table-layout: auto;
-  word-break: break-word;
 }
 
 .airport-table th,
@@ -162,6 +162,8 @@ html { font-size: 100%; }
   padding: 0.5rem 0.8rem;
   text-align: left;
   white-space: normal;
+  word-break: normal;
+  hyphens: none;
 }
 
 .airport-table th {
@@ -197,9 +199,7 @@ html { font-size: 100%; }
     font-size: 0.95rem;
   }
 
-  .airport-table {
-    font-size: 0.8rem;
-  }
+  /* Nie zmieniamy font-size tabeli zgodnie z prośbą */
 }
 
 @media (max-width: 480px) {
@@ -208,6 +208,6 @@ html { font-size: 100%; }
   }
 
   .airport-table {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
   }
 }
