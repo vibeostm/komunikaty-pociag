@@ -88,3 +88,34 @@ em { font-style:italic; font-size:0.9rem; }
   font-weight: bold;
 }
 
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .accordion-header,
+  .accordion-subheader {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .speech-box {
+    padding: 10px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
