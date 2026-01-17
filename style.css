@@ -1,6 +1,3 @@
-/* ================================
-   RESET & BAZA
-================================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,13 +16,8 @@ body {
 strong { font-weight: bold; }
 em { font-style: italic; font-size: 0.9rem; }
 
-html {
-  font-size: 100%;
-}
+html { font-size: 100%; }
 
-/* ================================
-   TABS
-================================== */
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -54,9 +46,6 @@ html {
   color: #000;
 }
 
-/* ================================
-   AKORDEONY
-================================== */
 .accordion-container {
   max-width: 850px;
   margin: 0 auto;
@@ -64,7 +53,11 @@ html {
 }
 
 .accordion-header,
-.accordion-subheader {
+.green-toggle,
+.orange-toggle,
+.cyan-toggle,
+.yellow-toggle,
+.connection-toggle {
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
@@ -77,11 +70,32 @@ html {
   margin-bottom: 0.5rem;
   border-radius: 6px;
   transition: background 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .accordion-header:hover,
-.accordion-subheader:hover {
+.green-toggle:hover,
+.orange-toggle:hover,
+.cyan-toggle:hover,
+.yellow-toggle:hover,
+.connection-toggle:hover {
   background: #dcdcdc;
+}
+
+.arrow-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.accordion-header.active .arrow-icon,
+.green-toggle.active .arrow-icon,
+.orange-toggle.active .arrow-icon,
+.cyan-toggle.active .arrow-icon,
+.yellow-toggle.active .arrow-icon,
+.connection-toggle.active .arrow-icon {
+  transform: rotate(90deg);
 }
 
 .accordion-body,
@@ -99,41 +113,11 @@ html {
   display: block;
 }
 
-/* ================================
-   KOLORY BLOKÓW
-================================== */
-.green-toggle { background: #a8d08d; margin-top: 1rem; }
-.green {
-  background: #e2f0d9;
-  border-left: 5px solid #a8d08d;
-  padding: 1rem;
-}
+.green { background: #e2f0d9; border-left: 5px solid #a8d08d; padding: 1rem; }
+.cyan { background: #d9f0ed; border-left: 5px solid #7ab8b3; padding: 1rem; }
+.orange { background: #fcd5b4; border-left: 5px solid #f7931e; padding: 1rem; }
+.yellow { background: #fff9e5; border-left: 5px solid #f4d35e; padding: 1rem; margin-top: 0.5rem; }
 
-.cyan-toggle { background: #c5e0dc; margin-top: 1rem; }
-.cyan {
-  background: #d9f0ed;
-  border-left: 5px solid #7ab8b3;
-  padding: 1rem;
-}
-
-.orange-toggle { background: #f8cbad; margin-top: 1rem; }
-.orange {
-  background: #fcd5b4;
-  border-left: 5px solid #f7931e;
-  padding: 1rem;
-}
-
-.yellow-toggle { background: #fff2cc; margin-top: 1rem; }
-.yellow {
-  background: #fff9e5;
-  border-left: 5px solid #f4d35e;
-  padding: 1rem;
-  margin-top: 0.5rem;
-}
-
-/* ================================
-   INFObOXy i SEKCJE
-================================== */
 .speech-box {
   background: #fff;
   border: 1px solid #ccc;
@@ -150,17 +134,9 @@ html {
   border-left: 4px solid #999;
 }
 
-.section {
-  display: none;
-}
+.section { display: none; }
+.section.active { display: block; }
 
-.section.active {
-  display: block;
-}
-
-/* ================================
-   TABELA LOTNISK
-================================== */
 .airport-table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -176,8 +152,7 @@ html {
   background-color: #fff;
 }
 
-.airport-table th,
-.airport-table td {
+.airport-table th, .airport-table td {
   border: 1px solid #ccc;
   padding: 0.6rem 0.8rem;
   text-align: left;
@@ -190,9 +165,6 @@ html {
   font-weight: 600;
 }
 
-/* ================================
-   RESPONSYWNOŚĆ
-================================== */
 @media (max-width: 768px) {
   body {
     font-size: 0.9rem;
@@ -200,7 +172,11 @@ html {
   }
 
   .accordion-header,
-  .accordion-subheader {
+  .green-toggle,
+  .orange-toggle,
+  .cyan-toggle,
+  .yellow-toggle,
+  .connection-toggle {
     font-size: 0.95rem;
     padding: 0.6rem 0.8rem;
   }
@@ -224,30 +200,7 @@ html {
     font-size: 0.85rem;
   }
 
-  .accordion-header,
-  .accordion-subheader {
-    font-size: 0.9rem;
-    padding: 0.5rem 0.6rem;
-  }
-
   .airport-table {
     font-size: 0.8rem;
   }
-}
-
-/* ================================
-   UX: FOCUS / HOVER
-================================== */
-button,
-.tab,
-.accordion-header,
-.accordion-subheader {
-  transition: all 0.2s ease;
-}
-
-button:focus,
-.tab:focus,
-.accordion-header:focus {
-  outline: 2px solid #999;
-  outline-offset: 2px;
 }
