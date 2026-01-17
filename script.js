@@ -1,46 +1,59 @@
-// ============ Dynamiczne ładowanie sekcji ============
 async function loadSections() {
   const elements = document.querySelectorAll('[data-load]');
 
   for (const el of elements) {
     const url = el.getAttribute('data-load');
-
-    // Nie ładuj ponownie jeśli już załadowane
     if (el.dataset.loaded === "true") continue;
 
     try {
       const response = await fetch(url);
       el.innerHTML = await response.text();
-      el.dataset.loaded = "true"; // oznacz jako załadowane
+      el.dataset.loaded = "true";
     } catch (e) {
       el.innerHTML = `<p>Błąd ładowania: ${url}</p>`;
     }
   }
 
-  activateAccordions(); // rebinduj nowe elementy po załadowaniu
+  activateAccordions();
+  addIconsToHeaders([
+    '.accordion-header',
+    '.green-toggle',
+    '.orange-toggle',
+    '.cyan-toggle',
+    '.yellow-toggle',
+    '.connection-toggle'
+  ]);
 }
 
-// ============ Akordeony ============
-function toggleSections(selector, options = {}) {
+function toggleSections(selector) {
   document.querySelectorAll(selector).forEach(btn => {
     btn.addEventListener('click', () => {
       const body = btn.nextElementSibling;
       if (!body) return;
 
-      // Jeśli onlyOneOpen = true
-      if (options.oneOpen) {
-        document.querySelectorAll(selector).forEach(otherBtn => {
-          if (otherBtn !== btn && otherBtn.nextElementSibling) {
-            otherBtn.nextElementSibling.classList.remove('active');
-          }
-        });
+      document.querySelectorAll(selector).forEach(otherBtn => {
+        const otherBody = otherBtn.nextElementSibling;
+        if (otherBody && otherBody !== body) {
+          otherBody.classList.remove('active');
+          otherBtn.classList.remove('active');
+          const icon = otherBtn.querySelector('.arrow-icon');
+          if (icon) icon.textContent = '▶';
+        }
+      });
+
+      const wasActive = body.classList.contains('active');
+      body.classList.toggle('active');
+      btn.classList.toggle('active');
+
+      const icon = btn.querySelector('.arrow-icon');
+      if (icon) {
+        icon.textContent = wasActive ? '▶' : '🔽';
       }
 
-      body.classList.toggle('active');
-
-      // UX: Przewiń do otwartego bloku, jeśli na mobile
-      if (body.classList.contains('active') && window.innerWidth < 768) {
-        setTimeout(() => body.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+      if (!wasActive && window.innerWidth < 768) {
+        setTimeout(() => {
+          btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
       }
     });
   });
@@ -52,10 +65,22 @@ function activateAccordions() {
   toggleSections('.orange-toggle');
   toggleSections('.cyan-toggle');
   toggleSections('.yellow-toggle');
-  toggleSections('.connection-toggle'); // Obsługa przesiadki
+  toggleSections('.connection-toggle');
 }
 
-// ============ Tabsy (języki) ============
+function addIconsToHeaders(selectors) {
+  selectors.forEach(selector => {
+    document.querySelectorAll(selector).forEach(btn => {
+      if (!btn.querySelector('.arrow-icon')) {
+        const icon = document.createElement('span');
+        icon.classList.add('arrow-icon');
+        icon.textContent = '▶';
+        btn.appendChild(icon);
+      }
+    });
+  });
+}
+
 function initTabs(tabButtons) {
   tabButtons.forEach(({ btnId, sectionId }) => {
     const btn = document.getElementById(btnId);
@@ -64,20 +89,17 @@ function initTabs(tabButtons) {
     if (!btn || !section) return;
 
     btn.addEventListener('click', () => {
-      // Deaktywuj wszystkie
       tabButtons.forEach(({ btnId, sectionId }) => {
         document.getElementById(btnId).classList.remove('active');
         document.getElementById(sectionId).classList.remove('active');
       });
 
-      // Aktywuj wybrany
       btn.classList.add('active');
       section.classList.add('active');
     });
   });
 }
 
-// ============ Start aplikacji ============
 document.addEventListener('DOMContentLoaded', () => {
   initTabs([
     { btnId: 'tabPL', sectionId: 'sectionPL' },
