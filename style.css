@@ -1,224 +1,202 @@
-.tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-.tab {
-  flex: 1; padding: 0.8rem; text-align: center;
-  font-weight: bold; cursor: pointer;
-  background: #e0e0e0; border-radius: 5px;
+/* ================================
+   RESET & BAZA
+================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-.tab.active { background: #ccc; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
   background: #f9f9f9;
+  color: #333;
   padding: 1rem;
 }
 
-.accordion-container { max-width: 850px; margin: 0 auto; }
+strong { font-weight: bold; }
+em { font-style: italic; font-size: 0.9rem; }
 
-.accordion-header, .accordion-subheader {
-  width: 100%; text-align: left;
-  padding: 1rem; font-weight: bold;
-  font-size: 1.1rem; background: #e0e0e0;
-  border: none; cursor: pointer; outline: none;
-  margin-bottom: 0.5rem;
-}
-
-.accordion-body, .accordion-subbody {
-  display: none; padding: 1rem;
-  background: white; border:1px solid #ccc;
-  border-top: none; border-radius:0 0 5px 5px;
-}
-
-.accordion-body.active,
-.accordion-subbody.active { display: block; }
-
-.green-toggle { background:#a8d08d; margin-top:1rem; }
-.green { background:#e2f0d9; border-left:5px solid #a8d08d; padding:1rem; }
-
-.cyan-toggle { background:#c5e0dc; margin-top:1rem; }
-.cyan { background:#d9f0ed; border-left:5px solid #7ab8b3; padding:1rem; }
-
-.orange-toggle { background:#f8cbad; margin-top:1rem; }
-.orange { background:#fcd5b4; border-left:5px solid #f7931e; padding:1rem; }
-
-.yellow-toggle { background:#fff2cc; margin-top:1rem; }
-.yellow {
-  background:#fff9e5; border-left:5px solid #f4d35e;
-  padding:1rem; margin-top:0.5rem;
-}
-
-.speech-box {
-  background:#fff; border:1px solid #ccc;
-  padding:1rem; margin-top:1rem; border-radius:8px;
-}
-
-.highlighted-info {
-  background:#e6e6e6; padding:0.5rem 1rem;
-  margin:0.5rem 0; font-weight:bold;
-  border-left:4px solid #999;
-}
-
-strong { font-weight:bold; }
-em { font-style:italic; font-size:0.9rem; }
-
-.section { display:none; }
-.section.active { display:block; }
-
-.airport-table-wrapper {
-  overflow-x: auto;
-  margin: 1em 0;
-}
-
-.airport-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95em;
-  background-color: #f9fdfc;
-  border: 1px solid #cde;
-}
-
-.airport-table th, .airport-table td {
-  border: 1px solid #bcd;
-  padding: 8px 12px;
-  text-align: left;
-}
-
-.airport-table th {
-  background-color: #e0f2f1;
-  font-weight: bold;
-}
-
-@media (max-width: 768px) {
-  body {
-    font-size: 16px;
-    padding: 10px;
-  }
-
-  .accordion-header,
-  .accordion-subheader {
-    font-size: 16px;
-    padding: 10px;
-  }
-
-  .speech-box {
-    padding: 10px;
-  }
-
-  table {
-    font-size: 14px;
-  }
-
-  .tabs {
-    flex-direction: column;
-  }
-
-  .tab {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-.airport-table-wrapper {
-  overflow-x: auto;
-}
-
-.airport-table {
-  width: 100%;
-  table-layout: auto;
-}
-
-/* ---------------------------
-   RESPONSYWNOŚĆ - ELASTYCZNY UKŁAD
----------------------------- */
-
-/* Base fluid typography */
 html {
-  font-size: 100%; /* 16px */
+  font-size: 100%;
 }
 
-body {
-  font-size: 1rem; /* 16px */
-  line-height: 1.5;
-  margin: 0;
-  padding: 0 1rem;
-}
-
-/* Containers should never exceed screen width */
-.speech-box,
-.airport-table-wrapper,
-.accordion-container {
-  max-width: 100%;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Fluid accordion headers */
-.accordion-header,
-.accordion-subheader {
-  font-size: 1rem;
-  padding: 0.75rem 1rem;
-}
-
-/* Make table scroll horizontally when needed */
-.airport-table-wrapper {
-  overflow-x: auto;
-  margin: 1rem 0;
-}
-
-/* Table layout optimized for small screens */
-.airport-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
-.airport-table th,
-.airport-table td {
-  padding: 0.6rem 0.8rem;
-  text-align: left;
-  word-break: break-word;
-}
-
-/* Tabs responsive */
+/* ================================
+   TABS
+================================== */
 .tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .tab {
   flex: 1 1 45%;
+  padding: 0.6rem;
   text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: #e0e0e0;
+  border-radius: 6px;
   cursor: pointer;
-  padding: 0.75rem;
-  font-size: 1rem;
+  transition: background 0.2s ease;
 }
 
-/* Improve spacing on small screens */
+.tab:hover {
+  background: #d0d0d0;
+}
+
+.tab.active {
+  background: #bbb;
+  color: #000;
+}
+
+/* ================================
+   AKORDEONY
+================================== */
+.accordion-container {
+  max-width: 850px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.accordion-header,
+.accordion-subheader {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  background: #eaeaea;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.accordion-header:hover,
+.accordion-subheader:hover {
+  background: #dcdcdc;
+}
+
+.accordion-body,
+.accordion-subbody {
+  display: none;
+  padding: 1rem;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+}
+
+.accordion-body.active,
+.accordion-subbody.active {
+  display: block;
+}
+
+/* ================================
+   KOLORY BLOKÓW
+================================== */
+.green-toggle { background: #a8d08d; margin-top: 1rem; }
+.green {
+  background: #e2f0d9;
+  border-left: 5px solid #a8d08d;
+  padding: 1rem;
+}
+
+.cyan-toggle { background: #c5e0dc; margin-top: 1rem; }
+.cyan {
+  background: #d9f0ed;
+  border-left: 5px solid #7ab8b3;
+  padding: 1rem;
+}
+
+.orange-toggle { background: #f8cbad; margin-top: 1rem; }
+.orange {
+  background: #fcd5b4;
+  border-left: 5px solid #f7931e;
+  padding: 1rem;
+}
+
+.yellow-toggle { background: #fff2cc; margin-top: 1rem; }
+.yellow {
+  background: #fff9e5;
+  border-left: 5px solid #f4d35e;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* ================================
+   INFObOXy i SEKCJE
+================================== */
+.speech-box {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+.highlighted-info {
+  background: #e6e6e6;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  font-weight: bold;
+  border-left: 4px solid #999;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+/* ================================
+   TABELA LOTNISK
+================================== */
+.airport-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1rem 0;
+}
+
+.airport-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background-color: #fff;
+}
+
+.airport-table th,
+.airport-table td {
+  border: 1px solid #ccc;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  white-space: nowrap;
+  word-break: break-word;
+}
+
+.airport-table th {
+  background-color: #e0f2f1;
+  font-weight: 600;
+}
+
+/* ================================
+   RESPONSYWNOŚĆ
+================================== */
 @media (max-width: 768px) {
   body {
-    padding: 0 0.5rem;
-    font-size: 0.95rem;
-  }
-
-  .speech-box {
-    padding: 0.75rem;
-  }
-
-  /* Tabs stack vertically on narrow screens */
-  .tabs {
-    flex-direction: column;
-  }
-
-  .tab {
-    flex: 1 1 100%;
-  }
-}
-
-/* Ultra small screens */
-@media (max-width: 480px) {
-  body {
     font-size: 0.9rem;
+    padding: 0.5rem;
   }
 
   .accordion-header,
@@ -226,6 +204,50 @@ body {
     font-size: 0.95rem;
     padding: 0.6rem 0.8rem;
   }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    flex: 1 1 100%;
+    font-size: 0.95rem;
+  }
+
+  .airport-table {
+    font-size: 0.85rem;
+  }
 }
 
+@media (max-width: 480px) {
+  body {
+    font-size: 0.85rem;
+  }
 
+  .accordion-header,
+  .accordion-subheader {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .airport-table {
+    font-size: 0.8rem;
+  }
+}
+
+/* ================================
+   UX: FOCUS / HOVER
+================================== */
+button,
+.tab,
+.accordion-header,
+.accordion-subheader {
+  transition: all 0.2s ease;
+}
+
+button:focus,
+.tab:focus,
+.accordion-header:focus {
+  outline: 2px solid #999;
+  outline-offset: 2px;
+}
