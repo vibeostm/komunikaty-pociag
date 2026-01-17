@@ -52,13 +52,8 @@ html { font-size: 100%; }
   width: 100%;
 }
 
-/* Przycisk akordeonu + kolory */
-.accordion-header,
-.green-toggle,
-.orange-toggle,
-.cyan-toggle,
-.yellow-toggle,
-.connection-toggle {
+/* === AKORDEONY GŁÓWNE === */
+.accordion-header {
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
@@ -76,12 +71,32 @@ html { font-size: 100%; }
   align-items: center;
 }
 
+/* === PODSEKCJE: AUTOMATYCZNY KOLOR ZGODNY Z TŁEM ROZWIJANEGO BLOKU === */
+.accordion-subheader {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.green-toggle    { background: #c8e6c9; } /* jasnozielony */
+.orange-toggle   { background: #fcd5b4; }
+.cyan-toggle     { background: #c5e0dc; }
+.yellow-toggle   { background: #fff2cc; }
+.connection-toggle { background: #c5e0dc; } /* traktuj jak cyan */
+
 .accordion-header:hover,
-.green-toggle:hover,
-.orange-toggle:hover,
-.cyan-toggle:hover,
-.yellow-toggle:hover,
-.connection-toggle:hover {
+.accordion-subheader:hover {
   background: #dcdcdc;
 }
 
@@ -91,22 +106,19 @@ html { font-size: 100%; }
 }
 
 .accordion-header.active .arrow-icon,
-.green-toggle.active .arrow-icon,
-.orange-toggle.active .arrow-icon,
-.cyan-toggle.active .arrow-icon,
-.yellow-toggle.active .arrow-icon,
-.connection-toggle.active .arrow-icon {
+.accordion-subheader.active .arrow-icon {
   transform: rotate(90deg);
 }
 
 .accordion-body,
 .accordion-subbody {
   display: none;
-  padding: 1rem;
+  padding: 1rem 1.5rem; /* lekkie wcięcie dla czytelności */
   background: white;
   border: 1px solid #ccc;
   border-top: none;
   border-radius: 0 0 6px 6px;
+  margin-bottom: 1rem;
 }
 
 .accordion-body.active,
@@ -114,11 +126,31 @@ html { font-size: 100%; }
   display: block;
 }
 
-/* Kolorowe bloki */
-.green { background: #e2f0d9; border-left: 5px solid #a8d08d; padding: 1rem; }
-.cyan { background: #d9f0ed; border-left: 5px solid #7ab8b3; padding: 1rem; }
-.orange { background: #fcd5b4; border-left: 5px solid #f7931e; padding: 1rem; }
-.yellow { background: #fff9e5; border-left: 5px solid #f4d35e; padding: 1rem; margin-top: 0.5rem; }
+/* === BLOKI TREŚCI === */
+.green {
+  background: #e2f0d9;
+  border-left: 5px solid #a8d08d;
+  padding: 1rem;
+}
+
+.cyan {
+  background: #d9f0ed;
+  border-left: 5px solid #7ab8b3;
+  padding: 1rem;
+}
+
+.orange {
+  background: #fcd5b4;
+  border-left: 5px solid #f7931e;
+  padding: 1rem;
+}
+
+.yellow {
+  background: #fff9e5;
+  border-left: 5px solid #f4d35e;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
 
 .speech-box {
   background: #fff;
@@ -136,12 +168,14 @@ html { font-size: 100%; }
   border-left: 4px solid #999;
 }
 
-.section { display: none; }
-.section.active { display: block; }
+.section {
+  display: none;
+}
+.section.active {
+  display: block;
+}
 
-/* ================================
-   TABELKI LOTNISK – Elastyczne i czytelne
-================================== */
+/* === TABELKI LOTNISK === */
 .airport-table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -171,9 +205,7 @@ html { font-size: 100%; }
   font-weight: 600;
 }
 
-/* ================================
-   RESPONSYWNOŚĆ
-================================== */
+/* === RESPONSYWNOŚĆ === */
 @media (max-width: 768px) {
   body {
     font-size: 0.9rem;
@@ -181,11 +213,7 @@ html { font-size: 100%; }
   }
 
   .accordion-header,
-  .green-toggle,
-  .orange-toggle,
-  .cyan-toggle,
-  .yellow-toggle,
-  .connection-toggle {
+  .accordion-subheader {
     font-size: 0.95rem;
     padding: 0.6rem 0.8rem;
   }
@@ -198,8 +226,6 @@ html { font-size: 100%; }
     flex: 1 1 100%;
     font-size: 0.95rem;
   }
-
-  /* Nie zmieniamy font-size tabeli zgodnie z prośbą */
 }
 
 @media (max-width: 480px) {
