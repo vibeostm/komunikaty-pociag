@@ -127,4 +127,105 @@ em { font-style:italic; font-size:0.9rem; }
   table-layout: auto;
 }
 
+/* ---------------------------
+   RESPONSYWNOŚĆ - ELASTYCZNY UKŁAD
+---------------------------- */
+
+/* Base fluid typography */
+html {
+  font-size: 100%; /* 16px */
+}
+
+body {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5;
+  margin: 0;
+  padding: 0 1rem;
+}
+
+/* Containers should never exceed screen width */
+.speech-box,
+.airport-table-wrapper,
+.accordion-container {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Fluid accordion headers */
+.accordion-header,
+.accordion-subheader {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+/* Make table scroll horizontally when needed */
+.airport-table-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+/* Table layout optimized for small screens */
+.airport-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.airport-table th,
+.airport-table td {
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  word-break: break-word;
+}
+
+/* Tabs responsive */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tab {
+  flex: 1 1 45%;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+/* Improve spacing on small screens */
+@media (max-width: 768px) {
+  body {
+    padding: 0 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .speech-box {
+    padding: 0.75rem;
+  }
+
+  /* Tabs stack vertically on narrow screens */
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    flex: 1 1 100%;
+  }
+}
+
+/* Ultra small screens */
+@media (max-width: 480px) {
+  body {
+    font-size: 0.9rem;
+  }
+
+  .accordion-header,
+  .accordion-subheader {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
 
