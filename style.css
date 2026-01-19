@@ -10,7 +10,7 @@ body {
   line-height: 1.6;
   background: #f9f9f9;
   color: #333;
-  padding: 1rem;
+  padding: 0; /* maksymalna szerokość – bez marginesów */
 }
 
 strong {
@@ -19,14 +19,14 @@ strong {
 
 em {
   font-style: italic;
-  font-size: 0.8rem; /* mniejsze o 1px */
+  font-size: 0.8rem; /* kursywa mniejsza o 1px */
 }
 
-/* Tabs */
+/* ===== TABY ===== */
 .tabs {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin: 0.5rem;
 }
 
 .tab {
@@ -43,14 +43,15 @@ em {
   background: #bbb;
 }
 
-/* Accordion layout */
+/* ===== GŁÓWNY KONTENER ===== */
 .accordion-container {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   width: 100%;
-  padding: 0 1rem;
+  padding: 0;
 }
 
+/* ===== GŁÓWNE AKORDEONY ===== */
 .accordion-header {
   width: 100%;
   text-align: left;
@@ -61,8 +62,7 @@ em {
   border: none;
   cursor: pointer;
   margin-bottom: 0.5rem;
-  border-radius: 6px;
-  transition: background 0.2s ease;
+  border-radius: 0;
   appearance: none;
   -webkit-appearance: none;
   background-image: none !important;
@@ -70,10 +70,10 @@ em {
 
 .accordion-body {
   display: none;
-  padding: 1rem 1.5rem;
+  padding: 0;
   background: white;
-  border: 1px solid #ccc;
-  border-radius: 0 0 6px 6px;
+  border: none;
+  border-radius: 0;
   margin-bottom: 1rem;
   overflow-x: auto;
 }
@@ -82,7 +82,7 @@ em {
   display: block;
 }
 
-/* LOTNISKA – jedyne rozwijane podsekcje */
+/* ===== JEDYNY PODAKORDEON – LOTNISKA ===== */
 .connection-toggle {
   width: 100%;
   text-align: left;
@@ -93,7 +93,7 @@ em {
   border: none;
   cursor: pointer;
   margin-bottom: 0.5rem;
-  border-radius: 6px;
+  border-radius: 0;
   appearance: none;
   -webkit-appearance: none;
   background-image: none !important;
@@ -101,10 +101,10 @@ em {
 
 .connection-toggle + .accordion-subbody {
   display: none;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
   background: white;
-  border: 1px solid #ccc;
-  border-radius: 0 0 6px 6px;
+  border: none;
+  border-radius: 0;
   margin-bottom: 1rem;
 }
 
@@ -112,7 +112,7 @@ em {
   display: block;
 }
 
-/* WYŁĄCZENIE innych pod-akordeonów */
+/* ===== WYŁĄCZENIE WSZYSTKICH INNYCH POD-AKORDEONÓW ===== */
 .accordion-subheader {
   display: none !important;
 }
@@ -121,14 +121,15 @@ em {
   display: block !important;
 }
 
-/* Kolorowe sekcje (z akapitem) */
+/* ===== KOLOROWE BLOKI KOMUNIKATÓW ===== */
 .green,
 .orange,
 .yellow,
 .cyan {
-  padding: 1rem 1.5rem 1rem 2rem;
-  margin-bottom: 1rem;
+  padding: 1rem 0.8rem;
+  margin: 0.5rem 0;
   border-left: 5px solid;
+  width: 100%;
 }
 
 .green {
@@ -151,25 +152,28 @@ em {
   border-color: #7ab8b3;
 }
 
+/* ===== BLOKI TEKSTOWE ===== */
 .speech-box {
   background: #fff;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  margin-top: 1rem;
-  border-radius: 8px;
+  border: none;
+  padding: 0.8rem;
+  margin: 0;
+  border-radius: 0;
 }
 
 .highlighted-info {
   background: #e6e6e6;
-  padding: 0.5rem 1rem;
+  padding: 0.8rem;
   margin: 0.5rem 0;
   font-weight: bold;
   border-left: 4px solid #999;
 }
 
+/* ===== TABELA LOTNISK ===== */
 .airport-table-wrapper {
   overflow-x: auto;
   margin: 1rem 0;
+  width: 100%;
 }
 
 .airport-table {
@@ -186,7 +190,7 @@ em {
   white-space: normal;
 }
 
-/* Sekcje językowe */
+/* ===== SEKCJE JĘZYKOWE ===== */
 .section {
   display: none;
 }
@@ -195,35 +199,42 @@ em {
   display: block;
 }
 
-/* RESPONSYWNOŚĆ */
+/* ===== RESPONSYWNOŚĆ ===== */
 @media (max-width: 768px) {
   .tabs {
     flex-direction: column;
+    margin: 0.3rem;
   }
 
   .tab {
     font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .accordion-container {
-    padding: 0 0.4rem;
   }
 
   .green,
   .orange,
   .yellow,
   .cyan {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 0.8rem 0.6rem;
   }
 
   .speech-box {
-    padding: 0.75rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .accordion-container {
+    padding: 0;
   }
 
   .accordion-body {
-    padding: 1rem;
+    padding: 0;
+  }
+
+  .green,
+  .orange,
+  .yellow,
+  .cyan {
+    padding: 0.6rem 0.5rem;
   }
 }
