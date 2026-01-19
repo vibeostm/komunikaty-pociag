@@ -267,34 +267,29 @@ em {
   display: block;
 }
 
-/* ===== GASTRONOMIA – BLOKI ROZWIJANE ===== */
+/* ===== GASTRONOMIA – WERSJA JAK NA WZORCU ===== */
 
 .gastronomy-more {
   display: none;
   margin-top: 0.6rem;
-  padding-left: 0.6rem;
-  border-left: 3px solid #e0c97a;
 }
 
 .gastronomy-more.active {
   display: block;
 }
 
-.gastronomy-item {
-  background: #fff8e1;
-  padding: 0.6rem 0.7rem;
-  margin: 0.4rem 0;
-  border-left: 4px solid #f4d35e;
-  font-size: 0.9rem;
+.gastronomy-comment {
+  font-style: italic;
+  font-size: 0.8rem;
+  margin: 0.6rem 0 0.2rem;
+  color: #444;
+}
+
+.gastronomy-block {
+  background: #fff4c2;
+  padding: 0.8rem 0.9rem;
+  margin-bottom: 0.6rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
   line-height: 1.5;
 }
-
-.gastronomy-note {
-  margin-top: 0.4rem;
-  padding-left: 0.6rem;
-  font-size: 0.8rem;
-  font-style: italic;
-  color: #555;
-  border-left: 3px solid #ccc;
-}
-
