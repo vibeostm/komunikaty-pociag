@@ -14,57 +14,57 @@ async function loadSections() {
     }
   }
 
-  activateAccordions();
+  // poczekaj aż DOM się zaktualizuje
+  setTimeout(() => {
+    activateAccordions();
+  }, 50);
 }
 
 function activateAccordions() {
-  // Główne nagłówki (1,2,3,4,5)
+  // Główne nagłówki
   document.querySelectorAll('.accordion-header').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.onclick = () => {
       const body = btn.nextElementSibling;
-
-      // Zamknij inne
       document.querySelectorAll('.accordion-body').forEach(b => {
         if (b !== body) b.classList.remove('active');
       });
-
       body.classList.toggle('active');
-    });
+    };
   });
 
-  // Tylko przesiadki jako pod-akordeon
+  // Tylko przesiadki
   document.querySelectorAll('.connection-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.onclick = () => {
       const body = btn.nextElementSibling;
-
       document.querySelectorAll('.connection-toggle').forEach(o => {
         if (o !== btn) o.classList.remove('active');
       });
-
       document.querySelectorAll('.accordion-subbody').forEach(b => {
         if (b !== body) b.classList.remove('active');
       });
 
       btn.classList.toggle('active');
       body.classList.toggle('active');
-    });
+    };
   });
 }
 
-document.getElementById('tabPL').addEventListener('click', () => {
+// Taby
+document.getElementById('tabPL').onclick = () => {
   document.getElementById('tabPL').classList.add('active');
   document.getElementById('tabEN').classList.remove('active');
   document.getElementById('sectionPL').classList.add('active');
   document.getElementById('sectionEN').classList.remove('active');
   loadSections();
-});
+};
 
-document.getElementById('tabEN').addEventListener('click', () => {
+document.getElementById('tabEN').onclick = () => {
   document.getElementById('tabEN').classList.add('active');
   document.getElementById('tabPL').classList.remove('active');
   document.getElementById('sectionEN').classList.add('active');
   document.getElementById('sectionPL').classList.remove('active');
   loadSections();
-});
+};
 
+// Start
 loadSections();
