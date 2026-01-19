@@ -15,70 +15,37 @@ async function loadSections() {
   }
 
   activateAccordions();
-  addIconsToHeaders([
-    '.accordion-header',
-    '.green-toggle',
-    '.orange-toggle',
-    '.cyan-toggle',
-    '.yellow-toggle',
-    '.connection-toggle'
-  ]);
-}
-
-function toggleSections(selector) {
-  document.querySelectorAll(selector).forEach(btn => {
-    btn.addEventListener('click', () => {
-      const body = btn.nextElementSibling;
-      if (!body) return;
-
-      document.querySelectorAll(selector).forEach(otherBtn => {
-        const otherBody = otherBtn.nextElementSibling;
-        if (otherBody && otherBody !== body) {
-          otherBody.classList.remove('active');
-          otherBtn.classList.remove('active');
-          const icon = otherBtn.querySelector('.arrow-icon');
-          if (icon) icon.textContent = '▶';
-        }
-      });
-
-      const wasActive = body.classList.contains('active');
-      body.classList.toggle('active');
-      btn.classList.toggle('active');
-
-      const icon = btn.querySelector('.arrow-icon');
-      if (icon) {
-        icon.textContent = wasActive ? '▶' : '🔽';
-      }
-
-      if (!wasActive && window.innerWidth < 768) {
-        setTimeout(() => {
-          btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 150);
-      }
-    });
-  });
 }
 
 function activateAccordions() {
-  toggleSections('.accordion-header');
-  toggleSections('.green-toggle');
-  toggleSections('.orange-toggle');
-  toggleSections('.cyan-toggle');
-  toggleSections('.yellow-toggle');
-  toggleSections('.connection-toggle');
-}
+  document.querySelectorAll('.accordion-header, .connection-toggle')
+    .forEach(btn => {
+      btn.addEventListener('click', () => {
+        const body = btn.nextElementSibling;
+        if (!body) return;
 
-function addIconsToHeaders(selectors) {
-  selectors.forEach(selector => {
-    document.querySelectorAll(selector).forEach(btn => {
-      if (!btn.querySelector('.arrow-icon')) {
-        const icon = document.createElement('span');
-        icon.classList.add('arrow-icon');
-        icon.textContent = '▶';
-        btn.appendChild(icon);
-      }
+        // zamknij wszystkie inne
+        document.querySelectorAll('.accordion-header, .connection-toggle')
+          .forEach(otherBtn => {
+            const otherBody = otherBtn.nextElementSibling;
+            if (otherBtn !== btn && otherBody) {
+              otherBody.classList.remove('active');
+              otherBtn.classList.remove('active');
+            }
+          });
+
+        // toggle aktualnej
+        body.classList.toggle('active');
+        btn.classList.toggle('active');
+
+        // przewiń do aktywnej sekcji na mobile
+        if (body.classList.contains('active') && window.innerWidth < 768) {
+          setTimeout(() => {
+            btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 150);
+        }
+      });
     });
-  });
 }
 
 function initTabs(tabButtons) {
@@ -96,6 +63,8 @@ function initTabs(tabButtons) {
 
       btn.classList.add('active');
       section.classList.add('active');
+
+      setTimeout(loadSections, 0);
     });
   });
 }
