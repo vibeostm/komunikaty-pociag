@@ -68,3 +68,15 @@ document.getElementById('tabEN').onclick = () => {
 
 // Start
 loadSections();
+
+// ===== GASTRONOMIA – PLUSIK =====
+document.addEventListener('click', function (e) {
+  if (e.target.classList.contains('gastronomy-plus')) {
+    const id = e.target.getAttribute('data-target');
+    const block = document.getElementById(id);
+    if (block) {
+      block.classList.toggle('active');
+    }
+  }
+});
+
