@@ -14,15 +14,14 @@ async function loadSections() {
     }
   }
 
-  // poczekaj aż DOM się zaktualizuje
-  setTimeout(() => {
-    activateAccordions();
-    activateGastronomyPlus();
-  }, 50);
+  // aktywuj po wstawieniu HTML
+  activateAccordions();
 }
 
+// ================= AKORDEONY =================
 function activateAccordions() {
-  // Główne nagłówki
+
+  // Główne akordeony
   document.querySelectorAll('.accordion-header').forEach(btn => {
     btn.onclick = () => {
       const body = btn.nextElementSibling;
@@ -33,7 +32,7 @@ function activateAccordions() {
     };
   });
 
-  // Tylko przesiadki
+  // Przesiadki (jeśli używane)
   document.querySelectorAll('.connection-toggle').forEach(btn => {
     btn.onclick = () => {
       const body = btn.nextElementSibling;
@@ -52,20 +51,23 @@ function activateAccordions() {
   });
 }
 
-// ===== GASTRONOMIA – PLUSIK =====
-function activateGastronomyPlus() {
-  document.querySelectorAll('.gastronomy-plus').forEach(plus => {
-    plus.onclick = () => {
-      const id = plus.getAttribute('data-target');
-      const block = document.getElementById(id);
-      if (block) {
-        block.classList.toggle('active');
-      }
-    };
-  });
-}
+// ================= PLUSIK GASTRONOMIA =================
+// EVENT DELEGATION – DZIAŁA Z FETCH()
+document.addEventListener('click', function (e) {
 
-// Taby
+  const plus = e.target.closest('.gastronomy-plus');
+  if (!plus) return;
+
+  const id = plus.getAttribute('data-target');
+  if (!id) return;
+
+  const block = document.getElementById(id);
+  if (!block) return;
+
+  block.classList.toggle('active');
+});
+
+// ================= TABY =================
 document.getElementById('tabPL').onclick = () => {
   document.getElementById('tabPL').classList.add('active');
   document.getElementById('tabEN').classList.remove('active');
@@ -82,5 +84,5 @@ document.getElementById('tabEN').onclick = () => {
   loadSections();
 };
 
-// Start
+// ================= START =================
 loadSections();
