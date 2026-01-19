@@ -351,4 +351,22 @@ em {
   user-select: none;
 }
 
+/* PLUSIK ma być klikalny i "na wierzchu" */
+.gastronomy-plus{
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  z-index: 5;
+}
+
+/* DOMYŚLNIE ZWIŃ */
+.gastronomy-more{
+  display: none;
+}
+
+/* PO ROZWINIĘCIU POKAŻ */
+.gastronomy-more.active{
+  display: block;
+}
+
 
