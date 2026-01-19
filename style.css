@@ -14,10 +14,15 @@ body {
 }
 
 strong { font-weight: bold; }
-em { font-style: italic; font-size: 0.9rem; }
+/* kursywa mniejsza o 1px */
+em {
+  font-style: italic;
+  font-size: 0.8rem;
+}
 
 html { font-size: 100%; }
 
+/* === TABSY === */
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -46,13 +51,14 @@ html { font-size: 100%; }
   color: #000;
 }
 
+/* === KONTAINER NA SEKCJE === */
 .accordion-container {
   max-width: 850px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* === Główne nagłówki akordeonów === */
+/* === GŁÓWNE NAGŁÓWKI AKORDEONÓW (bez ikon) === */
 .accordion-header {
   width: 100%;
   text-align: left;
@@ -66,85 +72,37 @@ html { font-size: 100%; }
   margin-bottom: 0.5rem;
   border-radius: 6px;
   transition: background 0.2s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
-/* === Podsekcje z dopasowanymi kolorami === */
+/* === PODSEKCJE Z PERMANENTNYM TEKSTEM === */
 .accordion-subheader {
+  display: none; /* wyłącz wszystkie rozwijane podnagłówki poza connection */
+}
+
+/* === ZACHOWAJ TYLKO PRZESIADKI NA LOTNISKA jako rozwijane === */
+.connection-toggle {
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
   font-weight: 600;
   font-size: 1rem;
+  background-color: #c5e0dc;
   border: none;
   cursor: pointer;
   outline: none;
   margin-bottom: 0.5rem;
   border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   transition: background 0.2s ease;
 }
 
-/* Kolory podsekcji – stałe (nie szarzeją po kliknięciu ani hoverze) */
-.green-toggle {
-  background-color: #c8e6c9;
-}
-.green-toggle:hover,
-.green-toggle.active {
-  background-color: #c8e6c9;
-}
-
-.orange-toggle {
-  background-color: #fcd5b4;
-}
-.orange-toggle:hover,
-.orange-toggle.active {
-  background-color: #fcd5b4;
-}
-
-.cyan-toggle {
-  background-color: #c5e0dc;
-}
-.cyan-toggle:hover,
-.cyan-toggle.active {
+.connection-toggle:hover {
   background-color: #c5e0dc;
 }
 
-.yellow-toggle {
-  background-color: #fff2cc;
-}
-.yellow-toggle:hover,
-.yellow-toggle.active {
-  background-color: #fff2cc;
-}
-
-.connection-toggle {
-  background-color: #c5e0dc;
-}
-.connection-toggle:hover,
-.connection-toggle.active {
-  background-color: #c5e0dc;
-}
-
-.arrow-icon {
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
-}
-
-.accordion-header.active .arrow-icon,
-.accordion-subheader.active .arrow-icon {
-  transform: rotate(90deg);
-}
-
-/* === Ciało sekcji === */
-.accordion-body,
-.accordion-subbody {
+/* ciało tego jedynego akordeonu jest rozwijane */
+.connection-toggle + .accordion-subbody {
   display: none;
-  padding: 1rem 1.5rem; /* lekkie wcięcie */
+  padding: 1rem 1.5rem;
   background: white;
   border: 1px solid #ccc;
   border-top: none;
@@ -152,35 +110,37 @@ html { font-size: 100%; }
   margin-bottom: 1rem;
 }
 
-.accordion-body.active,
-.accordion-subbody.active {
+.connection-toggle.active + .accordion-subbody {
   display: block;
 }
 
-/* === Bloki kolorowe === */
+/* === BLOKI TREŚCI === */
 .green {
   background: #e2f0d9;
   border-left: 5px solid #a8d08d;
   padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .cyan {
   background: #d9f0ed;
   border-left: 5px solid #7ab8b3;
   padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .orange {
   background: #fcd5b4;
   border-left: 5px solid #f7931e;
   padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .yellow {
   background: #fff9e5;
   border-left: 5px solid #f4d35e;
   padding: 1rem;
-  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .speech-box {
@@ -206,7 +166,7 @@ html { font-size: 100%; }
   display: block;
 }
 
-/* === TABELA LOTNISK === */
+/* === TABELKI LOTNISK === */
 .airport-table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -243,8 +203,12 @@ html { font-size: 100%; }
     padding: 0.5rem;
   }
 
-  .accordion-header,
-  .accordion-subheader {
+  .accordion-header {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .connection-toggle {
     font-size: 0.95rem;
     padding: 0.6rem 0.8rem;
   }
