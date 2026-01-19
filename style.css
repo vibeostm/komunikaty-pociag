@@ -48,6 +48,7 @@ em {
   max-width: 900px;
   margin: 0 auto;
   width: 100%;
+  padding: 0 1rem;
 }
 
 .accordion-header {
@@ -62,6 +63,9 @@ em {
   margin-bottom: 0.5rem;
   border-radius: 6px;
   transition: background 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: none !important;
 }
 
 .accordion-body {
@@ -90,6 +94,9 @@ em {
   cursor: pointer;
   margin-bottom: 0.5rem;
   border-radius: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: none !important;
 }
 
 .connection-toggle + .accordion-subbody {
@@ -188,12 +195,35 @@ em {
   display: block;
 }
 
-/* Responsywność */
+/* RESPONSYWNOŚĆ */
 @media (max-width: 768px) {
   .tabs {
     flex-direction: column;
   }
+
   .tab {
     font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .accordion-container {
+    padding: 0 0.4rem;
+  }
+
+  .green,
+  .orange,
+  .yellow,
+  .cyan {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .speech-box {
+    padding: 0.75rem;
+  }
+
+  .accordion-body {
+    padding: 1rem;
   }
 }
