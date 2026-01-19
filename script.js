@@ -17,6 +17,7 @@ async function loadSections() {
   // poczekaj aż DOM się zaktualizuje
   setTimeout(() => {
     activateAccordions();
+    activateGastronomyPlus();
   }, 50);
 }
 
@@ -36,15 +37,30 @@ function activateAccordions() {
   document.querySelectorAll('.connection-toggle').forEach(btn => {
     btn.onclick = () => {
       const body = btn.nextElementSibling;
+
       document.querySelectorAll('.connection-toggle').forEach(o => {
         if (o !== btn) o.classList.remove('active');
       });
+
       document.querySelectorAll('.accordion-subbody').forEach(b => {
         if (b !== body) b.classList.remove('active');
       });
 
       btn.classList.toggle('active');
       body.classList.toggle('active');
+    };
+  });
+}
+
+// ===== GASTRONOMIA – PLUSIK =====
+function activateGastronomyPlus() {
+  document.querySelectorAll('.gastronomy-plus').forEach(plus => {
+    plus.onclick = () => {
+      const id = plus.getAttribute('data-target');
+      const block = document.getElementById(id);
+      if (block) {
+        block.classList.toggle('active');
+      }
     };
   });
 }
@@ -68,15 +84,3 @@ document.getElementById('tabEN').onclick = () => {
 
 // Start
 loadSections();
-
-// ===== GASTRONOMIA – PLUSIK =====
-document.addEventListener('click', function (e) {
-  if (e.target.classList.contains('gastronomy-plus')) {
-    const id = e.target.getAttribute('data-target');
-    const block = document.getElementById(id);
-    if (block) {
-      block.classList.toggle('active');
-    }
-  }
-});
-
