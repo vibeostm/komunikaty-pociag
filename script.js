@@ -1,3 +1,5 @@
+alert('SCRIPT JS DZIAŁA');
+
 async function loadSections() {
   const elements = document.querySelectorAll('[data-load]');
 
@@ -86,3 +88,4 @@ document.getElementById('tabEN').onclick = () => {
 
 // ================= START =================
 loadSections();
+
