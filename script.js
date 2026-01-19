@@ -18,12 +18,12 @@ async function loadSections() {
 }
 
 function activateAccordions() {
-  // główne akordeony
+  // Główne nagłówki (1,2,3,4,5)
   document.querySelectorAll('.accordion-header').forEach(btn => {
     btn.addEventListener('click', () => {
       const body = btn.nextElementSibling;
 
-      // zamknij inne
+      // Zamknij inne
       document.querySelectorAll('.accordion-body').forEach(b => {
         if (b !== body) b.classList.remove('active');
       });
@@ -32,7 +32,7 @@ function activateAccordions() {
     });
   });
 
-  // tylko lotniska jako podakordeon
+  // Tylko przesiadki jako pod-akordeon
   document.querySelectorAll('.connection-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const body = btn.nextElementSibling;
