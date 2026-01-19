@@ -1,3 +1,6 @@
+// ========================
+// ŁADOWANIE SEKCJI (FETCH)
+// ========================
 async function loadSections() {
   const elements = document.querySelectorAll('[data-load]');
 
@@ -14,68 +17,56 @@ async function loadSections() {
     }
   }
 
-  // Po wstawieniu HTML aktywujemy akordeony (plusiki obsługujemy delegacją)
+  // Po wstawieniu HTML aktywujemy akordeony
   activateAccordions();
 }
 
+// ========================
+// AKORDEONY – GŁÓWNE BLOKI
+// ========================
 function activateAccordions() {
-  // Główne nagłówki
   document.querySelectorAll('.accordion-header').forEach(btn => {
     btn.onclick = () => {
       const body = btn.nextElementSibling;
+
       document.querySelectorAll('.accordion-body').forEach(b => {
         if (b !== body) b.classList.remove('active');
       });
-      body.classList.toggle('active');
-    };
-  });
 
-  // Tylko przesiadki
-  document.querySelectorAll('.connection-toggle').forEach(btn => {
-    btn.onclick = () => {
-      const body = btn.nextElementSibling;
-
-      document.querySelectorAll('.connection-toggle').forEach(o => {
-        if (o !== btn) o.classList.remove('active');
-      });
-
-      document.querySelectorAll('.accordion-subbody').forEach(b => {
-        if (b !== body) b.classList.remove('active');
-      });
-
-      btn.classList.toggle('active');
       body.classList.toggle('active');
     };
   });
 }
 
-// ========================
-// PLUSIK (delegacja klików)
-// ========================
+// ==================================================
+// TOGGLE PODBLOKÓW – KLIK CAŁEJ BELKI (DELEGACJA)
+// ==================================================
 document.addEventListener('click', function (e) {
-  const plus = e.target.closest('.gastronomy-plus');
-  if (!plus) return;
 
-  // Ważne: nie pozwól, żeby klik w plus wpływał na inne klik-handlery
+  // Szukamy kliknięcia w belkę rozwijaną
+  const header = e.target.closest('.toggle-header');
+  if (!header) return;
+
+  // Nie pozwalamy, aby klik wpływał na akordeon wyżej
   e.preventDefault();
   e.stopPropagation();
 
-  const id = plus.getAttribute('data-target');
-  if (!id) return;
+  // Rodzic = cały blok (.toggle)
+  const toggleBlock = header.parentElement;
 
-  const block = document.getElementById(id);
-  if (!block) return;
+  // Zamykamy tylko rodzeństwo NA TYM SAMYM POZIOMIE
+  const siblings = toggleBlock.parentElement.querySelectorAll('.toggle');
+  siblings.forEach(el => {
+    if (el !== toggleBlock) el.classList.remove('active');
+  });
 
-  // Toggle klasy
-  block.classList.toggle('active');
-
-  // Awaryjnie: jeśli CSS nie pokazuje .active, wymuś display
-  // (nie zmienia wyglądu, tylko gwarantuje działanie)
-  const isActive = block.classList.contains('active');
-  block.style.display = isActive ? 'block' : 'none';
+  // Toggle aktywności
+  toggleBlock.classList.toggle('active');
 });
 
-// Taby
+// ========================
+// TABY PL / EN
+// ========================
 document.getElementById('tabPL').onclick = () => {
   document.getElementById('tabPL').classList.add('active');
   document.getElementById('tabEN').classList.remove('active');
@@ -92,5 +83,7 @@ document.getElementById('tabEN').onclick = () => {
   loadSections();
 };
 
-// Start
+// ========================
+// START
+// ========================
 loadSections();
