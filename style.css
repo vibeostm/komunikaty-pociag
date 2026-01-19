@@ -13,15 +13,16 @@ body {
   padding: 1rem;
 }
 
-strong { font-weight: bold; }
-
-/* kursywa mniejsza o 1px */
-em {
-  font-style: italic;
-  font-size: 0.8rem;
+strong {
+  font-weight: bold;
 }
 
-/* TABY */
+em {
+  font-style: italic;
+  font-size: 0.8rem; /* mniejsze o 1px */
+}
+
+/* Tabs */
 .tabs {
   display: flex;
   gap: 0.5rem;
@@ -42,10 +43,11 @@ em {
   background: #bbb;
 }
 
-/* GŁÓWNE AKORDEONY */
+/* Accordion layout */
 .accordion-container {
   max-width: 900px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .accordion-header {
@@ -53,11 +55,13 @@ em {
   text-align: left;
   padding: 0.75rem 1rem;
   font-weight: 600;
+  font-size: 1rem;
   background: #eaeaea;
   border: none;
   cursor: pointer;
   margin-bottom: 0.5rem;
   border-radius: 6px;
+  transition: background 0.2s ease;
 }
 
 .accordion-body {
@@ -67,18 +71,20 @@ em {
   border: 1px solid #ccc;
   border-radius: 0 0 6px 6px;
   margin-bottom: 1rem;
+  overflow-x: auto;
 }
 
 .accordion-body.active {
   display: block;
 }
 
-/* ===== WYJĄTEK: TYLKO LOTNISKA ROZWIJANE ===== */
+/* LOTNISKA – jedyne rozwijane podsekcje */
 .connection-toggle {
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
   font-weight: 600;
+  font-size: 1rem;
   background: #c5e0dc;
   border: none;
   cursor: pointer;
@@ -92,13 +98,14 @@ em {
   background: white;
   border: 1px solid #ccc;
   border-radius: 0 0 6px 6px;
+  margin-bottom: 1rem;
 }
 
 .connection-toggle.active + .accordion-subbody {
   display: block;
 }
 
-/* ===== WYŁĄCZENIE WSZYSTKICH INNYCH PODAKORDEONÓW ===== */
+/* WYŁĄCZENIE innych pod-akordeonów */
 .accordion-subheader {
   display: none !important;
 }
@@ -107,7 +114,7 @@ em {
   display: block !important;
 }
 
-/* ===== BLOKI KOLOROWE (z wcięciem) ===== */
+/* Kolorowe sekcje (z akapitem) */
 .green,
 .orange,
 .yellow,
@@ -137,7 +144,22 @@ em {
   border-color: #7ab8b3;
 }
 
-/* TABELA LOTNISK */
+.speech-box {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+.highlighted-info {
+  background: #e6e6e6;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  font-weight: bold;
+  border-left: 4px solid #999;
+}
+
 .airport-table-wrapper {
   overflow-x: auto;
   margin: 1rem 0;
@@ -153,9 +175,11 @@ em {
 .airport-table td {
   border: 1px solid #ccc;
   padding: 0.5rem 0.8rem;
+  text-align: left;
+  white-space: normal;
 }
 
-/* SEKCJE JĘZYKOWE */
+/* Sekcje językowe */
 .section {
   display: none;
 }
@@ -164,9 +188,12 @@ em {
   display: block;
 }
 
-/* RESPONSYWNOŚĆ */
+/* Responsywność */
 @media (max-width: 768px) {
   .tabs {
     flex-direction: column;
+  }
+  .tab {
+    font-size: 0.95rem;
   }
 }
