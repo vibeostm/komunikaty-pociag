@@ -1,5 +1,3 @@
-alert('SCRIPT JS DZIAŁA');
-
 async function loadSections() {
   const elements = document.querySelectorAll('[data-load]');
 
@@ -16,14 +14,12 @@ async function loadSections() {
     }
   }
 
-  // aktywuj po wstawieniu HTML
+  // Po wstawieniu HTML aktywujemy akordeony (plusiki obsługujemy delegacją)
   activateAccordions();
 }
 
-// ================= AKORDEONY =================
 function activateAccordions() {
-
-  // Główne akordeony
+  // Główne nagłówki
   document.querySelectorAll('.accordion-header').forEach(btn => {
     btn.onclick = () => {
       const body = btn.nextElementSibling;
@@ -34,7 +30,7 @@ function activateAccordions() {
     };
   });
 
-  // Przesiadki (jeśli używane)
+  // Tylko przesiadki
   document.querySelectorAll('.connection-toggle').forEach(btn => {
     btn.onclick = () => {
       const body = btn.nextElementSibling;
@@ -53,12 +49,16 @@ function activateAccordions() {
   });
 }
 
-// ================= PLUSIK GASTRONOMIA =================
-// EVENT DELEGATION – DZIAŁA Z FETCH()
+// ========================
+// PLUSIK (delegacja klików)
+// ========================
 document.addEventListener('click', function (e) {
-
   const plus = e.target.closest('.gastronomy-plus');
   if (!plus) return;
+
+  // Ważne: nie pozwól, żeby klik w plus wpływał na inne klik-handlery
+  e.preventDefault();
+  e.stopPropagation();
 
   const id = plus.getAttribute('data-target');
   if (!id) return;
@@ -66,10 +66,16 @@ document.addEventListener('click', function (e) {
   const block = document.getElementById(id);
   if (!block) return;
 
+  // Toggle klasy
   block.classList.toggle('active');
+
+  // Awaryjnie: jeśli CSS nie pokazuje .active, wymuś display
+  // (nie zmienia wyglądu, tylko gwarantuje działanie)
+  const isActive = block.classList.contains('active');
+  block.style.display = isActive ? 'block' : 'none';
 });
 
-// ================= TABY =================
+// Taby
 document.getElementById('tabPL').onclick = () => {
   document.getElementById('tabPL').classList.add('active');
   document.getElementById('tabEN').classList.remove('active');
@@ -86,6 +92,5 @@ document.getElementById('tabEN').onclick = () => {
   loadSections();
 };
 
-// ================= START =================
+// Start
 loadSections();
-
