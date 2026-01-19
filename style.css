@@ -14,15 +14,11 @@ body {
 }
 
 strong { font-weight: bold; }
-/* kursywa mniejsza o 1px */
-em {
-  font-style: italic;
-  font-size: 0.8rem;
-}
+em { font-style: italic; font-size: 0.8rem; }
 
 html { font-size: 100%; }
 
-/* === TABSY === */
+/* === TABS === */
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -51,15 +47,15 @@ html { font-size: 100%; }
   color: #000;
 }
 
-/* === KONTAINER NA SEKCJE === */
+/* === SEKCJE GŁÓWNE === */
 .accordion-container {
-  max-width: 850px;
+  max-width: 900px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* === GŁÓWNE NAGŁÓWKI AKORDEONÓW (bez ikon) === */
-.accordion-header {
+.accordion-header,
+.connection-toggle {
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
@@ -74,33 +70,13 @@ html { font-size: 100%; }
   transition: background 0.2s ease;
 }
 
-/* === PODSEKCJE Z PERMANENTNYM TEKSTEM === */
-.accordion-subheader {
-  display: none; /* wyłącz wszystkie rozwijane podnagłówki poza connection */
+.accordion-header.active,
+.connection-toggle.active {
+  background: #e2e2e2;
 }
 
-/* === ZACHOWAJ TYLKO PRZESIADKI NA LOTNISKA jako rozwijane === */
-.connection-toggle {
-  width: 100%;
-  text-align: left;
-  padding: 0.75rem 1rem;
-  font-weight: 600;
-  font-size: 1rem;
-  background-color: #c5e0dc;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  margin-bottom: 0.5rem;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
-.connection-toggle:hover {
-  background-color: #c5e0dc;
-}
-
-/* ciało tego jedynego akordeonu jest rozwijane */
-.connection-toggle + .accordion-subbody {
+.accordion-body,
+.accordion-subbody {
   display: none;
   padding: 1rem 1.5rem;
   background: white;
@@ -108,41 +84,45 @@ html { font-size: 100%; }
   border-top: none;
   border-radius: 0 0 6px 6px;
   margin-bottom: 1rem;
+  word-wrap: break-word;
 }
 
-.connection-toggle.active + .accordion-subbody {
+.accordion-body.active,
+.accordion-subbody.active {
   display: block;
 }
 
-/* === BLOKI TREŚCI === */
-.green {
-  background: #e2f0d9;
-  border-left: 5px solid #a8d08d;
-  padding: 1rem;
+/* === KOLOROWE BLOKI Z AKAPITEM === */
+.green,
+.orange,
+.yellow,
+.cyan {
+  padding: 1rem 1.5rem 1rem 2rem;
   margin-bottom: 1rem;
+  border-left: 5px solid;
 }
 
-.cyan {
-  background: #d9f0ed;
-  border-left: 5px solid #7ab8b3;
-  padding: 1rem;
-  margin-bottom: 1rem;
+.green {
+  background: #e2f0d9;
+  border-color: #a8d08d;
 }
 
 .orange {
   background: #fcd5b4;
-  border-left: 5px solid #f7931e;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  border-color: #f7931e;
 }
 
 .yellow {
   background: #fff9e5;
-  border-left: 5px solid #f4d35e;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  border-color: #f4d35e;
 }
 
+.cyan {
+  background: #d9f0ed;
+  border-color: #7ab8b3;
+}
+
+/* === INNE BLOKI === */
 .speech-box {
   background: #fff;
   border: 1px solid #ccc;
@@ -159,14 +139,7 @@ html { font-size: 100%; }
   border-left: 4px solid #999;
 }
 
-.section {
-  display: none;
-}
-.section.active {
-  display: block;
-}
-
-/* === TABELKI LOTNISK === */
+/* === TABELA LOTNISK === */
 .airport-table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -196,6 +169,14 @@ html { font-size: 100%; }
   font-weight: 600;
 }
 
+/* === ZARZĄDZANIE SEKCJAMI === */
+.section {
+  display: none;
+}
+.section.active {
+  display: block;
+}
+
 /* === RESPONSYWNOŚĆ === */
 @media (max-width: 768px) {
   body {
@@ -203,11 +184,7 @@ html { font-size: 100%; }
     padding: 0.5rem;
   }
 
-  .accordion-header {
-    font-size: 0.95rem;
-    padding: 0.6rem 0.8rem;
-  }
-
+  .accordion-header,
   .connection-toggle {
     font-size: 0.95rem;
     padding: 0.6rem 0.8rem;
