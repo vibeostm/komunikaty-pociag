@@ -18,62 +18,53 @@ async function loadSections() {
 }
 
 function activateAccordions() {
-  document.querySelectorAll('.accordion-header, .connection-toggle')
-    .forEach(btn => {
-      btn.addEventListener('click', () => {
-        const body = btn.nextElementSibling;
-        if (!body) return;
-
-        // zamknij wszystkie inne
-        document.querySelectorAll('.accordion-header, .connection-toggle')
-          .forEach(otherBtn => {
-            const otherBody = otherBtn.nextElementSibling;
-            if (otherBtn !== btn && otherBody) {
-              otherBody.classList.remove('active');
-              otherBtn.classList.remove('active');
-            }
-          });
-
-        // toggle aktualnej
-        body.classList.toggle('active');
-        btn.classList.toggle('active');
-
-        // przewiń do aktywnej sekcji na mobile
-        if (body.classList.contains('active') && window.innerWidth < 768) {
-          setTimeout(() => {
-            btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 150);
-        }
-      });
-    });
-}
-
-function initTabs(tabButtons) {
-  tabButtons.forEach(({ btnId, sectionId }) => {
-    const btn = document.getElementById(btnId);
-    const section = document.getElementById(sectionId);
-
-    if (!btn || !section) return;
-
+  // główne akordeony
+  document.querySelectorAll('.accordion-header').forEach(btn => {
     btn.addEventListener('click', () => {
-      tabButtons.forEach(({ btnId, sectionId }) => {
-        document.getElementById(btnId).classList.remove('active');
-        document.getElementById(sectionId).classList.remove('active');
+      const body = btn.nextElementSibling;
+
+      // zamknij inne
+      document.querySelectorAll('.accordion-body').forEach(b => {
+        if (b !== body) b.classList.remove('active');
       });
 
-      btn.classList.add('active');
-      section.classList.add('active');
+      body.classList.toggle('active');
+    });
+  });
 
-      setTimeout(loadSections, 0);
+  // tylko lotniska jako podakordeon
+  document.querySelectorAll('.connection-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const body = btn.nextElementSibling;
+
+      document.querySelectorAll('.connection-toggle').forEach(o => {
+        if (o !== btn) o.classList.remove('active');
+      });
+
+      document.querySelectorAll('.accordion-subbody').forEach(b => {
+        if (b !== body) b.classList.remove('active');
+      });
+
+      btn.classList.toggle('active');
+      body.classList.toggle('active');
     });
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initTabs([
-    { btnId: 'tabPL', sectionId: 'sectionPL' },
-    { btnId: 'tabEN', sectionId: 'sectionEN' }
-  ]);
-
+document.getElementById('tabPL').addEventListener('click', () => {
+  document.getElementById('tabPL').classList.add('active');
+  document.getElementById('tabEN').classList.remove('active');
+  document.getElementById('sectionPL').classList.add('active');
+  document.getElementById('sectionEN').classList.remove('active');
   loadSections();
 });
+
+document.getElementById('tabEN').addEventListener('click', () => {
+  document.getElementById('tabEN').classList.add('active');
+  document.getElementById('tabPL').classList.remove('active');
+  document.getElementById('sectionEN').classList.add('active');
+  document.getElementById('sectionPL').classList.remove('active');
+  loadSections();
+});
+
+loadSections();
