@@ -1,124 +1,105 @@
 <section class="accordion">
 
-  <button class="accordion-header">
-    4. POWITALNO – POŻEGNALNY (TRANZYTOWY)
-  </button>
-
+  <button class="accordion-header">4. POWITALNO – POŻEGNALNY (TRANZYTOWY)</button>
   <div class="accordion-body">
 
     <!-- GASTRONOMIA -->
     <p><em>Jeśli w pociągu dostępna jest oferta gastronomiczna, dodać:</em></p>
-    <div class="box yellow">
+    <div class="yellow" style="border-radius:14px;">
       <strong>We would like to invite you to try the gastronomic service.</strong>
     </div>
 
     <!-- BLOK GŁÓWNY -->
-    <div class="speech-box">
+    <div class="speech-box" style="border:2px solid #ccc; border-radius:18px; padding:1rem; margin-top:0.8rem;">
 
-      <p><strong>We are approaching</strong> …………… station / terminal station.</p>
+      <p><strong>We are approaching</strong> …………… <strong>station / terminal station</strong>.</p>
 
       <p><em>Jeśli pociąg jest opóźniony o 5 lub więcej minut, dodać:</em></p>
-      <div class="box green">
+      <div class="green" style="border-radius:14px;">
         <strong>We would like to apologize for the delay.</strong>
       </div>
 
-      <p><em>Jeśli przewidywany czas postoju na stacji wynosi 5 lub więcej minut, dodać:</em></p>
-      <div class="box gray">
+      <p style="margin-top:0.6rem;">
+        <em>If the scheduled stop at the station exceeds 5 minutes, add:</em>
+      </p>
+      <div class="highlighted-info" style="border-radius:12px;">
         Scheduled/Estimated <strong>departure time at</strong> ……… .
       </div>
 
-      <p>
-        Passengers who are leaving the train, please remember to take your belongings
-        and take caution.
+      <p style="margin-top:0.8rem;">
+        Passengers, who are leaving the train, please remember to take your belongings and take caution.
       </p>
-
       <p><strong>Thank you for choosing PKP Intercity.</strong></p>
+
     </div>
 
-    <!-- PRZESIADKI -->
-    <p><em>Jeśli jest możliwość przesiadek, dodać:</em></p>
+    <!-- ===== BLOK TURKUSOWY – PRZESIADKI ===== -->
+    <p style="margin-top:0.8rem;"><em>Jeśli jest możliwość przesiadek, dodać:</em></p>
 
-    <div class="box turquoise toggle">
+    <div style="background:#6fc4b7; border-radius:22px; padding:1.1rem; margin-top:0.3rem;">
 
-      <div class="toggle-header">
+      <p>
         <strong>
           At the station you can change to long-distance, regional or suburban trains.
         </strong>
-        <span class="fake-plus">+</span>
+      </p>
+
+      <p><em>W przypadku ZKA, dodać:</em></p>
+      <div style="background:#7fd0c4; border-radius:12px; padding:0.5rem 0.7rem;">
+        as well as bus replacement service to ……… station.
       </div>
 
-      <div class="toggle-body">
+      <!-- LOTNISKA – RAMKA NIEBIESKA -->
+      <p style="margin-top:0.6rem;"><em>Jeśli ze stacji odjeżdżają pociągi na lotnisko, dodać:</em></p>
 
-        <p><em>W przypadku ZKA, dodać:</em></p>
-        <div class="inner-box">
-          as well as bus replacement service to ……… station.
+      <div style="background:#4fb3c4; border-radius:16px; padding:0.7rem;">
+
+        <div class="gastronomy-header">
+          <strong>
+            From ……… station depart trains to:
+          </strong>
         </div>
 
-        <!-- LOTNISKA -->
-        <p><em>Jeśli ze stacji odjeżdżają pociągi na lotnisko, dodać:</em></p>
+        <!-- LISTA LOTNISK – CIEMNIEJSZA RAMKA -->
+        <div style="background:#3a9fb0; border-radius:14px; padding:0.7rem; margin-top:0.5rem;">
+          <p><strong>Central</strong></p>
+          <ul>
+            <li>Warszawa Wschodnia → Chopin Airport / Warszawa-Modlin</li>
+            <li>Warszawa Zachodnia → Chopin Airport</li>
+            <li>Warszawa Gdańska → Warszawa-Modlin</li>
+            <li>Lublin Główny / Świdnik Miasto → Lublin Airport</li>
+          </ul>
 
-        <div class="inner-box toggle blue">
+          <p><strong>South</strong></p>
+          <ul>
+            <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice</li>
+            <li>Kraków Główny → Kraków-Balice</li>
+            <li>Rzeszów Główny → Rzeszów-Jasionka</li>
+          </ul>
 
-          <div class="toggle-header">
-            <strong>
-              From ……… station depart trains to ………
-            </strong>
-            <span class="fake-plus">+</span>
-          </div>
-
-          <div class="toggle-body">
-
-            <p><strong>Central region</strong></p>
-            <ul>
-              <li>Warszawa Wschodnia → Chopin Airport / Warsaw-Modlin Airport</li>
-              <li>Warszawa Zachodnia → Chopin Airport</li>
-              <li>Warszawa Gdańska → Warsaw-Modlin Airport</li>
-              <li>Lublin Główny / Świdnik Miasto → Lublin Airport</li>
-            </ul>
-
-            <p><strong>Southern region</strong></p>
-            <ul>
-              <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice Airport</li>
-              <li>Kraków Główny → Kraków-Balice Airport</li>
-              <li>Rzeszów Główny → Rzeszów-Jasionka Airport</li>
-            </ul>
-
-            <p><strong>Northern region</strong></p>
-            <ul>
-              <li>Gdańsk Wrzeszcz / Gdynia Główna → Gdańsk Airport</li>
-              <li>Olsztyn Główny → Olsztyn-Mazury Airport</li>
-              <li>Szczecin Dąbie → Szczecin-Goleniów Airport</li>
-            </ul>
-
-          </div>
+          <p><strong>North</strong></p>
+          <ul>
+            <li>Gdańsk Wrzeszcz / Gdynia Główna → Gdańsk Airport</li>
+            <li>Olsztyn Główny → Olsztyn-Mazury</li>
+            <li>Szczecin Dąbie → Szczecin-Goleniów</li>
+          </ul>
         </div>
-
-        <p><strong>Please be reminded to pay attention to information provided at the station.</strong></p>
       </div>
+
+      <p style="margin-top:0.6rem;">
+        <strong>Please be reminded to pay attention to information provided at the station.</strong>
+      </p>
     </div>
 
     <!-- ROZŁĄCZANIE WAGONÓW -->
-    <p><em>Jeśli na danej stacji wagony będą odłączone, dodać:</em></p>
-
-    <div class="box orange">
+    <p style="margin-top:0.8rem;"><em>Jeśli na danej stacji wagony będą odłączone, dodać:</em></p>
+    <div class="orange" style="border-radius:18px;">
       <strong>
-        We would like to remind you that the train will be divided
-        at ……… station.
+        We would like to remind you that the train will be divided at ……… station.
       </strong>
-
-      <p>
-        The cars with the following numbers: ……, ……, ……
-        are running to ……… station.
-      </p>
-
-      <p>
-        The cars with the following numbers: ……, ……, ……
-        will terminate here.
-      </p>
-
-      <p>
-        Please take extra caution during the detaching of the car.
-      </p>
+      <p>The cars with the following numbers: …… , …… , …… are running to ……… station.</p>
+      <p>The cars with the following numbers: …… , …… , …… will terminate here.</p>
+      <p>Please take extra caution during the detaching of the car.</p>
     </div>
 
   </div>
