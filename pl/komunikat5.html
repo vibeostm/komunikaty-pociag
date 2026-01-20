@@ -1,63 +1,192 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Komunikat PKP Intercity</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      margin: 0;
+      padding: 1rem;
+      background: #f8f8f8;
+    }
+
+    .accordion {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .accordion-header {
+      width: 100%;
+      background: #004b87;
+      color: white;
+      font-size: 1.1rem;
+      padding: 1rem;
+      border: none;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .accordion-body {
+      margin-top: 1rem;
+    }
+
+    .green {
+      background: #c8f7c5;
+      padding: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .highlighted-info {
+      background: #f0f0f0;
+      padding: 0.6rem;
+      margin-top: 0.4rem;
+    }
+
+    .speech-box {
+      background: #ffffff;
+    }
+
+    .orange {
+      background: #fcd1a8;
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    ul {
+      margin: 0.5rem 0 1rem 1.2rem;
+      padding-left: 1rem;
+    }
+
+    @media (min-width: 600px) {
+      body {
+        font-size: 17px;
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
 <section class="accordion">
-  <button class="accordion-header">5. POŻEGNALNY</button>
+  <button class="accordion-header">4. POWITALNO – POŻEGNALNY (TRANZYTOWY)</button>
   <div class="accordion-body">
 
-    <div class="speech-box">
-      <p><strong>Zbliżamy się do stacji .............. .</strong></p>
+    <!-- BLOK GŁÓWNY -->
+    <div class="speech-box" style="border:2px solid #ccc; border-radius:18px; padding:1rem; margin-top:0.8rem;">
 
-      <p><em>Jeśli pociąg jest opóźniony o 5 lub więcej minut:</em></p>
-      <div class="green"><strong>Przepraszamy za opóźnienie pociągu.</strong></div>
+      <p><strong>We are approaching</strong> …………… <strong>station / terminal station</strong>.</p>
 
-      <p><em>Jeśli przewidywany czas postoju na stacji od przyjazdu do planowej godziny odjazdu wynosi 5 lub więcej minut:</em></p>
-      <div class="highlighted-info">Planowy/Przewidywany odjazd pociągu o godzinie ..... .</div>
-
-      <p><em>Jeśli jest możliwość przesiadek:</em></p>
-      <button class="accordion-subheader cyan-toggle">Informacja o przesiadkach</button>
-      <div class="accordion-subbody cyan">
-        <p><strong>Na stacji można przesiąść się do pociągów dalekobieżnych, regionalnych lub podmiejskich.</strong></p>
-        <p><em>W przypadku ZKA:</em> oraz do zastępczej komunikacji autobusowej do stacji ......</p>
-
-        <p><em>Jeśli ze stacji odjeżdżają pociągi na lotnisko:</em></p>
-        <p><strong>Ze stacji ...... odjeżdżają pociągi w kierunku ..........</strong></p>
-
-        <!-- TABELA LOTNISK -->
-        <button class="accordion-subheader cyan-toggle">Wykaz przesiadek na lotniska</button>
-        <div class="accordion-subbody cyan">
-          <table style="width:100%; border-collapse: collapse;">
-            <tr style="background:#f2f2f2">
-              <th style="border:1px solid #ccc;padding:6px">Zakład</th>
-              <th style="border:1px solid #ccc;padding:6px">Stacja</th>
-              <th style="border:1px solid #ccc;padding:6px">Lotnisko do komunikatu</th>
-              <th style="border:1px solid #ccc;padding:6px">Stacja w pobliżu</th>
-            </tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Centralny</td><td style="border:1px solid #ccc;padding:6px">Lublin Główny / Świdnik Miasto</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Lublin airport</td><td style="border:1px solid #ccc;padding:6px">Lublin Airport</td></tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Centralny</td><td style="border:1px solid #ccc;padding:6px">Warszawa Wschodnia / Zachodnia</td><td style="border:1px solid #ccc;padding:6px">Lotnisko Chopina w Warszawie and Port Lotniczy Warszawa‑Modlin airports</td><td style="border:1px solid #ccc;padding:6px">Warszawa Lotnisko Chopina</td></tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Centralny</td><td style="border:1px solid #ccc;padding:6px">Warszawa Gdańska</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Warszawa‑Modlin airport</td><td style="border:1px solid #ccc;padding:6px">Modlin</td></tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Południowy</td><td style="border:1px solid #ccc;padding:6px">Częstochowa / Gliwice / Katowice / Zawiercie</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Katowice‑Pyrzowice airport</td><td style="border:1px solid #ccc;padding:6px">Pyrzowice Lotnisko</td></tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Południowy</td><td style="border:1px solid #ccc;padding:6px">Kraków Główny</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Kraków‑Balice airport</td><td style="border:1px solid #ccc;padding:6px">Kraków Lotnisko</td></tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Południowy</td><td style="border:1px solid #ccc;padding:6px">Rzeszów Główny</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Rzeszów‑Jasionka airport</td><td style="border:1px solid #ccc;padding:6px">Jasionka Lotnisko</td></tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Północny</td><td style="border:1px solid #ccc;padding:6px">Gdańsk Wrzeszcz / Gdynia Główna</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Gdańsk airport</td><td style="border:1px solid #ccc;padding:6px">Gdańsk Port Lotniczy</td></tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Północny</td><td style="border:1px solid #ccc;padding:6px">Olsztyn Główny</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Olsztyn‑Mazury airport</td><td style="border:1px solid #ccc;padding:6px">Szymany Lotnisko</td></tr>
-            <tr><td style="border:1px solid #ccc;padding:6px">Północny</td><td style="border:1px solid #ccc;padding:6px">Szczecin Dąbie</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Szczecin Goleniów airport</td><td style="border:1px solid #ccc;padding:6px">Port Lotniczy Szczecin Goleniów</td></tr>
-          </table>
-        </div>
-
-        <p><strong>Prosimy o zwrócenie uwagi na informacje stacyjne.</strong></p>
+      <p><em>Jeśli pociąg jest opóźniony o 5 lub więcej minut, dodać:</em></p>
+      <div class="green" style="border-radius:14px;">
+        <strong>We would like to apologize for the delay.</strong>
       </div>
 
-      <p><em>Jeśli na danej stacji wagony będą odłączone:</em></p>
-      <button class="accordion-subheader orange-toggle">Informacja o rozłączeniu wagonów</button>
-      <div class="accordion-subbody orange">
-        <p><strong>Przypominamy, że na stacji ........ pociąg zostanie rozłączony.</strong></p>
-        <p><strong>Wagony z numerami ..., ..., ... kursują do stacji .......... .</strong></p>
-        <p><strong>Wagony z numerami ..., ..., ... kończą bieg.</strong></p>
-        <p><strong>W czasie przestawiania wagonów prosimy o zachowanie szczególnej ostrożności.</strong></p>
+      <p style="margin-top:0.6rem;">
+        <em>If the scheduled stop at the station exceeds 5 minutes, add:</em>
+      </p>
+      <div class="highlighted-info" style="border-radius:12px;">
+        Scheduled/Estimated <strong>departure time at</strong> ……… .
       </div>
 
-      <br />
-      <p><strong>Osoby wysiadające prosimy o zabranie swoich rzeczy oraz zachowanie ostrożności.</strong></p>
-      <p><strong>Dziękujemy za podróż z <span style="font-weight:bold;">PKP Intercity</span>.</strong></p>
+      <p style="margin-top:0.8rem;">
+        Passengers, who are leaving the train, please remember to take your belongings and take caution.
+      </p>
+      <p><strong>Thank you for choosing PKP Intercity.</strong></p>
 
     </div>
+
+    <!-- ===== BLOK TURKUSOWY – PRZESIADKI ===== -->
+    <p style="margin-top:0.8rem;"><em>Jeśli jest możliwość przesiadek, dodać:</em></p>
+
+    <div style="background:#6fc4b7; border-radius:22px; padding:1.1rem; margin-top:0.3rem;">
+
+      <p>
+        <strong>
+          At the station you can change to long-distance, regional or suburban trains.
+        </strong>
+      </p>
+
+      <p><em>W przypadku ZKA, dodać:</em></p>
+      <div style="background:#7fd0c4; border-radius:12px; padding:0.5rem 0.7rem;">
+        as well as bus replacement service to ……… station.
+      </div>
+
+      <!-- LOTNISKA – RAMKA NIEBIESKA -->
+      <p style="margin-top:0.6rem;"><em>Jeśli ze stacji odjeżdżają pociągi na lotnisko, dodać:</em></p>
+
+      <div style="background:#4fb3c4; border-radius:16px; padding:0.7rem;">
+
+        <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleAirports()">
+          <strong>
+            From ……… station depart trains to:
+          </strong>
+          <span style="font-weight:bold; font-size:20px;" id="airports-toggle">+</span>
+        </div>
+
+        <!-- LISTA LOTNISK – UKRYTA DOMYŚLNIE -->
+        <div id="airports-en" style="display:none;">
+          <div style="background:#3a9fb0; border-radius:14px; padding:0.7rem; margin-top:0.5rem;">
+            <p><strong>Central</strong></p>
+            <ul>
+              <li>Warszawa Wschodnia → Chopin Airport / Warszawa-Modlin</li>
+              <li>Warszawa Zachodnia → Chopin Airport</li>
+              <li>Warszawa Gdańska → Warszawa-Modlin</li>
+              <li>Lublin Główny / Świdnik Miasto → Lublin Airport</li>
+            </ul>
+
+            <p><strong>South</strong></p>
+            <ul>
+              <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice</li>
+              <li>Kraków Główny → Kraków-Balice</li>
+              <li>Rzeszów Główny → Rzeszów-Jasionka</li>
+            </ul>
+
+            <p><strong>North</strong></p>
+            <ul>
+              <li>Gdańsk Wrzeszcz / Gdynia Główna → Gdańsk Airport</li>
+              <li>Olsztyn Główny → Olsztyn-Mazury</li>
+              <li>Szczecin Dąbie → Szczecin-Goleniów</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <p style="margin-top:0.6rem;">
+        <strong>Please be reminded to pay attention to information provided at the station.</strong>
+      </p>
+    </div>
+
+    <!-- ROZŁĄCZANIE WAGONÓW -->
+    <p style="margin-top:0.8rem;"><em>Jeśli na danej stacji wagony będą odłączone, dodać:</em></p>
+    <div class="orange" style="border-radius:18px;">
+      <strong>
+        We would like to remind you that the train will be divided at ……… station.
+      </strong>
+      <p>The cars with the following numbers: …… , …… , …… are running to ……… station.</p>
+      <p>The cars with the following numbers: …… , …… , …… will terminate here.</p>
+      <p>Please take extra caution during the detaching of the car.</p>
+    </div>
+
   </div>
 </section>
+
+<script>
+  function toggleAirports() {
+    const section = document.getElementById("airports-en");
+    const toggle = document.getElementById("airports-toggle");
+    if (section.style.display === "none" || section.style.display === "") {
+      section.style.display = "block";
+      toggle.textContent = "−";
+    } else {
+      section.style.display = "none";
+      toggle.textContent = "+";
+    }
+  }
+</script>
+
+</body>
+</html>
