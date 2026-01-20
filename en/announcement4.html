@@ -54,35 +54,40 @@
 
       <div style="background:#4fb3c4; border-radius:16px; padding:0.7rem;">
 
-        <div class="gastronomy-header">
+        <div class="gastronomy-header" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleAirports()">
           <strong>
             From ……… station depart trains to:
           </strong>
+          <span class="gastronomy-plus" style="font-weight:bold; font-size:20px;" id="airports-toggle">+</span>
         </div>
 
-        <!-- LISTA LOTNISK – CIEMNIEJSZA RAMKA -->
-        <div style="background:#3a9fb0; border-radius:14px; padding:0.7rem; margin-top:0.5rem;">
-          <p><strong>Central</strong></p>
-          <ul>
-            <li>Warszawa Wschodnia → Chopin Airport / Warszawa-Modlin</li>
-            <li>Warszawa Zachodnia → Chopin Airport</li>
-            <li>Warszawa Gdańska → Warszawa-Modlin</li>
-            <li>Lublin Główny / Świdnik Miasto → Lublin Airport</li>
-          </ul>
+        <!-- LISTA LOTNISK – UKRYTA DOMYŚLNIE -->
+        <div id="airports-en" class="gastronomy-more" style="display:none;">
 
-          <p><strong>South</strong></p>
-          <ul>
-            <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice</li>
-            <li>Kraków Główny → Kraków-Balice</li>
-            <li>Rzeszów Główny → Rzeszów-Jasionka</li>
-          </ul>
+          <div style="background:#3a9fb0; border-radius:14px; padding:0.7rem; margin-top:0.5rem;">
+            <p><strong>Central</strong></p>
+            <ul>
+              <li>Warszawa Wschodnia → Chopin Airport / Warszawa-Modlin</li>
+              <li>Warszawa Zachodnia → Chopin Airport</li>
+              <li>Warszawa Gdańska → Warszawa-Modlin</li>
+              <li>Lublin Główny / Świdnik Miasto → Lublin Airport</li>
+            </ul>
 
-          <p><strong>North</strong></p>
-          <ul>
-            <li>Gdańsk Wrzeszcz / Gdynia Główna → Gdańsk Airport</li>
-            <li>Olsztyn Główny → Olsztyn-Mazury</li>
-            <li>Szczecin Dąbie → Szczecin-Goleniów</li>
-          </ul>
+            <p><strong>South</strong></p>
+            <ul>
+              <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice</li>
+              <li>Kraków Główny → Kraków-Balice</li>
+              <li>Rzeszów Główny → Rzeszów-Jasionka</li>
+            </ul>
+
+            <p><strong>North</strong></p>
+            <ul>
+              <li>Gdańsk Wrzeszcz / Gdynia Główna → Gdańsk Airport</li>
+              <li>Olsztyn Główny → Olsztyn-Mazury</li>
+              <li>Szczecin Dąbie → Szczecin-Goleniów</li>
+            </ul>
+          </div>
+
         </div>
       </div>
 
@@ -104,3 +109,18 @@
 
   </div>
 </section>
+
+<!-- TOGGLE SCRIPT -->
+<script>
+  function toggleAirports() {
+    const el = document.getElementById("airports-en");
+    const toggle = document.getElementById("airports-toggle");
+    if (el.style.display === "none") {
+      el.style.display = "block";
+      toggle.textContent = "−";
+    } else {
+      el.style.display = "none";
+      toggle.textContent = "+";
+    }
+  }
+</script>
