@@ -1,121 +1,92 @@
 <section class="accordion">
-
-  <button class="accordion-header">5. POŻEGNALNY</button>
+  <button class="accordion-header">5. FAREWELL</button>
   <div class="accordion-body">
-    
 
-    <!-- BLOK GŁÓWNY -->
     <div class="speech-box" style="border:2px solid #ccc; border-radius:18px; padding:1rem; margin-top:0.8rem;">
 
-      <p><strong>We are approaching</strong> …………… <strong>station / terminal station</strong>.</p>
+      <p><strong>We are approaching the station</strong> …………… .</p>
 
-      <p><em>Jeśli pociąg jest opóźniony o 5 lub więcej minut, dodać:</em></p>
+      <p><em>If the train is delayed by 5 minutes or more, add:</em></p>
       <div class="green" style="border-radius:14px;">
-        <strong>We would like to apologize for the delay.</strong>
+        <strong>We apologise for the train delay.</strong>
       </div>
 
       <p style="margin-top:0.6rem;">
-        <em>If the scheduled stop at the station exceeds 5 minutes, add:</em>
+        <em>
+          If the expected stop time at the station from arrival
+          to the scheduled departure time is 5 minutes or more, add:
+        </em>
       </p>
       <div class="highlighted-info" style="border-radius:12px;">
-        Scheduled/Estimated <strong>departure time at</strong> ……… .
+        Scheduled/Expected <strong>departure time</strong> ……… .
       </div>
 
       <p style="margin-top:0.8rem;">
-        Passengers, who are leaving the train, please remember to take your belongings and take caution.
+        Passengers leaving the train are kindly requested
+        to take their belongings and exercise caution.
       </p>
-      <p><strong>Thank you for choosing PKP Intercity.</strong></p>
+      <p><strong>Thank you for travelling with PKP Intercity.</strong></p>
 
     </div>
 
-    <!-- ===== BLOK TURKUSOWY – PRZESIADKI ===== -->
-    <p style="margin-top:0.8rem;"><em>Jeśli jest możliwość przesiadek, dodać:</em></p>
+    <p style="margin-top:0.8rem;"><em>If connections are available, add:</em></p>
 
-    <div style="background:#6fc4b7; border-radius:22px; padding:1.1rem; margin-top:0.3rem;">
+    <div style="background:#6fc4b7;border-radius:22px;padding:1.1rem;margin-top:0.3rem;">
 
-      <p>
-        <strong>
-          At the station you can change to long-distance, regional or suburban trains.
-        </strong>
-      </p>
+      <p><strong>
+        At this station it is possible to change
+        to long-distance, regional or suburban trains.
+      </strong></p>
 
-      <p><em>W przypadku ZKA, dodać:</em></p>
-      <div style="background:#7fd0c4; border-radius:12px; padding:0.5rem 0.7rem;">
-        as well as bus replacement service to ……… station.
+      <p><em>In the case of replacement bus transport, add:</em></p>
+      <div style="background:#7fd0c4;border-radius:12px;padding:0.5rem 0.7rem;">
+        and to replacement bus service to the station ……… .
       </div>
 
-      <!-- LOTNISKA – RAMKA NIEBIESKA -->
-      <p style="margin-top:0.6rem;"><em>Jeśli ze stacji odjeżdżają pociągi na lotnisko, dodać:</em></p>
+      <p style="margin-top:0.6rem;"><em>If trains to the airport depart from this station, add:</em></p>
 
-      <div style="background:#4fb3c4; border-radius:16px; padding:0.7rem;">
+      <div style="background:#4fb3c4;border-radius:16px;padding:0.7rem;">
 
-        <div class="gastronomy-header" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleAirports()">
+        <div class="gastronomy-header">
           <strong>
-            From ……… station depart trains to:
+            From station ……… trains depart towards ………
           </strong>
-          <span class="gastronomy-plus" style="font-weight:bold; font-size:20px;" id="airports-toggle">+</span>
+          <span class="gastronomy-plus" data-target="airports-en-5">+</span>
         </div>
 
-        <!-- LISTA LOTNISK – UKRYTA DOMYŚLNIE -->
-        <div id="airports-en" class="gastronomy-more" style="display:none;">
+        <div id="airports-en-5" class="gastronomy-more">
+          <div style="background:#3a9fb0;border-radius:14px;padding:0.7rem;margin-top:0.5rem;">
 
-          <div style="background:#3a9fb0; border-radius:14px; padding:0.7rem; margin-top:0.5rem;">
             <p><strong>Central</strong></p>
             <ul>
-              <li>Warszawa Wschodnia → Chopin Airport / Warszawa-Modlin</li>
+              <li>Warszawa Wschodnia → Chopin Airport / Warsaw-Modlin Airport</li>
               <li>Warszawa Zachodnia → Chopin Airport</li>
-              <li>Warszawa Gdańska → Warszawa-Modlin</li>
+              <li>Warszawa Gdańska → Warsaw-Modlin Airport</li>
               <li>Lublin Główny / Świdnik Miasto → Lublin Airport</li>
             </ul>
 
-            <p><strong>South</strong></p>
+            <p><strong>Southern</strong></p>
             <ul>
-              <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice</li>
-              <li>Kraków Główny → Kraków-Balice</li>
-              <li>Rzeszów Główny → Rzeszów-Jasionka</li>
+              <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice Airport</li>
+              <li>Kraków Główny → Kraków-Balice Airport</li>
+              <li>Rzeszów Główny → Rzeszów-Jasionka Airport</li>
             </ul>
 
-            <p><strong>North</strong></p>
+            <p><strong>Northern</strong></p>
             <ul>
               <li>Gdańsk Wrzeszcz / Gdynia Główna → Gdańsk Airport</li>
-              <li>Olsztyn Główny → Olsztyn-Mazury</li>
-              <li>Szczecin Dąbie → Szczecin-Goleniów</li>
+              <li>Olsztyn Główny → Olsztyn-Mazury Airport</li>
+              <li>Szczecin Dąbie → Szczecin-Goleniów Airport</li>
             </ul>
-          </div>
 
+          </div>
         </div>
       </div>
 
       <p style="margin-top:0.6rem;">
-        <strong>Please be reminded to pay attention to information provided at the station.</strong>
+        <strong>Please pay attention to station announcements.</strong>
       </p>
-    </div>
 
-    <!-- ROZŁĄCZANIE WAGONÓW -->
-    <p style="margin-top:0.8rem;"><em>Jeśli na danej stacji wagony będą odłączone, dodać:</em></p>
-    <div class="orange" style="border-radius:18px;">
-      <strong>
-        We would like to remind you that the train will be divided at ……… station.
-      </strong>
-      <p>The cars with the following numbers: …… , …… , …… are running to ……… station.</p>
-      <p>The cars with the following numbers: …… , …… , …… will terminate here.</p>
-      <p>Please take extra caution during the detaching of the car.</p>
     </div>
-
   </div>
 </section>
-
-<!-- TOGGLE SCRIPT -->
-<script>
-  function toggleAirports() {
-    const el = document.getElementById("airports-en");
-    const toggle = document.getElementById("airports-toggle");
-    if (el.style.display === "none") {
-      el.style.display = "block";
-      toggle.textContent = "−";
-    } else {
-      el.style.display = "none";
-      toggle.textContent = "+";
-    }
-  }
-</script>
