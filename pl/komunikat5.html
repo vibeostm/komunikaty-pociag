@@ -1,81 +1,133 @@
-<button class="accordion-header">
-  5. POŻEGNALNY
-</button>
+<section class="accordion">
+  <button class="accordion-header">4. POWITALNO – POŻEGNALNY (TRANZYTOWY)</button>
+  <div class="accordion-body">
 
-<div class="accordion-body">
 
-  <!-- GŁÓWNY BLOK SZARY -->
-  <div class="speech-box">
+    <!-- BLOK GŁÓWNY -->
+    <div class="speech-box" style="border:2px solid #ccc; border-radius:18px; padding:1rem; margin-top:0.8rem;">
 
-    <strong>Zbliżamy się do stacji / stacji końcowej ............ .</strong><br><br>
+      <p><strong>Zbliżamy się do stacji</strong> …………… .</p>
 
-    <em>Jeśli pociąg jest opóźniony o 5 lub więcej minut, dodać:</em>
-    <div class="green">
-      Przepraszamy za opóźnienie pociągu.
-    </div>
-
-    <em>
-      Jeśli przewidywany czas postoju na stacji od przyjazdu do planowej godziny
-      odjazdu wynosi 5 lub więcej minut, dodać:
-    </em>
-    <div class="highlighted-info">
-      Planowy/Przewidywany odjazd pociągu o godzinie ..... .
-    </div>
-
-    Osoby wysiadające prosimy o zabranie swoich rzeczy oraz zachowanie ostrożności.<br>
-    Dziękujemy za podróż z PKP Intercity.
-
-  </div>
-
-  <!-- BLOK PRZESIADEK – CYJAN -->
-  <div class="cyan">
-
-    <em>Jeśli jest możliwość przesiadek, dodać:</em><br><br>
-
-    <strong>
-      Jeśli ze stacji w ciągu 30 minut odjeżdżają pociągi lub ZKA:
-    </strong>
-
-    <div class="speech-box">
-      Na stacji można przesiąść się do pociągów dalekobieżnych,
-      regionalnych lub podmiejskich.
-    </div>
-
-    <em>W przypadku ZKA, dodać:</em>
-    <div class="speech-box">
-      oraz do zastępczej komunikacji autobusowej do stacji ..... .
-    </div>
-
-    <!-- JEDYNY PODAKORDEON – LOTNISKA -->
-    <button class="connection-toggle">
-      Jeśli ze stacji odjeżdżają pociągi na lotnisko:
-    </button>
-
-    <div class="accordion-subbody">
-      <div class="speech-box">
-        Ze stacji ..... odjeżdżają pociągi w kierunku ..... .<br>
-        <em>(podać nazwę lotniska, zgodnie z Wykazem)</em>
+      <p><em>Jeśli pociąg jest opóźniony o 5 lub więcej minut, dodać:</em></p>
+      <div class="green" style="border-radius:14px;">
+        <strong>Przepraszamy za opóźnienie pociągu.</strong>
       </div>
+
+      <p style="margin-top:0.6rem;">
+        <em>
+          Jeśli przewidywany czas postoju na stacji od przyjazdu
+          do planowej godziny odjazdu wynosi 5 lub więcej minut, dodać:
+        </em>
+      </p>
+      <div class="highlighted-info" style="border-radius:12px;">
+        Planowy/Przewidywany <strong>odjazd pociągu o godzinie</strong> ……… .
+      </div>
+
+      <p style="margin-top:0.8rem;">
+        Osoby wysiadające prosimy o zabranie swoich rzeczy
+        oraz zachowanie ostrożności.
+      </p>
+      <p><strong>Dziękujemy za podróż z PKP Intercity.</strong></p>
+
     </div>
 
-    Prosimy o zwrócenie uwagi na informacje stacyjne.
+    <!-- ===== BLOK TURKUSOWY – PRZESIADKI ===== -->
+    <p style="margin-top:0.8rem;"><em>Jeśli jest możliwość przesiadek, dodać:</em></p>
+
+    <div style="
+      background:#6fc4b7;
+      border-radius:22px;
+      padding:1.1rem;
+      margin-top:0.3rem;
+    ">
+
+      <p>
+        <strong>
+          Na stacji można przesiąść się do pociągów
+          dalekobieżnych, regionalnych lub podmiejskich.
+        </strong>
+      </p>
+
+      <p><em>W przypadku ZKA, dodać:</em></p>
+      <div style="
+        background:#7fd0c4;
+        border-radius:12px;
+        padding:0.5rem 0.7rem;
+      ">
+        oraz do zastępczej komunikacji autobusowej do stacji ……… .
+      </div>
+
+      <!-- LOTNISKA – RAMKA NIEBIESKA -->
+      <p style="margin-top:0.6rem;"><em>Jeśli ze stacji odjeżdżają pociągi na lotnisko, dodać:</em></p>
+
+      <div style="
+        background:#4fb3c4;
+        border-radius:16px;
+        padding:0.7rem;
+      ">
+
+        <div class="gastronomy-header">
+          <strong>
+            Ze stacji ……… odjeżdżają pociągi w kierunku ………
+          </strong>
+          <span class="gastronomy-plus" data-target="airports-pl">+</span>
+        </div>
+
+        <!-- LISTA LOTNISK – CIEMNIEJSZA RAMKA -->
+        <div id="airports-pl" class="gastronomy-more">
+
+          <div style="
+            background:#3a9fb0;
+            border-radius:14px;
+            padding:0.7rem;
+            margin-top:0.5rem;
+          ">
+
+            <p><strong>Centralny</strong></p>
+            <ul>
+              <li>Warszawa Wschodnia → Lotnisko Chopina / Warszawa-Modlin</li>
+              <li>Warszawa Zachodnia → Lotnisko Chopina</li>
+              <li>Warszawa Gdańska → Warszawa-Modlin</li>
+              <li>Lublin Główny / Świdnik Miasto → Port Lotniczy Lublin</li>
+            </ul>
+
+            <p><strong>Południowy</strong></p>
+            <ul>
+              <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice</li>
+              <li>Kraków Główny → Kraków-Balice</li>
+              <li>Rzeszów Główny → Rzeszów-Jasionka</li>
+            </ul>
+
+            <p><strong>Północny</strong></p>
+            <ul>
+              <li>Gdańsk Wrzeszcz / Gdynia Główna → Port Lotniczy Gdańsk</li>
+              <li>Olsztyn Główny → Olsztyn-Mazury</li>
+              <li>Szczecin Dąbie → Szczecin-Goleniów</li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:0.6rem;">
+        <strong>Prosimy o zwrócenie uwagi na informacje stacyjne.</strong>
+      </p>
+
+    </div>
+
+    <!-- ROZŁĄCZANIE WAGONÓW -->
+    <p style="margin-top:0.8rem;"><em>Jeśli na danej stacji wagony będą odłączone, dodać:</em></p>
+    <div class="orange" style="border-radius:18px;">
+      <strong>
+        Przypominamy, że na stacji ……… pociąg zostanie rozłączony.
+      </strong>
+      <p>Wagony z numerami ……, ……, …… kursują do stacji ……… .</p>
+      <p>Wagony z numerami ……, ……, …… kończą bieg.</p>
+      <p>
+        W czasie przestawiania wagonów prosimy
+        o zachowanie szczególnej ostrożności.
+      </p>
+    </div>
 
   </div>
-
-  <!-- BLOK ROZŁĄCZANIA – POMARAŃCZOWY -->
-  <div class="orange">
-
-    <em>Jeśli na danej stacji wagony będą odłączone, dodać:</em><br><br>
-
-    <strong>
-      Przypominamy, że na stacji ..... pociąg zostanie rozłączony.
-    </strong><br><br>
-
-    Wagony z numerami ....., ....., ..... kursują do stacji ..... .<br>
-    Wagony z numerami ....., ....., ..... kończą bieg.<br><br>
-
-    W czasie przestawiania wagonów prosimy o zachowanie szczególnej ostrożności.
-
-  </div>
-
-</div>
+</section>
