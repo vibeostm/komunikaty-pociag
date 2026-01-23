@@ -2,6 +2,11 @@
   <button class="accordion-header">5. POŻEGNALNY</button>
   <div class="accordion-body">
 
+    <!-- SZARA UWAGA POD TYTUŁEM -->
+    <p style="font-size:0.7rem;color:#777;margin:0.4rem 0 0.6rem 0;padding-left:0.8rem;">
+      – przed dojazdem do stacji
+    </p>
+
     <!-- BLOK GŁÓWNY -->
     <div class="speech-box" style="border:2px solid #ccc; border-radius:18px; padding:1rem; margin-top:0.8rem;">
 
@@ -23,99 +28,79 @@
       </div>
 
       <p style="margin-top:0.8rem;">
-        Osoby wysiadające prosimy o zabranie swoich rzeczy
-        oraz zachowanie ostrożności.
-      </p>
-      <p><strong>Dziękujemy za podróż z PKP Intercity.</strong></p>
-
-    </div>
-
-    <!-- ===== BLOK TURKUSOWY – PRZESIADKI ===== -->
-    <p style="margin-top:0.8rem;"><em>Jeśli jest możliwość przesiadek, dodać:</em></p>
-
-    <div style="
-      background:#6fc4b7;
-      border-radius:22px;
-      padding:1.1rem;
-      margin-top:0.3rem;
-    ">
-
-      <p>
         <strong>
-          Na stacji można przesiąść się do pociągów
-          dalekobieżnych, regionalnych lub podmiejskich.
+          Osoby wysiadające prosimy o zabranie swoich rzeczy
+          oraz zachowanie ostrożności.
+          <br>
+          Dziękujemy za podróż z PKP Intercity.
         </strong>
       </p>
 
+    </div>
+
+    <!-- ===== BLOK TURKUSOWY – PRZESIADKI (1:1 Z TRANZYTOWEGO PL) ===== -->
+    <p style="margin-top:0.8rem;"><em>Jeśli jest możliwość przesiadek, dodać:</em></p>
+
+    <div style="background:#6fc4b7;border-radius:22px;padding:1.1rem;margin-top:0.3rem;">
+
+      <p><strong>
+        Na stacji można przesiąść się do pociągów
+        dalekobieżnych, regionalnych lub podmiejskich.
+      </strong></p>
+
       <p><em>W przypadku ZKA, dodać:</em></p>
-      <div style="
-        background:#7fd0c4;
-        border-radius:12px;
-        padding:0.5rem 0.7rem;
-      ">
-        oraz do zastępczej komunikacji autobusowej do stacji ……… .
+      <div style="background:#7fd0c4;border-radius:12px;padding:0.5rem 0.7rem;">
+        <strong>oraz do zastępczej komunikacji autobusowej do stacji ……… .</strong>
       </div>
 
-      <!-- LOTNISKA – RAMKA NIEBIESKA -->
       <p style="margin-top:0.6rem;"><em>Jeśli ze stacji odjeżdżają pociągi na lotnisko, dodać:</em></p>
 
-      <div style="
-        background:#4fb3c4;
-        border-radius:16px;
-        padding:0.7rem;
-      ">
+      <!-- BLOK LOTNISK – KLIKALNY CAŁY -->
+      <div style="background:#4fb3c4;border-radius:16px;padding:0.7rem;">
 
-        <div class="gastronomy-header">
-          <strong>
-            Ze stacji ……… odjeżdżają pociągi w kierunku ………
-          </strong>
+        <div class="gastronomy-header gastronomy-plus"
+             data-target="airports-pl-5"
+             style="cursor:pointer;color:#000;">
+          <strong>Ze stacji ……… odjeżdżają pociągi w kierunku ………</strong>
           <span class="gastronomy-plus" data-target="airports-pl-5">+</span>
         </div>
 
-        <!-- LISTA LOTNISK – CIEMNIEJSZA RAMKA -->
-        <div id="airports-pl-5" class="gastronomy-more">
+        <div id="airports-pl-5" class="gastronomy-more" style="border-left:none;padding-left:0;">
+          <div style="background:#3a9fb0;border-radius:14px;padding:0.7rem;margin-top:0.5rem;">
+            <ul style="padding-left:0.9rem;list-style-position:outside;">
+              <li>Lublin Główny – Port Lotniczy Lublin airport</li>
+              <li>Świdnik Miasto – Port Lotniczy Lublin airport</li>
+              <br>
 
-          <div style="
-            background:#3a9fb0;
-            border-radius:14px;
-            padding:0.7rem;
-            margin-top:0.5rem;
-          ">
+              <li>Warszawa Wschodnia – Lotnisko Chopina w Warszawie<br>
+                  i Port Lotniczy Warszawa-Modlin airports</li>
+              <li>Warszawa Zachodnia – Lotnisko Chopina w Warszawie<br>
+                  i Port Lotniczy Warszawa-Modlin airports</li>
+              <li>Warszawa Gdańska – Port Lotniczy Warszawa-Modlin airport</li>
+              <br>
 
-            <p><strong>Centralny</strong></p>
-            <ul>
-              <li>Warszawa Wschodnia → Lotnisko Chopina / Warszawa-Modlin</li>
-              <li>Warszawa Zachodnia → Lotnisko Chopina</li>
-              <li>Warszawa Gdańska → Warszawa-Modlin</li>
-              <li>Lublin Główny / Świdnik Miasto → Port Lotniczy Lublin</li>
+              <li>Częstochowa – Port Lotniczy Katowice-Pyrzowice airport</li>
+              <li>Gliwice – Port Lotniczy Katowice-Pyrzowice airport</li>
+              <li>Katowice – Port Lotniczy Katowice-Pyrzowice airport</li>
+              <li>Zawiercie – Port Lotniczy Katowice-Pyrzowice airport</li>
+              <li>Kraków Główny – Port Lotniczy Kraków-Balice airport</li>
+              <li>Rzeszów Główny – Port Lotniczy Rzeszów-Jasionka airport</li>
+              <br>
+
+              <li>Gdańsk Wrzeszcz – Port Lotniczy Gdańsk airport</li>
+              <li>Gdynia Główna – Port Lotniczy Gdańsk airport</li>
+              <li>Olsztyn Główny – Port Lotniczy Olsztyn-Mazury airport</li>
+              <li>Szczecin Dąbie – Port Lotniczy Szczecin Goleniów airport</li>
             </ul>
-
-            <p><strong>Południowy</strong></p>
-            <ul>
-              <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice</li>
-              <li>Kraków Główny → Kraków-Balice</li>
-              <li>Rzeszów Główny → Rzeszów-Jasionka</li>
-            </ul>
-
-            <p><strong>Północny</strong></p>
-            <ul>
-              <li>Gdańsk Wrzeszcz / Gdynia Główna → Port Lotniczy Gdańsk</li>
-              <li>Olsztyn Główny → Olsztyn-Mazury</li>
-              <li>Szczecin Dąbie → Szczecin-Goleniów</li>
-            </ul>
-
           </div>
         </div>
+
+        <p style="margin-top:0.7rem;"><strong>Prosimy o zwrócenie uwagi na informacje stacyjne.</strong></p>
+
       </div>
-
-      <!-- ZAKOŃCZENIE TURKUSU (BRAKOWAŁO) -->
-      <p style="margin-top:0.6rem;">
-        <strong>Prosimy o zwrócenie uwagi na informacje stacyjne.</strong>
-      </p>
-
     </div>
 
-    <!-- ROZŁĄCZANIE WAGONÓW (BRAKOWAŁO) -->
+    <!-- ROZŁĄCZANIE WAGONÓW -->
     <p style="margin-top:0.8rem;"><em>Jeśli na danej stacji wagony będą odłączone, dodać:</em></p>
     <div class="orange" style="border-radius:18px;">
       <strong>
