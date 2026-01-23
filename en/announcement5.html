@@ -1,20 +1,26 @@
 <section class="accordion">
-  <button class="accordion-header">5. FAREWELL</button>
+  <button class="accordion-header">5. POŻEGNALNY (EN)</button>
   <div class="accordion-body">
 
+    <!-- SZARA UWAGA POD TYTUŁEM -->
+    <p style="font-size:0.7rem;color:#777;margin:0.4rem 0 0.6rem 0;padding-left:0.8rem;">
+      – przed dojazdem do stacji
+    </p>
+
+    <!-- BLOK GŁÓWNY -->
     <div class="speech-box" style="border:2px solid #ccc; border-radius:18px; padding:1rem; margin-top:0.8rem;">
 
       <p><strong>We are approaching the station</strong> …………… .</p>
 
-      <p><em>If the train is delayed by 5 minutes or more, add:</em></p>
+      <p><em>Jeśli pociąg jest opóźniony o 5 lub więcej minut, dodać:</em></p>
       <div class="green" style="border-radius:14px;">
         <strong>We apologise for the train delay.</strong>
       </div>
 
       <p style="margin-top:0.6rem;">
         <em>
-          If the expected stop time at the station from arrival
-          to the scheduled departure time is 5 minutes or more, add:
+          Jeśli przewidywany czas postoju na stacji od przyjazdu
+          do planowej godziny odjazdu wynosi 5 lub więcej minut, dodać:
         </em>
       </p>
       <div class="highlighted-info" style="border-radius:12px;">
@@ -22,69 +28,75 @@
       </div>
 
       <p style="margin-top:0.8rem;">
-        Passengers leaving the train are kindly requested
-        to take their belongings and exercise caution.
+        <strong>
+          Passengers leaving the train are kindly requested
+          to take their belongings and exercise caution.
+          <br>
+          Thank you for travelling with PKP Intercity.
+        </strong>
       </p>
-      <p><strong>Thank you for travelling with PKP Intercity.</strong></p>
 
     </div>
 
-    <p style="margin-top:0.8rem;"><em>If connections are available, add:</em></p>
+    <!-- ===== BLOK TURKUSOWY – PRZESIADKI ===== -->
+    <p style="margin-top:0.8rem;"><em>Jeśli jest możliwość przesiadek, dodać:</em></p>
 
     <div style="background:#6fc4b7;border-radius:22px;padding:1.1rem;margin-top:0.3rem;">
 
       <p><strong>
-        At this station it is possible to change
-        to long-distance, regional or suburban trains.
+        At the station you can change to long-distance,
+        regional or suburban trains.
       </strong></p>
 
-      <p><em>In the case of replacement bus transport, add:</em></p>
+      <p><em>W przypadku ZKA, dodać:</em></p>
       <div style="background:#7fd0c4;border-radius:12px;padding:0.5rem 0.7rem;">
-        and to replacement bus service to the station ……… .
+        <strong>as well as replacement bus service to ……… station.</strong>
       </div>
 
-      <p style="margin-top:0.6rem;"><em>If trains to the airport depart from this station, add:</em></p>
+      <p style="margin-top:0.6rem;"><em>Jeśli ze stacji odjeżdżają pociągi na lotnisko, dodać:</em></p>
 
+      <!-- BLOK LOTNISK – IDENTYCZNY JAK W PL -->
       <div style="background:#4fb3c4;border-radius:16px;padding:0.7rem;">
 
-        <div class="gastronomy-header">
-          <strong>
-            From station ……… trains depart towards ………
-          </strong>
+        <div class="gastronomy-header gastronomy-plus"
+             data-target="airports-en-5"
+             style="cursor:pointer;color:#000;">
+          <strong>From station ……… trains depart towards ………</strong>
           <span class="gastronomy-plus" data-target="airports-en-5">+</span>
         </div>
 
-        <div id="airports-en-5" class="gastronomy-more">
+        <div id="airports-en-5" class="gastronomy-more" style="border-left:none;padding-left:0;">
           <div style="background:#3a9fb0;border-radius:14px;padding:0.7rem;margin-top:0.5rem;">
+            <ul style="padding-left:0.9rem;list-style-position:outside;">
+              <li>Lublin Główny – Lublin Airport</li>
+              <li>Świdnik Miasto – Lublin Airport</li>
 
-            <p><strong>Central</strong></p>
-            <ul>
-              <li>Warszawa Wschodnia → Chopin Airport / Warsaw-Modlin Airport</li>
-              <li>Warszawa Zachodnia → Chopin Airport</li>
-              <li>Warszawa Gdańska → Warsaw-Modlin Airport</li>
-              <li>Lublin Główny / Świdnik Miasto → Lublin Airport</li>
+              <li>Warszawa Wschodnia – Chopin Airport in Warsaw<br>
+                  and Warsaw-Modlin Airport</li>
+              <li>Warszawa Zachodnia – Chopin Airport in Warsaw<br>
+                  and Warsaw-Modlin Airport</li>
+              <li>Warszawa Gdańska – Warsaw-Modlin Airport</li>
+
+              <li>Częstochowa – Katowice-Pyrzowice Airport</li>
+              <li>Gliwice – Katowice-Pyrzowice Airport</li>
+              <li>Katowice – Katowice-Pyrzowice Airport</li>
+              <li>Zawiercie – Katowice-Pyrzowice Airport</li>
+              <li>Kraków Główny – Kraków-Balice Airport</li>
+              <li>Rzeszów Główny – Rzeszów-Jasionka Airport</li>
+
+              <li>Gdańsk Wrzeszcz – Gdańsk Airport</li>
+              <li>Gdynia Główna – Gdańsk Airport</li>
+              <li>Olsztyn Główny – Olsztyn-Mazury Airport</li>
+              <li>Szczecin Dąbie – Szczecin Goleniów Airport</li>
             </ul>
-
-            <p><strong>Southern</strong></p>
-            <ul>
-              <li>Katowice / Gliwice / Zawiercie → Katowice-Pyrzowice Airport</li>
-              <li>Kraków Główny → Kraków-Balice Airport</li>
-              <li>Rzeszów Główny → Rzeszów-Jasionka Airport</li>
-            </ul>
-
-            <p><strong>Northern</strong></p>
-            <ul>
-              <li>Gdańsk Wrzeszcz / Gdynia Główna → Gdańsk Airport</li>
-              <li>Olsztyn Główny → Olsztyn-Mazury Airport</li>
-              <li>Szczecin Dąbie → Szczecin-Goleniów Airport</li>
-            </ul>
-
           </div>
         </div>
+
       </div>
 
-      <p style="margin-top:0.6rem;">
-        <strong>Please pay attention to station announcements.</strong>
+      <!-- KOMUNIKAT KOŃCOWY – W TURKUSIE -->
+      <p style="margin-top:0.8rem;">
+        <strong>Please be reminded to pay attention to information provided at the station.</strong>
       </p>
 
     </div>
