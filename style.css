@@ -369,4 +369,57 @@ em {
   display: block;
 }
 
+/* =========================================================
+   FIX: czytelność na telefonach + kolor tekstu (bez kursywy)
+   Wklej NA SAM KONIEC style.css
+   ========================================================= */
+
+/* 1) Domyślnie: tekst NIE-kursywą ma być czarny */
+.accordion-body,
+.accordion-body p,
+.accordion-body li,
+.accordion-body strong,
+.accordion-body b,
+.accordion-body span,
+.accordion-body div {
+  color: #111;
+}
+
+/* Kursywa zostaje (jeśli wcześniej była szara) */
+.accordion-body em,
+.accordion-body i {
+  color: #777; /* jeśli u Ciebie kursywa ma inny kolor, wpisz tu ten sam */
+}
+
+/* 2) Zabezpieczenia przed „rozjechaniem” tekstu */
+.accordion-body * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.accordion-body p,
+.accordion-body li,
+.accordion-body div {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* 3) Jeśli gdzieś w środku masz flex (często inline w HTML),
+      to na telefonie wymuszamy układ pionowy zamiast „kolumn” */
+@media (max-width: 560px) {
+  .accordion-body [style*="display:flex"],
+  .accordion-body [style*="display: flex"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  /* Dodatkowo: jeśli listy gdzieś były robione w kolumnach */
+  .accordion-body ul,
+  .accordion-body ol {
+    columns: 1 !important;
+    -webkit-columns: 1 !important;
+    column-count: 1 !important;
+  }
+}
+
 
