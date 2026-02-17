@@ -23,10 +23,23 @@ function activateAccordions() {
   document.querySelectorAll('.accordion-header').forEach(btn => {
     btn.onclick = () => {
       const body = btn.nextElementSibling;
+
+      // zamknij inne główne zakładki
       document.querySelectorAll('.accordion-body').forEach(b => {
         if (b !== body) b.classList.remove('active');
       });
+
       body.classList.toggle('active');
+
+      // ====== NOWE: po otwarciu innej zakładki zamknij wszystkie plusiki w niej ======
+      if (body.classList.contains('active')) {
+        body.querySelectorAll('.gastronomy-more').forEach(m => {
+          m.classList.remove('active');
+          m.style.display = 'none';
+        });
+      }
+      // ===========================================================================
+
     };
   });
 
@@ -66,7 +79,6 @@ document.addEventListener('click', function (e) {
   const block = document.getElementById(id);
   if (!block) return;
 
-  // ====== NOWE: zamykanie innych rozwinięć w tej samej sekcji ======
   // Najbezpieczniejszy root: aktualna otwarta zakładka (accordion-body)
   const root = plus.closest('.accordion-body') || document;
 
@@ -77,7 +89,6 @@ document.addEventListener('click', function (e) {
       other.style.display = 'none';
     }
   });
-  // ===============================================================
 
   // Toggle klasy dla klikniętego
   block.classList.toggle('active');
