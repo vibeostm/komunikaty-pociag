@@ -66,11 +66,25 @@ document.addEventListener('click', function (e) {
   const block = document.getElementById(id);
   if (!block) return;
 
-  // Toggle klasy
+  // ====== NOWE: zamykanie innych rozwinięć w tej samej sekcji ======
+  // Szukamy najbliższego rodzica, który logicznie grupuje plusiki i ich treści.
+  // W Twoim układzie najlepszy i najbezpieczniejszy "root" to .accordion-body
+  // (zamyka tylko w obrębie aktualnej zakładki/akordeonu).
+  const root = plus.closest('.accordion-body') || document;
+
+  // Zamknij wszystkie inne .gastronomy-more w tym samym root
+  root.querySelectorAll('.gastronomy-more').forEach(other => {
+    if (other !== block) {
+      other.classList.remove('active');
+      other.style.display = 'none';
+    }
+  });
+  // ===============================================================
+
+  // Toggle klasy dla klikniętego
   block.classList.toggle('active');
 
-  // Awaryjnie: jeśli CSS nie pokazuje .active, wymuś display
-  // (nie zmienia wyglądu, tylko gwarantuje działanie)
+  // Wymuś display zgodnie ze stanem (jak u Ciebie)
   const isActive = block.classList.contains('active');
   block.style.display = isActive ? 'block' : 'none';
 });
