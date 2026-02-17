@@ -67,9 +67,7 @@ document.addEventListener('click', function (e) {
   if (!block) return;
 
   // ====== NOWE: zamykanie innych rozwinięć w tej samej sekcji ======
-  // Szukamy najbliższego rodzica, który logicznie grupuje plusiki i ich treści.
-  // W Twoim układzie najlepszy i najbezpieczniejszy "root" to .accordion-body
-  // (zamyka tylko w obrębie aktualnej zakładki/akordeonu).
+  // Najbezpieczniejszy root: aktualna otwarta zakładka (accordion-body)
   const root = plus.closest('.accordion-body') || document;
 
   // Zamknij wszystkie inne .gastronomy-more w tym samym root
@@ -84,7 +82,7 @@ document.addEventListener('click', function (e) {
   // Toggle klasy dla klikniętego
   block.classList.toggle('active');
 
-  // Wymuś display zgodnie ze stanem (jak u Ciebie)
+  // Wymuś display zgodnie ze stanem
   const isActive = block.classList.contains('active');
   block.style.display = isActive ? 'block' : 'none';
 });
