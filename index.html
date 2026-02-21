@@ -43,10 +43,60 @@
 
   </main>
 
+  <footer id="gc-footer" style="text-align:center; padding:10px 0 14px; font-size:0.85rem; opacity:0.9;">
+    <div style="display:inline-block; border:1px solid #ddd; border-radius:12px; padding:8px 12px;">
+      <span style="font-weight:700;">Odwiedziny:</span>
+      <span>łącznie <span id="gc-total">–</span></span>
+      <span style="margin:0 6px;">•</span>
+      <span>dziś <span id="gc-today">–</span></span>
+      <span style="margin:0 6px;">•</span>
+      <span>ostatnie 7 dni <span id="gc-7d">–</span></span>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
 
   <script data-goatcounter="https://komunikaty.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
+
+  <script>
+    const GC = "https://komunikaty.goatcounter.com";
+
+    function ymd(d) {
+      const pad = (n) => String(n).padStart(2, "0");
+      return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+    }
+
+    async function gcCount(path, start=null, end=null) {
+      const p = encodeURIComponent(path);
+      let url = `${GC}/counter/${p}.json`;
+      const qs = [];
+      if (start) qs.push(`start=${encodeURIComponent(start)}`);
+      if (end)   qs.push(`end=${encodeURIComponent(end)}`);
+      if (qs.length) url += `?${qs.join("&")}`;
+      const r = await fetch(url, {cache: "no-store"});
+      if (!r.ok) throw new Error("GoatCounter HTTP " + r.status);
+      const data = await r.json();
+      return data.count;
+    }
+
+    (async () => {
+      try {
+        const today = new Date();
+        const startToday = ymd(today);
+
+        document.getElementById("gc-total").textContent = await gcCount("TOTAL");
+
+        document.getElementById("gc-today").textContent = await gcCount("TOTAL", startToday);
+
+        const d7 = new Date(today);
+        d7.setDate(d7.getDate() - 7);
+        document.getElementById("gc-7d").textContent = await gcCount("TOTAL", ymd(d7));
+      } catch (e) {
+        console.warn("GoatCounter counter failed:", e);
+      }
+    })();
+  </script>
 
 </body>
 </html>
