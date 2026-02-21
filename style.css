@@ -371,10 +371,8 @@ em {
 
 /* =========================================================
    FIX: czytelność na telefonach + kolor tekstu (bez kursywy)
-   Wklej NA SAM KONIEC style.css
    ========================================================= */
 
-/* 1) Domyślnie: tekst NIE-kursywą ma być czarny */
 .accordion-body,
 .accordion-body p,
 .accordion-body li,
@@ -385,13 +383,11 @@ em {
   color: #111;
 }
 
-/* Kursywa zostaje (jeśli wcześniej była szara) */
 .accordion-body em,
 .accordion-body i {
-  color: #777; /* jeśli u Ciebie kursywa ma inny kolor, wpisz tu ten sam */
+  color: #777;
 }
 
-/* 2) Zabezpieczenia przed „rozjechaniem” tekstu */
 .accordion-body * {
   max-width: 100%;
   box-sizing: border-box;
@@ -404,8 +400,6 @@ em {
   word-break: break-word;
 }
 
-/* 3) Jeśli gdzieś w środku masz flex (często inline w HTML),
-      to na telefonie wymuszamy układ pionowy zamiast „kolumn” */
 @media (max-width: 560px) {
   .accordion-body [style*="display:flex"],
   .accordion-body [style*="display: flex"] {
@@ -413,7 +407,6 @@ em {
     align-items: stretch !important;
   }
 
-  /* Dodatkowo: jeśli listy gdzieś były robione w kolumnach */
   .accordion-body ul,
   .accordion-body ol {
     columns: 1 !important;
@@ -423,15 +416,23 @@ em {
 }
 
 /* =========================================================
-   FIX: Wyrównanie plusa do tytułu na telefonach (TYLKO TO)
+   FIX: PLUS w idealnej linii z tytułem (jak w "dobrym" kodzie)
+   Zmienia TYLKO span z plusem w nagłówkach
    ========================================================= */
 
-/* Celujemy TYLKO w SPAN z plusem w nagłówku (nie w div-header) */
-.gastronomy-header > span.gastronomy-plus {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 1em;       /* stabilizuje pion */
-  line-height: 1em;  /* stabilizuje line-box */
-  transform: translateY(-0.06em); /* delikatnie do góry – estetycznie na mobile */
+.gastronomy-header > span.gastronomy-plus{
+  /* wygrywamy z inline-style typu display:flex; font-size:1.4rem; line-height:1 */
+  display: inline !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+
+  /* plus po prawej w układzie flex nagłówka */
+  margin-left: auto !important;
+
+  /* zero sztucznych przesunięć */
+  transform: none !important;
+  top: auto !important;
+
+  /* zostawiamy klik */
+  cursor: pointer;
 }
