@@ -416,23 +416,29 @@ em {
 }
 
 /* =========================================================
-   FIX: PLUS w idealnej linii z tytułem (jak w "dobrym" kodzie)
-   Zmienia TYLKO span z plusem w nagłówkach
+   FIX: plus w linii z tytułem (baseline) — TYLKO plus
    ========================================================= */
 
+/* tylko SPAN z plusem (nie kontener z klasą gastronomy-plus) */
 .gastronomy-header > span.gastronomy-plus{
-  /* wygrywamy z inline-style typu display:flex; font-size:1.4rem; line-height:1 */
+  /* przebijamy inline-style z HTML */
   display: inline !important;
   font-size: inherit !important;
   line-height: inherit !important;
 
-  /* plus po prawej w układzie flex nagłówka */
+  /* trzymamy po prawej w flexie */
   margin-left: auto !important;
 
-  /* zero sztucznych przesunięć */
-  transform: none !important;
-  top: auto !important;
+  /* NAJWAŻNIEJSZE: wyrównanie do linii tekstu (zamiast "center") */
+  align-self: baseline !important;
 
-  /* zostawiamy klik */
-  cursor: pointer;
+  /* kasujemy ewentualne przesunięcia */
+  position: static !important;
+  top: auto !important;
+  transform: none !important;
+
+  /* kosmetyka */
+  padding: 0 !important;
+  float: none !important;
 }
+
