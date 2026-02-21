@@ -10,16 +10,14 @@ body {
   line-height: 1.6;
   background: #f9f9f9;
   color: #333;
-  padding: 0; /* maksymalna szerokość – bez marginesów */
+  padding: 0;
 }
 
-strong {
-  font-weight: bold;
-}
+strong { font-weight: bold; }
 
 em {
   font-style: italic;
-  font-size: 0.8rem; /* kursywa mniejsza o 1px */
+  font-size: 0.8rem;
 }
 
 /* ===== TABY ===== */
@@ -39,9 +37,7 @@ em {
   cursor: pointer;
 }
 
-.tab.active {
-  background: #bbb;
-}
+.tab.active { background: #bbb; }
 
 /* ===== GŁÓWNY KONTENER ===== */
 .accordion-container {
@@ -78,9 +74,7 @@ em {
   overflow-x: auto;
 }
 
-.accordion-body.active {
-  display: block;
-}
+.accordion-body.active { display: block; }
 
 /* ===== JEDYNY PODAKORDEON – LOTNISKA ===== */
 .connection-toggle {
@@ -108,49 +102,24 @@ em {
   margin-bottom: 1rem;
 }
 
-.connection-toggle.active + .accordion-subbody {
-  display: block;
-}
+.connection-toggle.active + .accordion-subbody { display: block; }
 
 /* ===== WYŁĄCZENIE WSZYSTKICH INNYCH POD-AKORDEONÓW ===== */
-.accordion-subheader {
-  display: none !important;
-}
-
-.accordion-subbody {
-  display: block !important;
-}
+.accordion-subheader { display: none !important; }
+.accordion-subbody { display: block !important; }
 
 /* ===== KOLOROWE BLOKI KOMUNIKATÓW ===== */
-.green,
-.orange,
-.yellow,
-.cyan {
+.green, .orange, .yellow, .cyan {
   padding: 1rem 0.8rem;
   margin: 0.5rem 0;
   border-left: 5px solid;
   width: 100%;
 }
 
-.green {
-  background: #e2f0d9;
-  border-color: #a8d08d;
-}
-
-.orange {
-  background: #fcd5b4;
-  border-color: #f7931e;
-}
-
-.yellow {
-  background: #fff9e5;
-  border-color: #f4d35e;
-}
-
-.cyan {
-  background: #d9f0ed;
-  border-color: #7ab8b3;
-}
+.green { background: #e2f0d9; border-color: #a8d08d; }
+.orange { background: #fcd5b4; border-color: #f7931e; }
+.yellow { background: #fff9e5; border-color: #f4d35e; }
+.cyan { background: #d9f0ed; border-color: #7ab8b3; }
 
 /* ===== BLOKI TEKSTOWE ===== */
 .speech-box {
@@ -191,94 +160,48 @@ em {
 }
 
 /* ===== SEKCJE JĘZYKOWE ===== */
-.section {
-  display: none;
-}
-
-.section.active {
-  display: block;
-}
+.section { display: none; }
+.section.active { display: block; }
 
 /* ===== RESPONSYWNOŚĆ ===== */
 @media (max-width: 768px) {
-  .tabs {
-    flex-direction: column;
-    margin: 0.3rem;
-  }
-
-  .tab {
-    font-size: 0.95rem;
-  }
-
-  .green,
-  .orange,
-  .yellow,
-  .cyan {
-    padding: 0.8rem 0.6rem;
-  }
-
-  .speech-box {
-    padding: 0.6rem;
-  }
+  .tabs { flex-direction: column; margin: 0.3rem; }
+  .tab { font-size: 0.95rem; }
+  .green, .orange, .yellow, .cyan { padding: 0.8rem 0.6rem; }
+  .speech-box { padding: 0.6rem; }
 }
 
 @media (max-width: 480px) {
-  .accordion-container {
-    padding: 0;
-  }
-
-  .accordion-body {
-    padding: 0;
-  }
-
-  .green,
-  .orange,
-  .yellow,
-  .cyan {
-    padding: 0.6rem 0.5rem;
-  }
+  .accordion-container { padding: 0; }
+  .accordion-body { padding: 0; }
+  .green, .orange, .yellow, .cyan { padding: 0.6rem 0.5rem; }
 }
 
-/* ===== GASTRONOMIA – DYSKRETNE ROZWIJANIE ===== */
-
+/* ===== GASTRONOMIA – ROZWIJANIE ===== */
 .gastronomy-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline; /* klucz: baseline zamiast center */
 }
 
 .gastronomy-plus {
   color: #888;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
   padding-left: 0.5rem;
   user-select: none;
+  position: relative;
+  z-index: 5;
 }
-
-.gastronomy-more {
-  display: none;
-  margin-top: 0.5rem;
-  padding-left: 0.8rem;
-  border-left: 2px solid #ccc;
-  font-size: 0.9rem;
-}
-
-.gastronomy-more.active {
-  display: block;
-}
-
-/* ===== GASTRONOMIA – MAKSYMALNIE WIERNA WERSJA WZORCOWA ===== */
 
 .gastronomy-more {
   display: none;
   margin-top: 0.6rem;
 }
 
-.gastronomy-more.active {
-  display: block;
-}
+.gastronomy-more.active { display: block; }
 
-/* Komentarze „kiedy użyć” – na białym tle jak strona */
+/* ===== GASTRONOMIA – KARTY / OPISY ===== */
 .gastronomy-comment-out {
   font-style: italic;
   font-size: 0.85rem;
@@ -287,7 +210,6 @@ em {
   background: transparent;
 }
 
-/* Żółty „pastylkowy” blok jak w oryginale */
 .gastronomy-card {
   background: #efe4a3;
   border-radius: 14px;
@@ -295,19 +217,14 @@ em {
   margin: 0 0 0.9rem 0;
 }
 
-/* „Mocniejszy” tekst komunikatu w środku */
 .gastronomy-text-strong {
   font-weight: 600;
   line-height: 1.55;
   font-size: 1rem;
 }
 
-/* Przerywana ramka dla komunikatów „wyjątkowo” (jak we wzorze) */
-.gastronomy-card--dashed {
-  border: 2px dashed #c9b26a;
-}
+.gastronomy-card--dashed { border: 2px dashed #c9b26a; }
 
-/* Komentarz kursywą, ale wewnątrz żółtego pola (te dwa przypadki ze wzoru) */
 .gastronomy-comment-in {
   margin-top: 0.7rem;
   font-style: italic;
@@ -315,12 +232,8 @@ em {
   color: #4a4a4a;
 }
 
-/* Wariant „bardziej z prawej” (mini-bar w oryginale jest przesunięty) */
-.gastronomy-comment-in--right {
-  margin-left: 2.2rem;
-}
+.gastronomy-comment-in--right { margin-left: 2.2rem; }
 
-/* Szara ramka wewnątrz żółtego pola (jak we wzorze) */
 .gastronomy-graybox {
   margin-top: 0.3rem;
   padding: 0.55rem 0.8rem;
@@ -331,48 +244,9 @@ em {
   line-height: 1.4;
 }
 
-/* Szara ramka z wcięciem (mini-bar) */
-.gastronomy-graybox--right {
-  margin-left: 2.2rem;
-}
+.gastronomy-graybox--right { margin-left: 2.2rem; }
 
-/* Plusik zostaje dyskretny */
-.gastronomy-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.gastronomy-plus {
-  color: #888;
-  font-weight: 700;
-  cursor: pointer;
-  padding-left: 0.5rem;
-  user-select: none;
-}
-
-/* PLUSIK ma być klikalny i "na wierzchu" */
-.gastronomy-plus{
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-  z-index: 5;
-}
-
-/* DOMYŚLNIE ZWIŃ */
-.gastronomy-more{
-  display: none;
-}
-
-/* PO ROZWINIĘCIU POKAŻ */
-.gastronomy-more.active{
-  display: block;
-}
-
-/* =========================================================
-   FIX: czytelność na telefonach + kolor tekstu (bez kursywy)
-   ========================================================= */
-
+/* ===== FIX: czytelność na telefonach + kolor tekstu (bez kursywy) ===== */
 .accordion-body,
 .accordion-body p,
 .accordion-body li,
@@ -415,30 +289,15 @@ em {
   }
 }
 
-/* =========================================================
-   FIX: plus w linii z tytułem (baseline) — TYLKO plus
-   ========================================================= */
-
-/* tylko SPAN z plusem (nie kontener z klasą gastronomy-plus) */
-.gastronomy-header > span.gastronomy-plus{
-  /* przebijamy inline-style z HTML */
-  display: inline !important;
+/* ===== FIX: plus w linii z tytułem — TYLKO span plusa (przebija inline-style) ===== */
+.gastronomy-header > span.gastronomy-plus {
+  display: inline-block !important;
   font-size: inherit !important;
   line-height: inherit !important;
-
-  /* trzymamy po prawej w flexie */
-  margin-left: auto !important;
-
-  /* NAJWAŻNIEJSZE: wyrównanie do linii tekstu (zamiast "center") */
   align-self: baseline !important;
-
-  /* kasujemy ewentualne przesunięcia */
-  position: static !important;
-  top: auto !important;
-  transform: none !important;
-
-  /* kosmetyka */
+  margin-left: auto !important;
   padding: 0 !important;
+  position: static !important;
+  transform: none !important;
   float: none !important;
 }
-
