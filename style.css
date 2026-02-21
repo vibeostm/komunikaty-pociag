@@ -422,4 +422,16 @@ em {
   }
 }
 
+/* =========================================================
+   FIX: Wyrównanie plusa do tytułu na telefonach (TYLKO TO)
+   ========================================================= */
 
+/* Celujemy TYLKO w SPAN z plusem w nagłówku (nie w div-header) */
+.gastronomy-header > span.gastronomy-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1em;       /* stabilizuje pion */
+  line-height: 1em;  /* stabilizuje line-box */
+  transform: translateY(-0.06em); /* delikatnie do góry – estetycznie na mobile */
+}
