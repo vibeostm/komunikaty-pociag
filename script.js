@@ -119,7 +119,7 @@ document.getElementById('tabEN').onclick = () => {
 loadSections();
 
 // ========================
-// PŁYWAJĄCY SWITCH PL/EN (wersja A) — POPRAWIONA
+// PŁYWAJĄCY SWITCH PL/EN (wersja A+) — z podzakładkami (gastronomy-more)
 // ========================
 const langFab = document.getElementById('langFab');
 
@@ -149,11 +149,9 @@ function getHeaderKey(text) {
 function findAccordionHeaderFromElement(el) {
   if (!el) return null;
 
-  // 1) jeśli klik/point trafił w nagłówek
   const directHeader = el.closest('.accordion-header');
   if (directHeader) return directHeader;
 
-  // 2) jeśli jesteśmy w środku treści (.accordion-body) — cofamy się do poprzedzającego nagłówka
   const body = el.closest('.accordion-body');
   if (body) {
     let prev = body.previousElementSibling;
@@ -163,7 +161,6 @@ function findAccordionHeaderFromElement(el) {
     }
   }
 
-  // 3) jeśli jednak jest wrapper (czasem masz <section class="accordion">)
   const wrapper = el.closest('.accordion');
   if (wrapper) {
     const h = wrapper.querySelector('.accordion-header');
@@ -173,28 +170,55 @@ function findAccordionHeaderFromElement(el) {
   return null;
 }
 
-// Czeka aż w aktywnej sekcji pojawi się nagłówek o danym key (fetch może jeszcze ładować HTML)
-function waitForHeaderInSection(sectionEl, key, maxTries = 30) {
+// Zamiana id podzakładki: misc-pl-c4 <-> misc-en-c4 (i inne z -pl-/-en-)
+function swapLangInId(id) {
+  if (!id) return null;
+  if (id.includes('-pl-')) return id.replace('-pl-', '-en-');
+  if (id.includes('-en-')) return id.replace('-en-', '-pl-');
+  return null; // nie umiemy mapować — wtedy olewamy
+}
+
+// Czekamy aż element pojawi się w DOM (fetch)
+function waitForSelector(root, selector, maxTries = 40) {
   return new Promise((resolve) => {
     let tries = 0;
     const tick = () => {
       tries++;
-
-      const headers = Array.from(sectionEl.querySelectorAll('.accordion-header'));
-      const found = key ? headers.find(h => getHeaderKey(h.textContent) === key) : null;
-
-      if (found) return resolve(found);
+      const el = root.querySelector(selector);
+      if (el) return resolve(el);
       if (tries >= maxTries) return resolve(null);
-
       setTimeout(tick, 50);
     };
     tick();
   });
 }
 
+// Otwórz główny akordeon (bez ryzyka, że go zamkniesz)
+function ensureOpenMain(header) {
+  const body = header.nextElementSibling;
+  if (!body || !body.classList || !body.classList.contains('accordion-body')) return;
+  if (!body.classList.contains('active')) header.click();
+}
+
+// Otwórz podzakładkę (klik w element z data-target)
+function ensureOpenSub(activeSection, targetId) {
+  if (!targetId) return;
+  const toggler = activeSection.querySelector(`[data-target="${CSS.escape(targetId)}"]`);
+  const panel = activeSection.querySelector(`#${CSS.escape(targetId)}`);
+
+  // jeśli nie ma — nie robimy nic
+  if (!toggler || !panel) return;
+
+  // jeśli już otwarte — OK
+  if (panel.classList.contains('active')) return;
+
+  // klik otworzy (Twoje JS deleguje po .gastronomy-plus)
+  toggler.click();
+}
+
 // Zapis “gdzie jestem” wg punktu pod kciukiem (prawy dół)
 function captureViewportState() {
-  const thumbOffset = 160; // px od dołu – punkt “czytania” (możesz zmienić)
+  const thumbOffset = 160;
   const x = Math.min(window.innerWidth - 30, window.innerWidth * 0.75);
   const y = Math.max(10, window.innerHeight - thumbOffset);
 
@@ -209,49 +233,52 @@ function captureViewportState() {
 
   const wasOpen = body && body.classList && body.classList.contains('accordion-body') && body.classList.contains('active');
 
+  // >>> NOWE: podzakładka (np. C4) jeśli jesteśmy w środku .gastronomy-more.active
+  const subPanel = el.closest('.gastronomy-more.active');
+  const subId = subPanel ? subPanel.id : null;
+
+  // ratio wewnątrz głównej treści (jak było)
   let ratio = 0;
   if (wasOpen && body) {
     const rect = body.getBoundingClientRect();
     const bodyTop = rect.top + window.scrollY;
     const bodyH = Math.max(1, rect.height);
     const thumbDocY = (window.scrollY + y);
-
     ratio = (thumbDocY - bodyTop) / bodyH;
     ratio = Math.max(0, Math.min(1, ratio));
   }
 
-  return { key, wasOpen, ratio, thumbOffset };
+  return { key, wasOpen, ratio, thumbOffset, subId };
 }
 
-// Otwórz nagłówek (bez ryzyka, że go zamkniesz)
-function ensureOpen(header) {
-  const body = header.nextElementSibling;
-  if (!body || !body.classList || !body.classList.contains('accordion-body')) return;
-
-  if (!body.classList.contains('active')) {
-    header.click(); // korzystamy z Twojej istniejącej mechaniki JS (jeden otwarty naraz)
-  }
-}
-
-// Po przełączeniu: znajdź ten sam komunikat w drugim języku i przewiń
 async function restoreViewportState(state) {
   if (!state) return;
 
   const activeSection = document.getElementById(getActiveLang() === 'PL' ? 'sectionPL' : 'sectionEN');
 
-  // czekamy aż docelowy nagłówek będzie w DOM (bo fetch)
-  let targetHeader = await waitForHeaderInSection(activeSection, state.key, 40);
-
-  // fallback: jeśli nie znaleziono po key — bierzemy pierwszy widoczny nagłówek
-  if (!targetHeader) {
-    const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
-    targetHeader = headers.length ? headers[0] : null;
+  // 1) znajdź docelowy główny komunikat po key
+  const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
+  let targetHeader = null;
+  if (state.key) {
+    targetHeader = headers.find(h => getHeaderKey(h.textContent) === state.key) || null;
   }
+  if (!targetHeader) targetHeader = headers.length ? headers[0] : null;
   if (!targetHeader) return;
 
-  if (state.wasOpen) ensureOpen(targetHeader);
+  if (state.wasOpen) ensureOpenMain(targetHeader);
 
-  // przewijanie: do body (proporcją) albo do nagłówka
+  // 2) >>> NOWE: spróbuj otworzyć tę samą podzakładkę w drugim języku
+  //    mapujemy id: misc-pl-c4 -> misc-en-c4
+  let mappedSubId = swapLangInId(state.subId);
+  if (mappedSubId) {
+    // czekamy aż ta sekcja się wczyta i id będzie w DOM
+    const subPanel = await waitForSelector(activeSection, `#${CSS.escape(mappedSubId)}`, 60);
+    if (subPanel) {
+      ensureOpenSub(activeSection, mappedSubId);
+    }
+  }
+
+  // 3) przewiń do podobnego miejsca
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       const targetBody = targetHeader.nextElementSibling;
@@ -271,20 +298,13 @@ async function restoreViewportState(state) {
   });
 }
 
-// Klik w pływający przycisk
 langFab.addEventListener('click', async () => {
   const state = captureViewportState();
   const nextLang = (getActiveLang() === 'PL') ? 'EN' : 'PL';
-
   setLang(nextLang);
-
-  // poczekaj na przełączenie sekcji i ewentualne dociągnięcie treści
   await restoreViewportState(state);
 });
 
-// Na start ustaw label
-updateLangFabLabel();
-// Na start ustaw label
 updateLangFabLabel();
 
 
