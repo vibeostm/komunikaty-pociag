@@ -119,7 +119,7 @@ document.getElementById('tabEN').onclick = () => {
 loadSections();
 
 // ========================
-// PŁYWAJĄCY SWITCH PL/EN (wersja A)
+// PŁYWAJĄCY SWITCH PL/EN (wersja A) — POPRAWIONA
 // ========================
 const langFab = document.getElementById('langFab');
 
@@ -128,16 +128,12 @@ function getActiveLang() {
 }
 
 function setLang(lang) {
-  if (lang === 'PL') {
-    document.getElementById('tabPL').click();
-  } else {
-    document.getElementById('tabEN').click();
-  }
+  if (lang === 'PL') document.getElementById('tabPL').click();
+  else document.getElementById('tabEN').click();
   updateLangFabLabel();
 }
 
 function updateLangFabLabel() {
-  // Na ekranie pokazujemy "drugą stronę" (co klikniesz)
   const active = getActiveLang();
   langFab.textContent = (active === 'PL') ? 'EN' : 'PL';
 }
@@ -149,6 +145,53 @@ function getHeaderKey(text) {
   return m ? m[1].toUpperCase() : null;
 }
 
+// Znajdź nagłówek akordeonu z dowolnego elementu na ekranie
+function findAccordionHeaderFromElement(el) {
+  if (!el) return null;
+
+  // 1) jeśli klik/point trafił w nagłówek
+  const directHeader = el.closest('.accordion-header');
+  if (directHeader) return directHeader;
+
+  // 2) jeśli jesteśmy w środku treści (.accordion-body) — cofamy się do poprzedzającego nagłówka
+  const body = el.closest('.accordion-body');
+  if (body) {
+    let prev = body.previousElementSibling;
+    while (prev) {
+      if (prev.classList && prev.classList.contains('accordion-header')) return prev;
+      prev = prev.previousElementSibling;
+    }
+  }
+
+  // 3) jeśli jednak jest wrapper (czasem masz <section class="accordion">)
+  const wrapper = el.closest('.accordion');
+  if (wrapper) {
+    const h = wrapper.querySelector('.accordion-header');
+    if (h) return h;
+  }
+
+  return null;
+}
+
+// Czeka aż w aktywnej sekcji pojawi się nagłówek o danym key (fetch może jeszcze ładować HTML)
+function waitForHeaderInSection(sectionEl, key, maxTries = 30) {
+  return new Promise((resolve) => {
+    let tries = 0;
+    const tick = () => {
+      tries++;
+
+      const headers = Array.from(sectionEl.querySelectorAll('.accordion-header'));
+      const found = key ? headers.find(h => getHeaderKey(h.textContent) === key) : null;
+
+      if (found) return resolve(found);
+      if (tries >= maxTries) return resolve(null);
+
+      setTimeout(tick, 50);
+    };
+    tick();
+  });
+}
+
 // Zapis “gdzie jestem” wg punktu pod kciukiem (prawy dół)
 function captureViewportState() {
   const thumbOffset = 160; // px od dołu – punkt “czytania” (możesz zmienić)
@@ -158,26 +201,21 @@ function captureViewportState() {
   const el = document.elementFromPoint(x, y);
   if (!el) return null;
 
-  // Szukamy najbliższego komunikatu (section.accordion)
-  const acc = el.closest('section.accordion');
-  if (!acc) return null;
-
-  const header = acc.querySelector('.accordion-header');
+  const header = findAccordionHeaderFromElement(el);
   if (!header) return null;
 
   const body = header.nextElementSibling;
   const key = getHeaderKey(header.textContent);
 
-  // Czy był otwarty?
-  const wasOpen = body && body.classList.contains('active');
+  const wasOpen = body && body.classList && body.classList.contains('accordion-body') && body.classList.contains('active');
 
-  // Proporcja przewinięcia wewnątrz body (jeśli otwarte)
   let ratio = 0;
   if (wasOpen && body) {
-    const bodyRect = body.getBoundingClientRect();
-    const bodyTop = bodyRect.top + window.scrollY;
-    const bodyH = Math.max(1, bodyRect.height);
+    const rect = body.getBoundingClientRect();
+    const bodyTop = rect.top + window.scrollY;
+    const bodyH = Math.max(1, rect.height);
     const thumbDocY = (window.scrollY + y);
+
     ratio = (thumbDocY - bodyTop) / bodyH;
     ratio = Math.max(0, Math.min(1, ratio));
   }
@@ -185,49 +223,45 @@ function captureViewportState() {
   return { key, wasOpen, ratio, thumbOffset };
 }
 
+// Otwórz nagłówek (bez ryzyka, że go zamkniesz)
+function ensureOpen(header) {
+  const body = header.nextElementSibling;
+  if (!body || !body.classList || !body.classList.contains('accordion-body')) return;
+
+  if (!body.classList.contains('active')) {
+    header.click(); // korzystamy z Twojej istniejącej mechaniki JS (jeden otwarty naraz)
+  }
+}
+
 // Po przełączeniu: znajdź ten sam komunikat w drugim języku i przewiń
-function restoreViewportState(state) {
+async function restoreViewportState(state) {
   if (!state) return;
 
   const activeSection = document.getElementById(getActiveLang() === 'PL' ? 'sectionPL' : 'sectionEN');
-  const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
 
-  // 1) Szukamy po kluczu (np. "5." albo "B2.")
-  let targetHeader = null;
-  if (state.key) {
-    targetHeader = headers.find(h => getHeaderKey(h.textContent) === state.key) || null;
+  // czekamy aż docelowy nagłówek będzie w DOM (bo fetch)
+  let targetHeader = await waitForHeaderInSection(activeSection, state.key, 40);
+
+  // fallback: jeśli nie znaleziono po key — bierzemy pierwszy widoczny nagłówek
+  if (!targetHeader) {
+    const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
+    targetHeader = headers.length ? headers[0] : null;
   }
-
-  // 2) Fallback: jeśli nie znaleziono klucza, bierzemy najbliższy nagłówek do góry ekranu
-  if (!targetHeader && headers.length) {
-    targetHeader = headers.reduce((best, h) => {
-      const d = Math.abs(h.getBoundingClientRect().top - 120);
-      const bd = best ? Math.abs(best.getBoundingClientRect().top - 120) : Infinity;
-      return d < bd ? h : best;
-    }, null);
-  }
-
   if (!targetHeader) return;
 
-  const targetBody = targetHeader.nextElementSibling;
+  if (state.wasOpen) ensureOpen(targetHeader);
 
-  // Jeśli wcześniej był otwarty – otwórz też tutaj
-  if (state.wasOpen && targetBody) {
-    // zamknij inne, otwórz to
-    document.querySelectorAll('.accordion-body').forEach(b => {
-      if (b !== targetBody) b.classList.remove('active');
-    });
-    targetBody.classList.add('active');
-  }
-
-  // przewijanie: albo do body (proporcją), albo do nagłówka
+  // przewijanie: do body (proporcją) albo do nagłówka
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      const baseTop = (state.wasOpen && targetBody)
+      const targetBody = targetHeader.nextElementSibling;
+      const hasBody = targetBody && targetBody.classList && targetBody.classList.contains('accordion-body');
+
+      const baseTop = (state.wasOpen && hasBody)
         ? (targetBody.getBoundingClientRect().top + window.scrollY)
         : (targetHeader.getBoundingClientRect().top + window.scrollY);
 
-      const height = (state.wasOpen && targetBody)
+      const height = (state.wasOpen && hasBody)
         ? Math.max(1, targetBody.getBoundingClientRect().height)
         : 1;
 
@@ -238,17 +272,19 @@ function restoreViewportState(state) {
 }
 
 // Klik w pływający przycisk
-langFab.addEventListener('click', () => {
+langFab.addEventListener('click', async () => {
   const state = captureViewportState();
   const nextLang = (getActiveLang() === 'PL') ? 'EN' : 'PL';
 
   setLang(nextLang);
 
-  // Po przełączeniu sekcji przewiń do odpowiednika
-  // (loadSections() i tak jest wywoływane przy klikach tabów, więc treść już będzie)
-  restoreViewportState(state);
+  // poczekaj na przełączenie sekcji i ewentualne dociągnięcie treści
+  await restoreViewportState(state);
 });
 
 // Na start ustaw label
 updateLangFabLabel();
+// Na start ustaw label
+updateLangFabLabel();
+
 
