@@ -1,3 +1,6 @@
+/* =========================
+   RESET / GLOBAL
+========================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,7 +23,9 @@ em {
   font-size: 0.8rem;
 }
 
-/* ===== TABY ===== */
+/* =========================
+   TABY
+========================= */
 .tabs {
   display: flex;
   gap: 0.5rem;
@@ -39,7 +44,9 @@ em {
 
 .tab.active { background: #bbb; }
 
-/* ===== GŁÓWNY KONTENER ===== */
+/* =========================
+   GŁÓWNY KONTENER
+========================= */
 .accordion-container {
   max-width: 100%;
   margin: 0;
@@ -47,7 +54,9 @@ em {
   padding: 0;
 }
 
-/* ===== GŁÓWNE AKORDEONY ===== */
+/* =========================
+   GŁÓWNE AKORDEONY
+========================= */
 .accordion-header {
   width: 100%;
   text-align: left;
@@ -76,7 +85,9 @@ em {
 
 .accordion-body.active { display: block; }
 
-/* ===== JEDYNY PODAKORDEON – LOTNISKA ===== */
+/* =========================
+   JEDYNY PODAKORDEON – LOTNISKA
+========================= */
 .connection-toggle {
   width: 100%;
   text-align: left;
@@ -108,7 +119,9 @@ em {
 .accordion-subheader { display: none !important; }
 .accordion-subbody { display: block !important; }
 
-/* ===== KOLOROWE BLOKI KOMUNIKATÓW ===== */
+/* =========================
+   KOLOROWE BLOKI KOMUNIKATÓW
+========================= */
 .green, .orange, .yellow, .cyan {
   padding: 1rem 0.8rem;
   margin: 0.5rem 0;
@@ -121,7 +134,9 @@ em {
 .yellow { background: #fff9e5; border-color: #f4d35e; }
 .cyan { background: #d9f0ed; border-color: #7ab8b3; }
 
-/* ===== BLOKI TEKSTOWE ===== */
+/* =========================
+   BLOKI TEKSTOWE
+========================= */
 .speech-box {
   background: #fff;
   border: none;
@@ -138,7 +153,9 @@ em {
   border-left: 4px solid #999;
 }
 
-/* ===== TABELA LOTNISK ===== */
+/* =========================
+   TABELA LOTNISK
+========================= */
 .airport-table-wrapper {
   overflow-x: auto;
   margin: 1rem 0;
@@ -159,11 +176,15 @@ em {
   white-space: normal;
 }
 
-/* ===== SEKCJE JĘZYKOWE ===== */
+/* =========================
+   SEKCJE JĘZYKOWE
+========================= */
 .section { display: none; }
 .section.active { display: block; }
 
-/* ===== RESPONSYWNOŚĆ ===== */
+/* =========================
+   RESPONSYWNOŚĆ OGÓLNA
+========================= */
 @media (max-width: 768px) {
   .tabs { flex-direction: column; margin: 0.3rem; }
   .tab { font-size: 0.95rem; }
@@ -177,23 +198,49 @@ em {
   .green, .orange, .yellow, .cyan { padding: 0.6rem 0.5rem; }
 }
 
-/* ===== GASTRONOMIA – ROZWIJANIE ===== */
-.gastronomy-header {
+/* =========================
+   GASTRONOMIA / KATALOG – ROZWIJANIE
+   (używasz tego też w katalogu opóźnień)
+========================= */
+
+/* Nagłówek: tekst + plus zawsze w jednym wierszu */
+.gastronomy-header{
   display: flex;
-  justify-content: space-between;
-  align-items: baseline; /* klucz: baseline zamiast center */
+  align-items: center;      /* zamiast baseline – stabilniej na mobile */
+  justify-content: flex-start; /* układ robi margin-left:auto na plusie */
+  flex-wrap: nowrap;
+  gap: 0.75rem;
 }
 
-.gastronomy-plus {
+/* Tekst ma się zwężać/łamać, ale nie wypychać plusa pod spód */
+.gastronomy-header > strong{
+  flex: 1 1 auto;
+  min-width: 0;             /* KLUCZ w flexie na mobile */
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+/* Plus – stały kwadrat (hitbox), zawsze na środku, zawsze po prawej */
+.gastronomy-header > .gastronomy-plus{
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 1.55rem;
+  font-weight: 800;
   color: #888;
-  font-weight: 700;
   cursor: pointer;
-  padding-left: 0.5rem;
   user-select: none;
   position: relative;
   z-index: 5;
+  padding: 0;               /* przebija stare padding-left */
 }
 
+/* Rozwijana treść */
 .gastronomy-more {
   display: none;
   margin-top: 0.6rem;
@@ -201,7 +248,9 @@ em {
 
 .gastronomy-more.active { display: block; }
 
-/* ===== GASTRONOMIA – KARTY / OPISY ===== */
+/* =========================
+   GASTRONOMIA – KARTY / OPISY
+========================= */
 .gastronomy-comment-out {
   font-style: italic;
   font-size: 0.85rem;
@@ -246,7 +295,9 @@ em {
 
 .gastronomy-graybox--right { margin-left: 2.2rem; }
 
-/* ===== FIX: czytelność na telefonach + kolor tekstu (bez kursywy) ===== */
+/* =========================
+   CZYTELNOŚĆ W AKORDEONACH
+========================= */
 .accordion-body,
 .accordion-body p,
 .accordion-body li,
@@ -262,11 +313,6 @@ em {
   color: #777;
 }
 
-.accordion-body * {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
 .accordion-body p,
 .accordion-body li,
 .accordion-body div {
@@ -274,30 +320,12 @@ em {
   word-break: break-word;
 }
 
-@media (max-width: 560px) {
-  .accordion-body [style*="display:flex"],
-  .accordion-body [style*="display: flex"] {
-    flex-direction: column !important;
-    align-items: stretch !important;
+/* =========================
+   MOBILE: delikatnie węższe “pastylki” nagłówków (opcjonalnie)
+   (w katalogu opóźnień masz je inline, ale to pomoże gdy gdzieś są bez inline)
+========================= */
+@media (max-width: 480px){
+  .gastronomy-header{
+    padding: 0.6rem 0.65rem;
   }
-
-  .accordion-body ul,
-  .accordion-body ol {
-    columns: 1 !important;
-    -webkit-columns: 1 !important;
-    column-count: 1 !important;
-  }
-}
-
-/* ===== FIX: plus w linii z tytułem — TYLKO span plusa (przebija inline-style) ===== */
-.gastronomy-header > span.gastronomy-plus {
-  display: inline-block !important;
-  font-size: inherit !important;
-  line-height: inherit !important;
-  align-self: baseline !important;
-  margin-left: auto !important;
-  padding: 0 !important;
-  position: static !important;
-  transform: none !important;
-  float: none !important;
 }
