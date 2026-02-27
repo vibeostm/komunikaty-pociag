@@ -113,7 +113,7 @@ document.getElementById('tabEN').onclick = () => {
 loadSections();
 
 // ========================
-// PŁYWAJĄCY SWITCH PL/EN (wersja A++) — z podzakładkami + mapowanie dla 7
+// PŁYWAJĄCY SWITCH PL/EN (wersja A+++) — z podzakładkami + mapowanie 7 i 6
 // ========================
 const langFab = document.getElementById('langFab');
 
@@ -167,18 +167,29 @@ function findAccordionHeaderFromElement(el) {
 
 /**
  * Mapowanie ID podzakładek PL <-> EN
- * - 8: misc-pl-c4 <-> misc-en-c4
- * - 7: wypadek-pl-7-1 <-> acc-en7-1, wypadek-pl-7-b10 <-> acc-en7-b10
- * - oraz inne, jeśli kiedyś dodasz podobne
+ * Obsługuje:
+ * - schematy: *-pl-* <-> *-en-* (gastronomy, airports, misc itd.)
+ * - zakładkę 6: delay-cat-* <-> delay-en-*
+ * - zakładkę 7: wypadek-pl-7-* <-> acc-en7-*
  */
 function swapLangInId(id) {
   if (!id) return null;
 
-  // A) schemat "-pl-" <-> "-en-" (np. misc-pl-c4)
+  // A) schemat "-pl-" <-> "-en-" (np. gastronomy-pl-1, airports-pl-5, misc-pl-c4)
   if (id.includes('-pl-')) return id.replace('-pl-', '-en-');
   if (id.includes('-en-')) return id.replace('-en-', '-pl-');
 
-  // B) zakładka 7: wypadek-pl-7-* <-> acc-en7-*
+  // B) zakładka 6: delay-cat-awarie <-> delay-en-awarie (i inne)
+  if (id.startsWith('delay-cat-')) {
+    const rest = id.replace('delay-cat-', '');
+    return `delay-en-${rest}`;
+  }
+  if (id.startsWith('delay-en-')) {
+    const rest = id.replace('delay-en-', '');
+    return `delay-cat-${rest}`;
+  }
+
+  // C) zakładka 7: wypadek-pl-7-* <-> acc-en7-*
   if (id.startsWith('wypadek-pl-7-')) {
     const rest = id.replace('wypadek-pl-7-', ''); // np. "1", "b2", "b10"
     return `acc-en7-${rest}`;
