@@ -203,19 +203,20 @@ em {
    (używasz tego też w katalogu opóźnień)
 ========================= */
 
-/* Nagłówek: tekst + plus zawsze w jednym wierszu */
+/* Nagłówek: tekst + plus zawsze w jednym wierszu + niższa “pastylka” */
 .gastronomy-header{
   display: flex;
-  align-items: center;      /* zamiast baseline – stabilniej na mobile */
-  justify-content: flex-start; /* układ robi margin-left:auto na plusie */
+  align-items: center;           /* stabilnie na mobile */
+  justify-content: flex-start;   /* układ robi margin-left:auto na plusie */
   flex-wrap: nowrap;
   gap: 0.75rem;
+  padding: 0.5rem 0.8rem;        /* <<< mniejsza wysokość (bliżej tytułu akordeonu) */
 }
 
 /* Tekst ma się zwężać/łamać, ale nie wypychać plusa pod spód */
 .gastronomy-header > strong{
   flex: 1 1 auto;
-  min-width: 0;             /* KLUCZ w flexie na mobile */
+  min-width: 0;                  /* KLUCZ w flexie na mobile */
   display: block;
   overflow-wrap: anywhere;
 }
@@ -224,20 +225,20 @@ em {
 .gastronomy-header > .gastronomy-plus{
   flex: 0 0 auto;
   margin-left: auto;
-  width: 34px;
-  height: 34px;
+  width: 30px;                   /* <<< minimalnie mniejszy */
+  height: 30px;                  /* <<< minimalnie mniejszy */
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
-  font-size: 1.55rem;
+  font-size: 1.45rem;            /* <<< minimalnie mniejszy */
   font-weight: 800;
   color: #888;
   cursor: pointer;
   user-select: none;
   position: relative;
   z-index: 5;
-  padding: 0;               /* przebija stare padding-left */
+  padding: 0;                    /* przebija stare padding-left */
 }
 
 /* Rozwijana treść */
@@ -247,7 +248,6 @@ em {
 }
 
 .gastronomy-more.active { display: block; }
-
 /* =========================
    GASTRONOMIA – KARTY / OPISY
 ========================= */
@@ -329,3 +329,4 @@ em {
     padding: 0.6rem 0.65rem;
   }
 }
+
