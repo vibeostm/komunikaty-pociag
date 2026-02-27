@@ -69,19 +69,21 @@
     </div>
   </main>
 
-  <!-- STOPKA (sticky footer) w stylu nagłówka + Twoje liczniki + data utworzenia + wersja -->
+  <!-- STOPKA (sticky footer) -->
   <footer class="footerbar" id="gc-footer">
     <div class="footerbar__inner">
 
-      <div class="footerbar__left">
-        <span class="footerbar__label">Komunikaty</span>
+      <!-- 1) DYSKRETNA LINIA: nazwa • utworzono • wersja -->
+      <div class="footerbar__meta" aria-label="Informacje o wersji">
+        <span class="footerbar__metaName">Komunikaty</span>
         <span class="footerbar__dot" aria-hidden="true">•</span>
-        <span class="footerbar__muted">Utworzono by AB: <strong id="createdDate">2026-01-14</strong></span>
+        <span>powered by @B: <strong id="createdDate">2026-01-14</strong></span>
         <span class="footerbar__dot" aria-hidden="true">•</span>
-        <span class="footerbar__muted">Wersja: <strong id="appVersion">v1.2.0</strong></span>
+        <span>Wersja: <strong id="appVersion">v1.2.0</strong></span>
       </div>
 
-      <div class="footerbar__right">
+      <!-- 2) LICZNIKI -->
+      <div class="footerbar__counters" aria-label="Statystyki odsłon">
         <span class="chip chip--soft">Odsłony: łącznie <strong id="gc-total">–</strong></span>
         <span class="chip chip--soft">dziś <strong id="gc-today">–</strong></span>
         <span class="chip chip--soft">ostatnie 7 dni <strong id="gc-7d">–</strong></span>
@@ -227,7 +229,7 @@
       background: rgba(255,255,255,.06);
     }
 
-    /* Stopka w tym samym stylu */
+    /* Stopka */
     .footerbar{
       flex: 0 0 auto;
       margin-top: 24px;
@@ -237,50 +239,48 @@
     .footerbar__inner{
       max-width: 980px;
       margin: 0 auto;
-      padding: 14px 16px;
+      padding: 10px 16px 12px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 10px;
     }
-    .footerbar__left{
+
+    /* Dyskretna linia meta (to o co prosisz) */
+    .footerbar__meta{
       display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
       flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;                 /* mała czcionka */
+      color: rgba(255,255,255,.72);    /* dyskretna */
+      letter-spacing: .1px;
+      line-height: 1.2;
     }
-    .footerbar__label{
-      color:#fff;
-      font-weight:800;
-      letter-spacing:.2px;
+    .footerbar__meta strong{
+      color: rgba(255,255,255,.88);
+      font-weight: 700;               /* mniej agresywne niż 800 */
     }
-    .footerbar__muted{
-      color: rgba(255,255,255,.72);
-      font-size: 12.5px;
-      white-space: nowrap;
-    }
-    .footerbar__muted strong{
-      color: rgba(255,255,255,.90);
-      font-weight: 800;
+    .footerbar__metaName{
+      color: rgba(255,255,255,.82);
+      font-weight: 700;
     }
     .footerbar__dot{
       color: rgba(255,255,255,.35);
     }
-    .footerbar__right{
-      display:flex;
-      align-items:center;
-      gap:10px;
+
+    /* Liczniki poniżej */
+    .footerbar__counters{
+      display: flex;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      gap: 10px;
+      justify-content: center; /* dyskretnie i równo */
+      align-items: center;
     }
 
-    /* Drobna poprawka: żeby Twoje sekcje nie "wchodziły" pod sticky topbar przy linkach/scrollu */
+    /* Drobna poprawka: żeby sekcje nie "wchodziły" pod sticky topbar */
     :root { scroll-padding-top: 72px; }
   </style>
 
 </body>
 </html>
-
-
