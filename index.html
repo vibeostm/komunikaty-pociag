@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Komunikaty PKP IC</title>
+  <title>Komunikaty</title>
 
   <link rel="stylesheet" href="style.css">
 
@@ -11,58 +11,82 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#0f172a">
 </head>
-<body>
 
-  <div class="tabs">
-    <div id="tabPL" class="tab active">🇵🇱 Polski</div>
-    <div id="tabEN" class="tab">🇬🇧 English</div>
-  </div>
+<body class="app">
 
-  <main class="accordion-container">
+  <!-- NAGŁÓWEK (wariant A) -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <div class="brand__text">
+          <div class="brand__name">Komunikaty</div>
+          <div class="brand__tagline">PL • EN • do odczytu na pokładzie</div>
+        </div>
+      </div>
 
-    <div id="sectionPL" class="section active">
-      <div data-load="pl/komunikat1.html"></div>
-      <div data-load="pl/komunikat2.html"></div>
-      <div data-load="pl/komunikat3.html"></div>
-      <div data-load="pl/komunikat4.html"></div>
-      <div data-load="pl/komunikat5.html"></div>
-      <div data-load="pl/komunikat6.html"></div>
-      <div data-load="pl/komunikat7.html"></div>
-      <div data-load="pl/komunikat8.html"></div>
-      <div data-load="pl/uwaga.html"></div>
+      <div class="topbar__right">
+        <span class="chip">Szybka ściąga</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Twoja zawartość (wypychacz dla sticky footer) -->
+  <main class="app__content">
+    <div class="tabs">
+      <div id="tabPL" class="tab active">🇵🇱 Polski</div>
+      <div id="tabEN" class="tab">🇬🇧 English</div>
     </div>
 
-    <div id="sectionEN" class="section">
-      <div data-load="en/announcement1.html"></div>
-      <div data-load="en/announcement2.html"></div>
-      <div data-load="en/announcement3.html"></div>
-      <div data-load="en/announcement4.html"></div>
-      <div data-load="en/announcement5.html"></div>
-      <div data-load="en/announcement6.html"></div>
-      <div data-load="en/announcement7.html"></div>
-      <div data-load="en/announcement8.html"></div>
-      <div data-load="en/note.html"></div>
-    </div>
+    <div class="accordion-container">
 
+      <div id="sectionPL" class="section active">
+        <div data-load="pl/komunikat1.html"></div>
+        <div data-load="pl/komunikat2.html"></div>
+        <div data-load="pl/komunikat3.html"></div>
+        <div data-load="pl/komunikat4.html"></div>
+        <div data-load="pl/komunikat5.html"></div>
+        <div data-load="pl/komunikat6.html"></div>
+        <div data-load="pl/komunikat7.html"></div>
+        <div data-load="pl/komunikat8.html"></div>
+        <div data-load="pl/uwaga.html"></div>
+      </div>
+
+      <div id="sectionEN" class="section">
+        <div data-load="en/announcement1.html"></div>
+        <div data-load="en/announcement2.html"></div>
+        <div data-load="en/announcement3.html"></div>
+        <div data-load="en/announcement4.html"></div>
+        <div data-load="en/announcement5.html"></div>
+        <div data-load="en/announcement6.html"></div>
+        <div data-load="en/announcement7.html"></div>
+        <div data-load="en/announcement8.html"></div>
+        <div data-load="en/note.html"></div>
+      </div>
+
+    </div>
   </main>
 
-  <footer id="gc-footer" style="text-align:center; padding:10px 0 14px; font-size:0.85rem; opacity:0.95;">
-    <div style="display:inline-flex; flex-wrap:wrap; gap:6px; justify-content:center; align-items:center; border:1px solid #ddd; border-radius:12px; padding:8px 10px; max-width:92vw;">
-      <span style="font-weight:700; white-space:nowrap;">Odsłony:</span>
+  <!-- STOPKA (sticky footer) w stylu nagłówka + Twoje liczniki + data utworzenia + wersja -->
+  <footer class="footerbar" id="gc-footer">
+    <div class="footerbar__inner">
 
-      <span style="border:1px solid #e5e5e5; border-radius:10px; padding:4px 8px; white-space:nowrap;">
-        łącznie <span id="gc-total">–</span>
-      </span>
+      <div class="footerbar__left">
+        <span class="footerbar__label">Komunikaty</span>
+        <span class="footerbar__dot" aria-hidden="true">•</span>
+        <span class="footerbar__muted">Utworzono: <strong id="createdDate">2026-02-27</strong></span>
+        <span class="footerbar__dot" aria-hidden="true">•</span>
+        <span class="footerbar__muted">Wersja: <strong id="appVersion">v1.0.0</strong></span>
+      </div>
 
-      <span style="border:1px solid #e5e5e5; border-radius:10px; padding:4px 8px; white-space:nowrap;">
-        dziś <span id="gc-today">–</span>
-      </span>
+      <div class="footerbar__right">
+        <span class="chip chip--soft">Odsłony: łącznie <strong id="gc-total">–</strong></span>
+        <span class="chip chip--soft">dziś <strong id="gc-today">–</strong></span>
+        <span class="chip chip--soft">ostatnie 7 dni <strong id="gc-7d">–</strong></span>
+      </div>
 
-      <span style="border:1px solid #e5e5e5; border-radius:10px; padding:4px 8px; white-space:nowrap;">
-        ostatnie 7 dni <span id="gc-7d">–</span>
-      </span>
     </div>
   </footer>
 
@@ -75,6 +99,14 @@
           async src="//gc.zgo.at/count.js"></script>
 
   <script>
+    // === Stałe do edycji ===
+    const CREATED = "2026-02-27";
+    const VERSION = "v1.0.0";
+
+    document.getElementById("createdDate").textContent = CREATED;
+    document.getElementById("appVersion").textContent = VERSION;
+
+    // === GoatCounter ===
     const GC = "https://komunikaty.goatcounter.com";
 
     function ymd(d) {
@@ -113,6 +145,140 @@
       }
     })();
   </script>
+
+  <!-- STYLE: sticky layout + nagłówek A + stopka w tym samym stylu -->
+  <style>
+    /* Sticky footer layout */
+    html, body { height: 100%; }
+    .app{
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .app__content{
+      flex: 1 0 auto; /* wypycha stopkę na dół, gdy treści mało */
+    }
+
+    /* Nagłówek (wariant A) */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #0f172a;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .topbar__inner{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand__mark{
+      width: 44px;
+      height: 32px;
+      border-radius: 10px;
+      background:
+        linear-gradient(#22c55e,#22c55e) 6px 9px/32px 2px no-repeat,
+        linear-gradient(#38bdf8,#38bdf8) 6px 21px/32px 2px no-repeat,
+        repeating-linear-gradient(90deg, rgba(255,255,255,.22) 0 6px, transparent 6px 12px) 6px 15px/32px 2px no-repeat;
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+      flex: 0 0 auto;
+    }
+    .brand__text{ min-width: 0; }
+    .brand__name{
+      font-size: 22px;
+      line-height: 1.1;
+      letter-spacing: .2px;
+      color: #fff;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brand__tagline{
+      margin-top: 2px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,.70);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Chip (wspólny) */
+    .chip{
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.85);
+      border: 1px solid rgba(255,255,255,.10);
+      white-space: nowrap;
+    }
+    .chip--soft{
+      background: rgba(255,255,255,.06);
+    }
+
+    /* Stopka w tym samym stylu */
+    .footerbar{
+      flex: 0 0 auto;
+      margin-top: 24px;
+      background: #0f172a;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .footerbar__inner{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .footerbar__left{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex-wrap: wrap;
+    }
+    .footerbar__label{
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .footerbar__muted{
+      color: rgba(255,255,255,.72);
+      font-size: 12.5px;
+      white-space: nowrap;
+    }
+    .footerbar__muted strong{
+      color: rgba(255,255,255,.90);
+      font-weight: 800;
+    }
+    .footerbar__dot{
+      color: rgba(255,255,255,.35);
+    }
+    .footerbar__right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    /* Drobna poprawka: żeby Twoje sekcje nie "wchodziły" pod sticky topbar przy linkach/scrollu */
+    :root { scroll-padding-top: 72px; }
+  </style>
 
 </body>
 </html>
