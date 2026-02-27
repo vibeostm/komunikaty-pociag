@@ -330,3 +330,32 @@ em {
   }
 }
 
+/* ===== PŁYWAJĄCY PRZEŁĄCZNIK JĘZYKA (kciuk, prawy dół) ===== */
+.lang-fab{
+  position: fixed;
+  right: 14px;
+  bottom: 86px;              /* nad dolnym paskiem telefonu */
+  z-index: 9999;
+
+  height: 44px;
+  min-width: 56px;
+  padding: 0 14px;
+
+  border-radius: 999px;
+  border: 2px solid #bbb;
+  background: #ffffff;
+  color: #111;
+
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lang-fab:active{
+  transform: scale(0.98);
+}
+
