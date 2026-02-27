@@ -31,15 +31,13 @@ function activateAccordions() {
 
       body.classList.toggle('active');
 
-      // ====== NOWE: po otwarciu innej zakładki zamknij wszystkie plusiki w niej ======
+      // po otwarciu innej zakładki zamknij wszystkie plusiki w niej
       if (body.classList.contains('active')) {
         body.querySelectorAll('.gastronomy-more').forEach(m => {
           m.classList.remove('active');
           m.style.display = 'none';
         });
       }
-      // ===========================================================================
-
     };
   });
 
@@ -69,7 +67,6 @@ document.addEventListener('click', function (e) {
   const plus = e.target.closest('.gastronomy-plus');
   if (!plus) return;
 
-  // Ważne: nie pozwól, żeby klik w plus wpływał na inne klik-handlery
   e.preventDefault();
   e.stopPropagation();
 
@@ -79,10 +76,8 @@ document.addEventListener('click', function (e) {
   const block = document.getElementById(id);
   if (!block) return;
 
-  // Najbezpieczniejszy root: aktualna otwarta zakładka (accordion-body)
   const root = plus.closest('.accordion-body') || document;
 
-  // Zamknij wszystkie inne .gastronomy-more w tym samym root
   root.querySelectorAll('.gastronomy-more').forEach(other => {
     if (other !== block) {
       other.classList.remove('active');
@@ -90,15 +85,14 @@ document.addEventListener('click', function (e) {
     }
   });
 
-  // Toggle klasy dla klikniętego
   block.classList.toggle('active');
-
-  // Wymuś display zgodnie ze stanem
   const isActive = block.classList.contains('active');
   block.style.display = isActive ? 'block' : 'none';
 });
 
-// Taby
+// ========================
+// TABY (przełączanie języka)
+// ========================
 document.getElementById('tabPL').onclick = () => {
   document.getElementById('tabPL').classList.add('active');
   document.getElementById('tabEN').classList.remove('active');
@@ -119,7 +113,7 @@ document.getElementById('tabEN').onclick = () => {
 loadSections();
 
 // ========================
-// PŁYWAJĄCY SWITCH PL/EN (wersja A+) — z podzakładkami (gastronomy-more)
+// PŁYWAJĄCY SWITCH PL/EN (wersja A++) — z podzakładkami + mapowanie dla 7
 // ========================
 const langFab = document.getElementById('langFab');
 
@@ -134,6 +128,7 @@ function setLang(lang) {
 }
 
 function updateLangFabLabel() {
+  if (!langFab) return;
   const active = getActiveLang();
   langFab.textContent = (active === 'PL') ? 'EN' : 'PL';
 }
@@ -170,16 +165,34 @@ function findAccordionHeaderFromElement(el) {
   return null;
 }
 
-// Zamiana id podzakładki: misc-pl-c4 <-> misc-en-c4 (i inne z -pl-/-en-)
+/**
+ * Mapowanie ID podzakładek PL <-> EN
+ * - 8: misc-pl-c4 <-> misc-en-c4
+ * - 7: wypadek-pl-7-1 <-> acc-en7-1, wypadek-pl-7-b10 <-> acc-en7-b10
+ * - oraz inne, jeśli kiedyś dodasz podobne
+ */
 function swapLangInId(id) {
   if (!id) return null;
+
+  // A) schemat "-pl-" <-> "-en-" (np. misc-pl-c4)
   if (id.includes('-pl-')) return id.replace('-pl-', '-en-');
   if (id.includes('-en-')) return id.replace('-en-', '-pl-');
-  return null; // nie umiemy mapować — wtedy olewamy
+
+  // B) zakładka 7: wypadek-pl-7-* <-> acc-en7-*
+  if (id.startsWith('wypadek-pl-7-')) {
+    const rest = id.replace('wypadek-pl-7-', ''); // np. "1", "b2", "b10"
+    return `acc-en7-${rest}`;
+  }
+  if (id.startsWith('acc-en7-')) {
+    const rest = id.replace('acc-en7-', '');
+    return `wypadek-pl-7-${rest}`;
+  }
+
+  return null;
 }
 
 // Czekamy aż element pojawi się w DOM (fetch)
-function waitForSelector(root, selector, maxTries = 40) {
+function waitForSelector(root, selector, maxTries = 60) {
   return new Promise((resolve) => {
     let tries = 0;
     const tick = () => {
@@ -193,6 +206,19 @@ function waitForSelector(root, selector, maxTries = 40) {
   });
 }
 
+// Czekamy aż w aktywnej sekcji pojawi się nagłówek o danym key (bo fetch)
+async function waitForHeaderByKey(sectionEl, key) {
+  if (!key) return null;
+  const selector = '.accordion-header';
+  for (let i = 0; i < 60; i++) {
+    const headers = Array.from(sectionEl.querySelectorAll(selector));
+    const found = headers.find(h => getHeaderKey(h.textContent) === key);
+    if (found) return found;
+    await new Promise(r => setTimeout(r, 50));
+  }
+  return null;
+}
+
 // Otwórz główny akordeon (bez ryzyka, że go zamkniesz)
 function ensureOpenMain(header) {
   const body = header.nextElementSibling;
@@ -203,16 +229,13 @@ function ensureOpenMain(header) {
 // Otwórz podzakładkę (klik w element z data-target)
 function ensureOpenSub(activeSection, targetId) {
   if (!targetId) return;
+
   const toggler = activeSection.querySelector(`[data-target="${CSS.escape(targetId)}"]`);
   const panel = activeSection.querySelector(`#${CSS.escape(targetId)}`);
 
-  // jeśli nie ma — nie robimy nic
   if (!toggler || !panel) return;
-
-  // jeśli już otwarte — OK
   if (panel.classList.contains('active')) return;
 
-  // klik otworzy (Twoje JS deleguje po .gastronomy-plus)
   toggler.click();
 }
 
@@ -230,14 +253,13 @@ function captureViewportState() {
 
   const body = header.nextElementSibling;
   const key = getHeaderKey(header.textContent);
-
   const wasOpen = body && body.classList && body.classList.contains('accordion-body') && body.classList.contains('active');
 
-  // >>> NOWE: podzakładka (np. C4) jeśli jesteśmy w środku .gastronomy-more.active
+  // Podzakładka: jeśli jesteśmy w środku .gastronomy-more.active
   const subPanel = el.closest('.gastronomy-more.active');
   const subId = subPanel ? subPanel.id : null;
 
-  // ratio wewnątrz głównej treści (jak było)
+  // Proporcja przewinięcia wewnątrz body (głównego komunikatu)
   let ratio = 0;
   if (wasOpen && body) {
     const rect = body.getBoundingClientRect();
@@ -256,26 +278,23 @@ async function restoreViewportState(state) {
 
   const activeSection = document.getElementById(getActiveLang() === 'PL' ? 'sectionPL' : 'sectionEN');
 
-  // 1) znajdź docelowy główny komunikat po key
-  const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
-  let targetHeader = null;
-  if (state.key) {
-    targetHeader = headers.find(h => getHeaderKey(h.textContent) === state.key) || null;
+  // 1) znajdź docelowy główny komunikat po key (czekamy, bo może być jeszcze fetch)
+  let targetHeader = await waitForHeaderByKey(activeSection, state.key);
+
+  // fallback: jeśli nie znaleziono po key, bierzemy pierwszy dostępny
+  if (!targetHeader) {
+    const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
+    targetHeader = headers.length ? headers[0] : null;
   }
-  if (!targetHeader) targetHeader = headers.length ? headers[0] : null;
   if (!targetHeader) return;
 
   if (state.wasOpen) ensureOpenMain(targetHeader);
 
-  // 2) >>> NOWE: spróbuj otworzyć tę samą podzakładkę w drugim języku
-  //    mapujemy id: misc-pl-c4 -> misc-en-c4
-  let mappedSubId = swapLangInId(state.subId);
+  // 2) spróbuj otworzyć tę samą podzakładkę w drugim języku
+  const mappedSubId = swapLangInId(state.subId);
   if (mappedSubId) {
-    // czekamy aż ta sekcja się wczyta i id będzie w DOM
-    const subPanel = await waitForSelector(activeSection, `#${CSS.escape(mappedSubId)}`, 60);
-    if (subPanel) {
-      ensureOpenSub(activeSection, mappedSubId);
-    }
+    const subPanel = await waitForSelector(activeSection, `#${CSS.escape(mappedSubId)}`, 80);
+    if (subPanel) ensureOpenSub(activeSection, mappedSubId);
   }
 
   // 3) przewiń do podobnego miejsca
@@ -298,13 +317,13 @@ async function restoreViewportState(state) {
   });
 }
 
-langFab.addEventListener('click', async () => {
-  const state = captureViewportState();
-  const nextLang = (getActiveLang() === 'PL') ? 'EN' : 'PL';
-  setLang(nextLang);
-  await restoreViewportState(state);
-});
+if (langFab) {
+  langFab.addEventListener('click', async () => {
+    const state = captureViewportState();
+    const nextLang = (getActiveLang() === 'PL') ? 'EN' : 'PL';
+    setLang(nextLang);
+    await restoreViewportState(state);
+  });
+}
 
 updateLangFabLabel();
-
-
