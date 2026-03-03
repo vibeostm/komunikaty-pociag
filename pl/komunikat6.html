@@ -1,4 +1,4 @@
-<button class="accordion-header">6. JAZDA POCIĄGIEM OPÓŹNIONYM (PL)</button>
+<button class="accordion-header">6. JAZDA POCIĄGIEM OPÓŹNIONYM</button>
 <div class="accordion-body">
   <div class="speech-box">
 
@@ -13,7 +13,7 @@
         list-style: none;
         cursor:pointer;
         padding: 0.6rem 3.1rem 0.6rem 0.95rem; /* miejsce na plus po prawej */
-        background:#f2b8a8;                    /* intensywniejszy łosoś */
+        background:#f2b8a8;                    /* pastylka: łosoś (intensywniejszy) */
         border-radius: 18px;
         user-select:none;
         box-shadow: 0 6px 16px rgba(0,0,0,0.06);
@@ -22,7 +22,7 @@
       }
       .k6-details > summary::-webkit-details-marker{ display:none; }
 
-      /* plusik / minusik po prawej */
+      /* plusik (szary, wtopiony, zawsze PLUS) */
       .k6-pill::after{
         content:"+";
         position:absolute;
@@ -31,16 +31,14 @@
         transform: translateY(-50%);
         width: 30px;
         height: 30px;
-        border-radius: 10px;
         display:flex;
         align-items:center;
         justify-content:center;
         font-size: 1.45rem;
         font-weight: 800;
-        color:#7a4b40;
-        background: rgba(255,255,255,0.35);
+        color:#888;                /* szary */
+        background: transparent;   /* bez mini-ramki/tła */
       }
-      .k6-details[open] > .k6-pill::after{ content:"–"; }
 
       /* ciaśniej instrukcje */
       .k6-note{ margin: 0 0 0.15rem; }
