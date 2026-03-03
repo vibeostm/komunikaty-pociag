@@ -33,7 +33,7 @@
     </div>
   </header>
 
-  <!-- Twoja zawartość (wypychacz dla sticky footer) -->
+  <!-- Zawartość (wypychacz dla sticky footer) -->
   <main class="app__content">
     <div class="tabs">
       <div id="tabPL" class="tab active">🇵🇱 Polski</div>
@@ -73,7 +73,7 @@
   <footer class="footerbar" id="gc-footer">
     <div class="footerbar__inner">
 
-      <!-- 1) DYSKRETNA LINIA: nazwa • utworzono • wersja -->
+      <!-- 1) linia meta -->
       <div class="footerbar__meta" aria-label="Informacje o wersji">
         <span class="footerbar__metaName">Komunikaty</span>
         <span class="footerbar__dot" aria-hidden="true">•</span>
@@ -82,7 +82,7 @@
         <span>Wersja: <strong id="appVersion">v1.2.0</strong></span>
       </div>
 
-      <!-- 2) LICZNIKI -->
+      <!-- 2) liczniki -->
       <div class="footerbar__counters" aria-label="Statystyki odsłon">
         <span class="chip chip--soft">Odsłony: łącznie <strong id="gc-total">–</strong></span>
         <span class="chip chip--soft">dziś <strong id="gc-today">–</strong></span>
@@ -148,140 +148,5 @@
     })();
   </script>
 
-  <!-- STYLE: sticky layout + nagłówek A + stopka w tym samym stylu -->
-  <style>
-    /* Sticky footer layout */
-    html, body { height: 100%; }
-    .app{
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-    .app__content{
-      flex: 1 0 auto; /* wypycha stopkę na dół, gdy treści mało */
-    }
-
-    /* Nagłówek (wariant A) */
-    .topbar{
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: #0f172a;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .topbar__inner{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .brand{
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-    .brand__mark{
-      width: 44px;
-      height: 32px;
-      border-radius: 10px;
-      background:
-        linear-gradient(#22c55e,#22c55e) 6px 9px/32px 2px no-repeat,
-        linear-gradient(#38bdf8,#38bdf8) 6px 21px/32px 2px no-repeat,
-        repeating-linear-gradient(90deg, rgba(255,255,255,.22) 0 6px, transparent 6px 12px) 6px 15px/32px 2px no-repeat;
-      box-shadow: 0 6px 20px rgba(0,0,0,.25);
-      flex: 0 0 auto;
-    }
-    .brand__text{ min-width: 0; }
-    .brand__name{
-      font-size: 22px;
-      line-height: 1.1;
-      letter-spacing: .2px;
-      color: #fff;
-      font-weight: 800;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .brand__tagline{
-      margin-top: 2px;
-      font-size: 12.5px;
-      color: rgba(255,255,255,.70);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Chip (wspólny) */
-    .chip{
-      font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.85);
-      border: 1px solid rgba(255,255,255,.10);
-      white-space: nowrap;
-    }
-    .chip--soft{
-      background: rgba(255,255,255,.06);
-    }
-
-    /* Stopka */
-    .footerbar{
-      flex: 0 0 auto;
-      margin-top: 24px;
-      background: #0f172a;
-      border-top: 1px solid rgba(255,255,255,.08);
-    }
-    .footerbar__inner{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 10px 16px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    /* Dyskretna linia meta (to o co prosisz) */
-    .footerbar__meta{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-      align-items: center;
-      font-size: 12px;                 /* mała czcionka */
-      color: rgba(255,255,255,.72);    /* dyskretna */
-      letter-spacing: .1px;
-      line-height: 1.2;
-    }
-    .footerbar__meta strong{
-      color: rgba(255,255,255,.88);
-      font-weight: 700;               /* mniej agresywne niż 800 */
-    }
-    .footerbar__metaName{
-      color: rgba(255,255,255,.82);
-      font-weight: 700;
-    }
-    .footerbar__dot{
-      color: rgba(255,255,255,.35);
-    }
-
-    /* Liczniki poniżej */
-    .footerbar__counters{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center; /* dyskretnie i równo */
-      align-items: center;
-    }
-
-    /* Drobna poprawka: żeby sekcje nie "wchodziły" pod sticky topbar */
-    :root { scroll-padding-top: 72px; }
-  </style>
-
 </body>
 </html>
-
