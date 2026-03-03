@@ -1,210 +1,233 @@
-<button class="accordion-header">6. JAZDA POCIĄGIEM OPÓŹNIONYM (PL)</button>
+<button class="accordion-header">6. JAZDA POCIĄGIEM OPÓŹNIONYM</button>
 <div class="accordion-body">
   <div class="speech-box">
 
-    <!-- A1 -->
-    <details open style="margin: 0.4rem 0 0.75rem;">
-      <summary style="
-        list-style: none;
-        cursor: pointer;
-        font-weight: 800;
-        padding: 0.65rem 0.95rem;
-        background: #f2b8a8;              /* łososiowa pastylka (bardziej intensywna) */
-        border-radius: 16px;              /* ładniejsze, bardziej „miękkie” */
-        user-select: none;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    <!-- wewnętrzne akordeony: TYLKO JEDEN OTWARTY (radio) -->
+    <div style="margin: 0.2rem 0 0.4rem;">
+
+      <!-- A1 -->
+      <input id="k6-a1" type="radio" name="k6-acc" checked style="display:none;">
+      <label for="k6-a1" style="
+        display:block;
+        cursor:pointer;
+        padding: 0.6rem 0.95rem;
+        background:#f2b8a8;
+        border-radius:16px;
+        user-select:none;
+        box-shadow:0 6px 16px rgba(0,0,0,0.06);
+        font-weight:500;               /* NIE pogrubione */
       ">
         A1. JAZDA POCIĄGIEM OPÓŹNIONYM
-      </summary>
+      </label>
 
-      <div style="padding: 0.55rem 0.1rem 0;">
-        <p style="margin: 0 0 0.25rem;"><em>Komunikat ten należy wygłosić:</em></p>
-        <div style="margin: 0; padding-left: 0.25rem;">
-          <p style="margin: 0.08rem 0;"><em>a) po odjeździe z miejsca nieplanowanego postoju, w którym powstało opóźnienie;</em></p>
-          <p style="margin: 0.08rem 0;"><em>b) jeśli opóźnienie pociągu powstało podczas jazdy;</em></p>
-          <p style="margin: 0.08rem 0;"><em>c) jeśli opóźnienie pociągu zmieniło się o 5 lub więcej minut.</em></p>
+      <div style="
+        display:none;
+        padding: 0.45rem 0.05rem 0.2rem;
+      " data-k6-panel="a1">
+        <p style="margin: 0 0 0.15rem;">
+          <em style="font-weight:400;">Komunikat ten należy wygłosić:</em>
+        </p>
+
+        <div style="margin:0; padding-left:0.15rem;">
+          <p style="margin:0.05rem 0;"><em style="font-weight:400;">a) po odjeździe z miejsca nieplanowanego postoju, w którym powstało opóźnienie;</em></p>
+          <p style="margin:0.05rem 0;"><em style="font-weight:400;">b) jeśli opóźnienie pociągu powstało podczas jazdy;</em></p>
+          <p style="margin:0.05rem 0;"><em style="font-weight:400;">c) jeśli opóźnienie pociągu zmieniło się o 5 lub więcej minut.</em></p>
         </div>
 
         <div style="
-          background: #f7ddd6;            /* mniej intensywny łososiowy w ramce */
-          border: 2px solid #edc1b6;
-          border-left: 7px solid #e5a292;
-          border-radius: 18px;
-          padding: 1rem 0.95rem;
-          margin: 0.6rem 0 0.55rem;
-          box-shadow: 0 8px 18px rgba(0,0,0,0.05);
-        ">
-          <strong>
-            Informujemy, że w związku z …… <em>(wybrać z Katalogu)</em> pociąg jest opóźniony o …… minut/minut.
-            Przepraszamy za opóźnienie. Osoby przesiadające się do innych pociągów prosimy o zgłaszanie tego zamiaru
-            drużynie konduktorskiej. Przedział konduktorski znajduje się w wagonie numer …… .
-          </strong>
-        </div>
-
-        <p style="margin: 0.1rem 0 0.35rem;"><em>
-          Komunikat ten należy wygłosić w pociągu, który był opóźniony, a obecnie jedzie zgodnie z rozkładem jazdy.
-        </em></p>
-
-        <div style="
-          background: #f7ddd6;
-          border: 2px solid #edc1b6;
-          border-left: 7px solid #e5a292;
-          border-radius: 18px;
+          background:#f7ddd6;           /* mniej intensywne niż pastylka */
+          border:2px solid #edc1b6;
+          border-left:7px solid #e5a292;
+          border-radius:18px;
           padding: 0.95rem 0.95rem;
-          margin: 0.55rem 0 0.1rem;
-          box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+          margin: 0.45rem 0 0.4rem;
+          box-shadow:0 8px 18px rgba(0,0,0,0.05);
+          font-weight:700;             /* treść komunikatu pogrubiona */
         ">
-          <strong>Informujemy, że pociąg jedzie zgodnie z rozkładem jazdy.</strong>
+          Informujemy, że w związku z …… <em style="font-weight:400;">(wybrać z Katalogu)</em> pociąg jest opóźniony o …… minut/minut.
+          Przepraszamy za opóźnienie. Osoby przesiadające się do innych pociągów prosimy o zgłaszanie tego zamiaru
+          drużynie konduktorskiej. Przedział konduktorski znajduje się w wagonie numer …… .
+        </div>
+
+        <p style="margin: 0 0 0.2rem;">
+          <em style="font-weight:400;">
+            Komunikat ten należy wygłosić w pociągu, który był opóźniony, a obecnie jedzie zgodnie z rozkładem jazdy.
+          </em>
+        </p>
+
+        <div style="
+          background:#f7ddd6;
+          border:2px solid #edc1b6;
+          border-left:7px solid #e5a292;
+          border-radius:18px;
+          padding: 0.85rem 0.95rem;
+          margin: 0.35rem 0 0.2rem;
+          box-shadow:0 8px 18px rgba(0,0,0,0.05);
+          font-weight:700;
+        ">
+          Informujemy, że pociąg jedzie zgodnie z rozkładem jazdy.
         </div>
       </div>
-    </details>
 
-    <!-- A2 -->
-    <details style="margin: 0.4rem 0 0.75rem;">
-      <summary style="
-        list-style: none;
-        cursor: pointer;
-        font-weight: 800;
-        padding: 0.65rem 0.95rem;
-        background: #f2b8a8;
-        border-radius: 16px;
-        user-select: none;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      <!-- A2 -->
+      <input id="k6-a2" type="radio" name="k6-acc" style="display:none;">
+      <label for="k6-a2" style="
+        display:block;
+        cursor:pointer;
+        padding: 0.6rem 0.95rem;
+        background:#f2b8a8;
+        border-radius:16px;
+        user-select:none;
+        box-shadow:0 6px 16px rgba(0,0,0,0.06);
+        font-weight:500;
+        margin-top:0.45rem;
       ">
         A2. WYDŁUŻONY POSTÓJ POCIĄGU NA STACJI HANDLOWEJ
-      </summary>
+      </label>
 
-      <div style="padding: 0.55rem 0.1rem 0;">
-        <p style="margin: 0 0 0.25rem;"><em>
-          Komunikat ten należy wygłosić podczas postoju pociągu niezwłocznie, gdy zostało potwierdzone przez dyżurnego ruchu
-          opóźnienie odjazdu o 5 lub więcej minut.
-        </em></p>
+      <div style="display:none; padding: 0.45rem 0.05rem 0.2rem;" data-k6-panel="a2">
+        <p style="margin: 0 0 0.2rem;">
+          <em style="font-weight:400;">
+            Komunikat ten należy wygłosić podczas postoju pociągu niezwłocznie, gdy zostało potwierdzone przez dyżurnego ruchu
+            opóźnienie odjazdu o 5 lub więcej minut.
+          </em>
+        </p>
 
         <div style="
-          background: #f7ddd6;
-          border: 2px solid #edc1b6;
-          border-left: 7px solid #e5a292;
-          border-radius: 18px;
-          padding: 1rem 0.95rem;
-          margin: 0.6rem 0 0.1rem;
-          box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+          background:#f7ddd6;
+          border:2px solid #edc1b6;
+          border-left:7px solid #e5a292;
+          border-radius:18px;
+          padding: 0.95rem 0.95rem;
+          margin: 0.35rem 0 0.2rem;
+          box-shadow:0 8px 18px rgba(0,0,0,0.05);
+          font-weight:700;
         ">
-          <strong>
-            Informujemy, że w związku z …… <em>(wybrać z Katalogu)</em> pociąg odjedzie z opóźnieniem około …… minut.
-            O zmianie opóźnienia będziemy informować na bieżąco. Przepraszamy za niedogodności.
-            <br><br>
-            Osoby przesiadające się do innych pociągów prosimy o zgłaszanie tego zamiaru drużynie konduktorskiej.
-            Przedział konduktorski znajduje się w wagonie numer …… .
-          </strong>
+          Informujemy, że w związku z …… <em style="font-weight:400;">(wybrać z Katalogu)</em> pociąg odjedzie z opóźnieniem około …… minut.
+          O zmianie opóźnienia będziemy informować na bieżąco. Przepraszamy za niedogodności.
+          <br><br>
+          Osoby przesiadające się do innych pociągów prosimy o zgłaszanie tego zamiaru drużynie konduktorskiej.
+          Przedział konduktorski znajduje się w wagonie numer …… .
         </div>
       </div>
-    </details>
 
-    <!-- A3 -->
-    <details style="margin: 0.4rem 0 0.75rem;">
-      <summary style="
-        list-style: none;
-        cursor: pointer;
-        font-weight: 800;
-        padding: 0.65rem 0.95rem;
-        background: #f2b8a8;
-        border-radius: 16px;
-        user-select: none;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      <!-- A3 -->
+      <input id="k6-a3" type="radio" name="k6-acc" style="display:none;">
+      <label for="k6-a3" style="
+        display:block;
+        cursor:pointer;
+        padding: 0.6rem 0.95rem;
+        background:#f2b8a8;
+        border-radius:16px;
+        user-select:none;
+        box-shadow:0 6px 16px rgba(0,0,0,0.06);
+        font-weight:500;
+        margin-top:0.45rem;
       ">
         A3. ZATRZYMANIE PRZED SEMAFOREM WJAZDOWYM
-      </summary>
+      </label>
 
-      <div style="padding: 0.55rem 0.1rem 0;">
-        <p style="margin: 0 0 0.25rem;"><em>
-          Komunikat ten należy wygłosić, jeśli po wygłoszeniu komunikatu pożegnalnego lub powitalno-pożegnalnego nastąpiło
-          zatrzymanie pociągu przed semaforem wjazdowym do stacji postoju handlowego.
-        </em></p>
+      <div style="display:none; padding: 0.45rem 0.05rem 0.2rem;" data-k6-panel="a3">
+        <p style="margin: 0 0 0.2rem;">
+          <em style="font-weight:400;">
+            Komunikat ten należy wygłosić, jeśli po wygłoszeniu komunikatu pożegnalnego lub powitalno-pożegnalnego nastąpiło
+            zatrzymanie pociągu przed semaforem wjazdowym do stacji postoju handlowego.
+          </em>
+        </p>
 
         <div style="
-          background: #f7ddd6;
-          border: 2px solid #edc1b6;
-          border-left: 7px solid #e5a292;
-          border-radius: 18px;
-          padding: 1rem 0.95rem;
-          margin: 0.6rem 0 0.1rem;
-          box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+          background:#f7ddd6;
+          border:2px solid #edc1b6;
+          border-left:7px solid #e5a292;
+          border-radius:18px;
+          padding: 0.95rem 0.95rem;
+          margin: 0.35rem 0 0.2rem;
+          box-shadow:0 8px 18px rgba(0,0,0,0.05);
+          font-weight:700;
         ">
-          <strong>
-            Informujemy, że nasz pociąg wjedzie na stację …… za około …… minut.
-            <br><br>
-            W przypadku, jeśli przy peronach danej stacji na odjazd oczekuje inny pociąg na przesiadkę, dodać:<br>
-            Pociąg …… do stacji …… , przez stacje: …… , …… , planowo odjeżdżający o godzinie …… ,
-            oczekuje przy peronie …… .
-            <br><br>
-            Ze względów bezpieczeństwa, otwieranie drzwi wyjściowych oraz opuszczanie pociągu jest zabronione.
-          </strong>
+          Informujemy, że nasz pociąg wjedzie na stację …… za około …… minut.
+          <br><br>
+          W przypadku, jeśli przy peronach danej stacji na odjazd oczekuje inny pociąg na przesiadkę, dodać:<br>
+          Pociąg …… do stacji …… , przez stacje: …… , …… , planowo odjeżdżający o godzinie …… ,
+          oczekuje przy peronie …… .
+          <br><br>
+          Ze względów bezpieczeństwa, otwieranie drzwi wyjściowych oraz opuszczanie pociągu jest zabronione.
         </div>
       </div>
-    </details>
 
-    <!-- A4 -->
-    <details style="margin: 0.4rem 0 0.2rem;">
-      <summary style="
-        list-style: none;
-        cursor: pointer;
-        font-weight: 800;
-        padding: 0.65rem 0.95rem;
-        background: #f2b8a8;
-        border-radius: 16px;
-        user-select: none;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      <!-- A4 -->
+      <input id="k6-a4" type="radio" name="k6-acc" style="display:none;">
+      <label for="k6-a4" style="
+        display:block;
+        cursor:pointer;
+        padding: 0.6rem 0.95rem;
+        background:#f2b8a8;
+        border-radius:16px;
+        user-select:none;
+        box-shadow:0 6px 16px rgba(0,0,0,0.06);
+        font-weight:500;
+        margin-top:0.45rem;
       ">
         A4. INFORMACJE DOTYCZĄCE SKOMUNIKOWAŃ
-      </summary>
+      </label>
 
-      <div style="padding: 0.55rem 0.1rem 0;">
-        <p style="margin: 0 0 0.25rem;"><em>
-          Odpowiedni komunikat należy wygłosić w przypadku zebrania od podróżnych informacji dotyczących potrzeby zorganizowania
-          skomunikowania, które zostały zgłoszone do Dyspozytury IC.
-        </em></p>
+      <div style="display:none; padding: 0.45rem 0.05rem 0.2rem;" data-k6-panel="a4">
+        <p style="margin: 0 0 0.2rem;">
+          <em style="font-weight:400;">
+            Odpowiedni komunikat należy wygłosić w przypadku zebrania od podróżnych informacji dotyczących potrzeby zorganizowania
+            skomunikowania, które zostały zgłoszone do Dyspozytury IC.
+          </em>
+        </p>
 
-        <p style="margin: 0.35rem 0 0.2rem;"><em>W przypadku zgody na skomunikowanie:</em></p>
+        <p style="margin: 0.25rem 0 0.15rem;"><em style="font-weight:400;">W przypadku zgody na skomunikowanie:</em></p>
         <div style="
-          background: #f7ddd6;
-          border: 2px solid #edc1b6;
-          border-left: 7px solid #e5a292;
-          border-radius: 18px;
-          padding: 1rem 0.95rem;
-          margin: 0.55rem 0;
-          box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+          background:#f7ddd6;
+          border:2px solid #edc1b6;
+          border-left:7px solid #e5a292;
+          border-radius:18px;
+          padding: 0.95rem 0.95rem;
+          margin: 0.3rem 0 0.45rem;
+          box-shadow:0 8px 18px rgba(0,0,0,0.05);
+          font-weight:700;
         ">
-          <strong>
-            Prosimy o uwagę!<br><br>
-            Pociąg …… <em>(kategoria, numer i nazwa pociągu, jeśli jest)</em> do stacji …… , przez stacje: …… , …… ,
-            …… , będzie oczekiwał na Państwa na stacji …… . Prosimy o zwrócenie uwagi na informacje stacyjne.
-            <br><br>
-            <em>Komunikat należy powtórzyć.</em>
-          </strong>
+          Prosimy o uwagę!<br><br>
+          Pociąg …… <em style="font-weight:400;">(kategoria, numer i nazwa pociągu, jeśli jest)</em> do stacji …… , przez stacje: …… , …… ,
+          …… , będzie oczekiwał na Państwa na stacji …… . Prosimy o zwrócenie uwagi na informacje stacyjne.
+          <br><br>
+          <em style="font-weight:400;">Komunikat należy powtórzyć.</em>
         </div>
 
-        <p style="margin: 0.35rem 0 0.2rem;"><em>W przypadku odmowy skomunikowania:</em></p>
+        <p style="margin: 0.25rem 0 0.15rem;"><em style="font-weight:400;">W przypadku odmowy skomunikowania:</em></p>
         <div style="
-          background: #f7ddd6;
-          border: 2px solid #edc1b6;
-          border-left: 7px solid #e5a292;
-          border-radius: 18px;
-          padding: 1rem 0.95rem;
-          margin: 0.55rem 0 0.1rem;
-          box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+          background:#f7ddd6;
+          border:2px solid #edc1b6;
+          border-left:7px solid #e5a292;
+          border-radius:18px;
+          padding: 0.95rem 0.95rem;
+          margin: 0.3rem 0 0.2rem;
+          box-shadow:0 8px 18px rgba(0,0,0,0.05);
+          font-weight:700;
         ">
-          <strong>
-            Prosimy o uwagę!<br><br>
-            Pociąg …… <em>(kategoria, numer i nazwa pociągu, jeśli jest)</em> do stacji …… , przez stacje: …… , …… ,
-            …… , nie będzie oczekiwał na przyjazd naszego pociągu. Przepraszamy za niedogodności.
-            Dodatkowych informacji udzieli Państwu drużyna konduktorska.
-            Przedział konduktorski znajduje się w wagonie numer …… .
-            <br><br>
-            <em>Komunikat należy powtórzyć.</em>
-          </strong>
+          Prosimy o uwagę!<br><br>
+          Pociąg …… <em style="font-weight:400;">(kategoria, numer i nazwa pociągu, jeśli jest)</em> do stacji …… , przez stacje: …… , …… ,
+          …… , nie będzie oczekiwał na przyjazd naszego pociągu. Przepraszamy za niedogodności.
+          Dodatkowych informacji udzieli Państwu drużyna konduktorska.
+          Przedział konduktorski znajduje się w wagonie numer …… .
+          <br><br>
+          <em style="font-weight:400;">Komunikat należy powtórzyć.</em>
         </div>
       </div>
-    </details>
+
+      <!-- CSS tylko dla TEGO pliku (bez dotykania style.css) -->
+      <style>
+        /* tylko jeden panel otwarty naraz */
+        #k6-a1:checked ~ [data-k6-panel="a1"],
+        #k6-a2:checked ~ [data-k6-panel="a2"],
+        #k6-a3:checked ~ [data-k6-panel="a3"],
+        #k6-a4:checked ~ [data-k6-panel="a4"] { display:block; }
+      </style>
+
+    </div>
 
   </div>
 </div>
