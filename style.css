@@ -186,8 +186,21 @@ em {
    RESPONSYWNOŚĆ OGÓLNA
 ========================= */
 @media (max-width: 768px) {
-  .tabs { flex-direction: column; margin: 0.3rem; }
-  .tab { font-size: 0.95rem; }
+  /* TABY OBOK SIEBIE + TA SAMA WYSOKOŚĆ */
+  .tabs {
+    flex-direction: row;      /* było: column */
+    margin: 0.35rem;
+    gap: 0.5rem;
+  }
+
+  .tab {
+    display: flex;            /* wyśrodkowanie + równa wysokość */
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;         /* ta sama wysokość obu przycisków */
+    font-size: 1rem;
+  }
+
   .green, .orange, .yellow, .cyan { padding: 0.8rem 0.6rem; }
   .speech-box { padding: 0.6rem; }
 }
