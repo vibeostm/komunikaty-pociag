@@ -520,3 +520,14 @@ html, body { height: 100%; }
 
 /* Żeby sekcje nie "wchodziły" pod sticky topbar */
 :root { scroll-padding-top: 72px; }
+
+/* =========================
+   OGRANICZENIE SZEROKOŚCI NA PC (bez wpływu na mobile)
+========================= */
+.tabs,
+.accordion-container{
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
