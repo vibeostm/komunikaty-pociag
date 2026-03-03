@@ -338,3 +338,27 @@ if (langFab) {
 }
 
 updateLangFabLabel();
+
+// === komunikat6: tylko jeden wewnętrzny akordeon naraz (A1–A4) ===
+document.addEventListener("click", (e) => {
+  const summary = e.target.closest("summary.k6-pill");
+  if (!summary) return;
+
+  const details = summary.parentElement;
+  if (!details || details.tagName !== "DETAILS") return;
+
+  const group = details.closest(".k6-group");
+  if (!group) return;
+
+  // przejmujemy toggle, żeby panować nad stanem
+  e.preventDefault();
+
+  const wasOpen = details.open;
+
+  // zamknij wszystkie w grupie
+  group.querySelectorAll("details.k6-details[open]").forEach((d) => (d.open = false));
+
+  // jeśli kliknięty nie był otwarty – otwórz go
+  if (!wasOpen) details.open = true;
+});
+
