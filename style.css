@@ -521,3 +521,27 @@ html, body { height: 100%; }
   margin-left: auto;
   margin-right: auto;
 }
+
+/* =========================
+   STOPKA: jedna linia na PC
+========================= */
+@media (min-width: 769px){
+  .footerbar__inner{
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .footerbar__meta{
+    justify-content: flex-start;
+    flex-wrap: nowrap;     /* jedna linia */
+    white-space: nowrap;
+  }
+
+  .footerbar__counters{
+    justify-content: flex-end;
+    flex-wrap: nowrap;     /* jedna linia */
+    white-space: nowrap;
+  }
+}
