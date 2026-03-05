@@ -91,18 +91,34 @@
           async src="//gc.zgo.at/count.js"></script>
 
   <script>
+    // === Stałe do edycji ===
     const CREATED = "2026-01-14";
     const VERSION = "v1.2.0";
 
     document.getElementById("createdDate").textContent = CREATED;
     document.getElementById("appVersion").textContent = VERSION;
 
+    // === GoatCounter: zawsze pokazuj liczby po odświeżeniu ===
     const GC = "https://komunikaty.goatcounter.com";
+    const LS_KEY = "gc_counts_v1";
 
     function ymd(d) {
       const pad = (n) => String(n).padStart(2, "0");
-      return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+      return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
     }
+
+    function setText(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = (val ?? "–");
+    }
+
+    // 1) NATYCHMIAST: pokaż ostatnie znane wartości (localStorage)
+    try {
+      const cached = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+      setText("gc-total", cached.total);
+      setText("gc-today", cached.today);
+      setText("gc-7d", cached.d7);
+    } catch (_) {}
 
     async function gcCount(path, start=null, end=null) {
       const p = encodeURIComponent(path);
@@ -110,30 +126,59 @@
       const qs = [];
       if (start) qs.push(`start=${encodeURIComponent(start)}`);
       if (end)   qs.push(`end=${encodeURIComponent(end)}`);
-      qs.push(`_=${Date.now()}`);
+      qs.push(`_=${Date.now()}`); // cache-buster
       url += `?${qs.join("&")}`;
 
-      const r = await fetch(url, {cache: "no-store"});
-      if (!r.ok) throw new Error("GoatCounter HTTP " + r.status);
-      const data = await r.json();
-      return data.count;
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 5000);
+
+      try {
+        const r = await fetch(url, {
+          cache: "no-store",
+          mode: "cors",
+          credentials: "omit",
+          signal: ctrl.signal
+        });
+        if (!r.ok) throw new Error("GoatCounter HTTP " + r.status);
+        const data = await r.json();
+        return data.count;
+      } finally {
+        clearTimeout(t);
+      }
     }
 
-    (async () => {
-      try {
-        const today = new Date();
-        const startToday = ymd(today);
+    async function refreshCounters() {
+      const today = new Date();
+      const startToday = ymd(today);
 
-        document.getElementById("gc-total").textContent = await gcCount("TOTAL");
-        document.getElementById("gc-today").textContent = await gcCount("TOTAL", startToday);
+      const d7 = new Date(today);
+      d7.setDate(d7.getDate() - 7);
 
-        const d7 = new Date(today);
-        d7.setDate(d7.getDate() - 7);
-        document.getElementById("gc-7d").textContent = await gcCount("TOTAL", ymd(d7));
-      } catch (e) {
-        console.warn("GoatCounter counter failed:", e);
+      async function try2(fn){
+        try { return await fn(); }
+        catch (e1) { return await fn(); }
       }
-    })();
+
+      const total = await try2(() => gcCount("TOTAL"));
+      const todayCount = await try2(() => gcCount("TOTAL", startToday));
+      const d7Count = await try2(() => gcCount("TOTAL", ymd(d7)));
+
+      setText("gc-total", total);
+      setText("gc-today", todayCount);
+      setText("gc-7d", d7Count);
+
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        total,
+        today: todayCount,
+        d7: d7Count,
+        ts: Date.now()
+      }));
+    }
+
+    refreshCounters().catch((e) => {
+      console.warn("GoatCounter counter failed:", e);
+      // zostają wartości z localStorage
+    });
   </script>
 
 </body>
