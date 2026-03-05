@@ -592,4 +592,42 @@ body{ background:#0f172a !important; }
     white-space: normal !important;
   }
 }
+/* ===== FIX: tło kolumny + przerwy między wierszami ===== */
+
+/* tło całej strony jak stopka */
+body{ background:#0f172a !important; }
+
+/* DOMYŚLNIE (lista): cała kolumna ma jasne tło aż do stopki */
+.app__content{
+  background:#f9f9f9 !important;
+  width:min(100%, var(--pageWidth)) !important;
+  margin:0 auto !important;
+  padding-bottom:24px !important;
+}
+
+/* gdy komunikat otwarty: tło białe */
+.app__content:has(.accordion-body.active){
+  background:#ffffff !important;
+}
+
+/* KLUCZ: zablokuj „zapadanie” marginesów, żeby przerwy też miały tło kolumny */
+.tabs,
+.accordion-container{
+  display: flow-root !important;   /* tworzy nowy kontekst blokowy -> brak margin-collapsing */
+  background: transparent !important; /* tło bierze z .app__content */
+}
+
+/* FAB ma być przy krawędzi kolumny */
+.lang-fab{
+  right: max(14px, calc((100vw - min(100vw, var(--pageWidth))) / 2 + 14px)) !important;
+}
+
+/* PC: liczniki nie mogą znikać */
+@media (min-width: 769px){
+  .footerbar__counters{
+    flex-wrap: wrap !important;
+    white-space: normal !important;
+  }
+}
+
 
