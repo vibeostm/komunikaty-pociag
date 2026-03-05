@@ -1,64 +1,38 @@
 /* =========================
    RESET / GLOBAL
 ========================= */
-:root{
-  --pageWidth: 720px;
-  scroll-padding-top: 72px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body { height: 100%; }
-
-body{
-  font-family: 'Segoe UI','Roboto','Helvetica Neue',sans-serif;
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   font-size: 0.95rem;
   line-height: 1.6;
-  background: #0f172a; /* tło strony jak stopka */
+  background: #f9f9f9;
   color: #333;
+  padding: 0;
 }
 
-strong{ font-weight: bold; }
+strong { font-weight: bold; }
 
-em{
+em {
   font-style: italic;
   font-size: 0.8rem;
 }
 
 /* =========================
-   LAYOUT APLIKACJI
+   TABY
 ========================= */
-.app{
-  min-height: 100%;
+.tabs {
   display: flex;
-  flex-direction: column;
-}
-
-/* Kolumna (lista = jasno, komunikat = biało) */
-.app__content{
-  flex: 1 0 auto;
-  width: min(100%, var(--pageWidth));
-  margin: 0 auto;
-  background: #f9f9f9;     /* LISTA */
-  padding-bottom: 24px;
-}
-
-/* KOMUNIKAT: gdy jest otwarty akordeon -> białe tło kolumny */
-.app__content:has(.accordion-body.active){
-  background: #ffffff;
-}
-
-/* =========================
-   TABY (zawsze obok siebie)
-========================= */
-.tabs{
-  display: flex;
-  flex-direction: row;     /* wymuszenie obok siebie */
   gap: 0.5rem;
   margin: 0.5rem;
 }
 
-.tab{
+.tab {
   flex: 1;
   padding: 0.6rem;
   text-align: center;
@@ -68,21 +42,22 @@ em{
   cursor: pointer;
 }
 
-.tab.active{ background: #bbb; }
+.tab.active { background: #bbb; }
 
 /* =========================
    GŁÓWNY KONTENER
 ========================= */
-.accordion-container{
+.accordion-container {
+  max-width: 100%;
+  margin: 0;
   width: 100%;
   padding: 0;
-  margin: 0;
 }
 
 /* =========================
    GŁÓWNE AKORDEONY
 ========================= */
-.accordion-header{
+.accordion-header {
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
@@ -98,7 +73,7 @@ em{
   background-image: none !important;
 }
 
-.accordion-body{
+.accordion-body {
   display: none;
   padding: 0;
   background: white;
@@ -108,12 +83,12 @@ em{
   overflow-x: auto;
 }
 
-.accordion-body.active{ display: block; }
+.accordion-body.active { display: block; }
 
 /* =========================
    JEDYNY PODAKORDEON – LOTNISKA
 ========================= */
-.connection-toggle{
+.connection-toggle {
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
@@ -129,7 +104,7 @@ em{
   background-image: none !important;
 }
 
-.connection-toggle + .accordion-subbody{
+.connection-toggle + .accordion-subbody {
   display: none;
   padding: 1rem;
   background: white;
@@ -138,31 +113,31 @@ em{
   margin-bottom: 1rem;
 }
 
-.connection-toggle.active + .accordion-subbody{ display: block; }
+.connection-toggle.active + .accordion-subbody { display: block; }
 
 /* ===== WYŁĄCZENIE WSZYSTKICH INNYCH POD-AKORDEONÓW ===== */
-.accordion-subheader{ display: none !important; }
-.accordion-subbody{ display: block !important; }
+.accordion-subheader { display: none !important; }
+.accordion-subbody { display: block !important; }
 
 /* =========================
    KOLOROWE BLOKI KOMUNIKATÓW
 ========================= */
-.green, .orange, .yellow, .cyan{
+.green, .orange, .yellow, .cyan {
   padding: 1rem 0.8rem;
   margin: 0.5rem 0;
   border-left: 5px solid;
   width: 100%;
 }
 
-.green  { background: #e2f0d9; border-color: #a8d08d; }
+.green { background: #e2f0d9; border-color: #a8d08d; }
 .orange { background: #fcd5b4; border-color: #f7931e; }
 .yellow { background: #fff9e5; border-color: #f4d35e; }
-.cyan   { background: #d9f0ed; border-color: #7ab8b3; }
+.cyan { background: #d9f0ed; border-color: #7ab8b3; }
 
 /* =========================
    BLOKI TEKSTOWE
 ========================= */
-.speech-box{
+.speech-box {
   background: #fff;
   border: none;
   padding: 0.8rem;
@@ -170,7 +145,7 @@ em{
   border-radius: 0;
 }
 
-.highlighted-info{
+.highlighted-info {
   background: #e6e6e6;
   padding: 0.8rem;
   margin: 0.5rem 0;
@@ -181,20 +156,20 @@ em{
 /* =========================
    TABELA LOTNISK
 ========================= */
-.airport-table-wrapper{
+.airport-table-wrapper {
   overflow-x: auto;
   margin: 1rem 0;
   width: 100%;
 }
 
-.airport-table{
+.airport-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
 }
 
 .airport-table th,
-.airport-table td{
+.airport-table td {
   border: 1px solid #ccc;
   padding: 0.5rem 0.8rem;
   text-align: left;
@@ -204,19 +179,21 @@ em{
 /* =========================
    SEKCJE JĘZYKOWE
 ========================= */
-.section{ display: none; }
-.section.active{ display: block; }
+.section { display: none; }
+.section.active { display: block; }
 
 /* =========================
    RESPONSYWNOŚĆ OGÓLNA
 ========================= */
-@media (max-width: 768px){
-  .tabs{
+@media (max-width: 768px) {
+  /* TABY OBOK SIEBIE + TA SAMA WYSOKOŚĆ */
+  .tabs {
+    flex-direction: row;
     margin: 0.35rem;
     gap: 0.5rem;
   }
 
-  .tab{
+  .tab {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -224,18 +201,19 @@ em{
     font-size: 1rem;
   }
 
-  .green, .orange, .yellow, .cyan{ padding: 0.8rem 0.6rem; }
-  .speech-box{ padding: 0.6rem; }
+  .green, .orange, .yellow, .cyan { padding: 0.8rem 0.6rem; }
+  .speech-box { padding: 0.6rem; }
 }
 
-@media (max-width: 480px){
-  .accordion-container{ padding: 0; }
-  .accordion-body{ padding: 0; }
-  .green, .orange, .yellow, .cyan{ padding: 0.6rem 0.5rem; }
+@media (max-width: 480px) {
+  .accordion-container { padding: 0; }
+  .accordion-body { padding: 0; }
+  .green, .orange, .yellow, .cyan { padding: 0.6rem 0.5rem; }
 }
 
 /* =========================
    GASTRONOMIA / KATALOG – ROZWIJANIE
+   (używasz tego też w katalogu opóźnień)
 ========================= */
 .gastronomy-header{
   display: flex;
@@ -272,11 +250,17 @@ em{
   padding: 0;
 }
 
-.gastronomy-more{ display: none; margin-top: 0.6rem; }
-.gastronomy-more.active{ display: block; }
+.gastronomy-more {
+  display: none;
+  margin-top: 0.6rem;
+}
 
-/* Gastronomia – karty / opisy */
-.gastronomy-comment-out{
+.gastronomy-more.active { display: block; }
+
+/* =========================
+   GASTRONOMIA – KARTY / OPISY
+========================= */
+.gastronomy-comment-out {
   font-style: italic;
   font-size: 0.85rem;
   color: #444;
@@ -284,31 +268,31 @@ em{
   background: transparent;
 }
 
-.gastronomy-card{
+.gastronomy-card {
   background: #efe4a3;
   border-radius: 14px;
   padding: 1rem 1rem;
   margin: 0 0 0.9rem 0;
 }
 
-.gastronomy-text-strong{
+.gastronomy-text-strong {
   font-weight: 600;
   line-height: 1.55;
   font-size: 1rem;
 }
 
-.gastronomy-card--dashed{ border: 2px dashed #c9b26a; }
+.gastronomy-card--dashed { border: 2px dashed #c9b26a; }
 
-.gastronomy-comment-in{
+.gastronomy-comment-in {
   margin-top: 0.7rem;
   font-style: italic;
   font-size: 0.85rem;
   color: #4a4a4a;
 }
 
-.gastronomy-comment-in--right{ margin-left: 2.2rem; }
+.gastronomy-comment-in--right { margin-left: 2.2rem; }
 
-.gastronomy-graybox{
+.gastronomy-graybox {
   margin-top: 0.3rem;
   padding: 0.55rem 0.8rem;
   border: 2px solid #8f8f8f;
@@ -318,47 +302,98 @@ em{
   line-height: 1.4;
 }
 
-.gastronomy-graybox--right{ margin-left: 2.2rem; }
+.gastronomy-graybox--right { margin-left: 2.2rem; }
 
-/* Czytelność w akordeonach */
+/* =========================
+   CZYTELNOŚĆ W AKORDEONACH
+========================= */
 .accordion-body,
 .accordion-body p,
 .accordion-body li,
 .accordion-body strong,
 .accordion-body b,
 .accordion-body span,
-.accordion-body div{ color: #111; }
+.accordion-body div {
+  color: #111;
+}
 
 .accordion-body em,
-.accordion-body i{ color: #777; }
+.accordion-body i {
+  color: #777;
+}
 
 .accordion-body p,
 .accordion-body li,
-.accordion-body div{
+.accordion-body div {
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
-/* Mobile: delikatnie węższe “pastylki” nagłówków (opcjonalnie) */
+/* =========================
+   MOBILE: delikatnie węższe “pastylki” nagłówków (opcjonalnie)
+========================= */
 @media (max-width: 480px){
-  .gastronomy-header{ padding: 0.6rem 0.65rem; }
+  .gastronomy-header{
+    padding: 0.6rem 0.65rem;
+  }
+}
+
+/* ===== PŁYWAJĄCY PRZEŁĄCZNIK JĘZYKA (kciuk, prawy dół) ===== */
+.lang-fab{
+  position: fixed;
+  right: 14px;
+  bottom: 86px;
+  z-index: 9999;
+
+  height: 44px;
+  min-width: 56px;
+  padding: 0 14px;
+
+  border-radius: 999px;
+  border: 2px solid #bbb;
+  background: #ffffff;
+  color: #111;
+
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lang-fab:active{
+  transform: scale(0.98);
 }
 
 /* =========================
-   TOPBAR + FOOTER (zawężone jak kontent)
+   LAYOUT APLIKACJI + TOPBAR + FOOTER
+   (przeniesione z index.html)
 ========================= */
+html, body { height: 100%; }
+
+.app{
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__content{
+  flex: 1 0 auto;
+}
+
+/* Nagłówek (wariant A) */
 .topbar{
   position: sticky;
   top: 0;
   z-index: 50;
-  width: min(100%, var(--pageWidth));
-  margin: 0 auto;
   background: #0f172a;
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .topbar__inner{
-  width: 100%;
+  max-width: 720px; /* <<< było 980px */
   margin: 0 auto;
   padding: 14px 16px;
   display: flex;
@@ -367,35 +402,72 @@ em{
   gap: 12px;
 }
 
-/* Logo w topbar */
-.topbar__inner--logo{
-  width: 100%;
+.brand{
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 10px 12px;
+  gap: 12px;
+  min-width: 0;
 }
 
-.topbar__logo{
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
+.brand__mark{
+  width: 44px;
+  height: 32px;
+  border-radius: 10px;
+  background:
+    linear-gradient(#22c55e,#22c55e) 6px 9px/32px 2px no-repeat,
+    linear-gradient(#38bdf8,#38bdf8) 6px 21px/32px 2px no-repeat,
+    repeating-linear-gradient(90deg, rgba(255,255,255,.22) 0 6px, transparent 6px 12px) 6px 15px/32px 2px no-repeat;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  flex: 0 0 auto;
+}
+
+.brand__text{ min-width: 0; }
+
+.brand__name{
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: .2px;
+  color: #fff;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand__tagline{
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,.70);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Chip (wspólny) */
+.chip{
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.85);
+  border: 1px solid rgba(255,255,255,.10);
+  white-space: nowrap;
+}
+
+.chip--soft{
+  background: rgba(255,255,255,.06);
 }
 
 /* Stopka */
 .footerbar{
   flex: 0 0 auto;
   margin-top: 24px;
-  width: min(100%, var(--pageWidth));
-  margin-left: auto;
-  margin-right: auto;
   background: #0f172a;
   border-top: 1px solid rgba(255,255,255,.08);
 }
 
 .footerbar__inner{
-  width: 100%;
+  max-width: 720px; /* <<< było 980px */
   margin: 0 auto;
   padding: 10px 16px 12px;
   display: flex;
@@ -403,6 +475,7 @@ em{
   gap: 10px;
 }
 
+/* Dyskretna linia meta */
 .footerbar__meta{
   display: flex;
   flex-wrap: wrap;
@@ -425,17 +498,33 @@ em{
   font-weight: 700;
 }
 
-.footerbar__dot{ color: rgba(255,255,255,.35); }
+.footerbar__dot{
+  color: rgba(255,255,255,.35);
+}
 
 .footerbar__counters{
   display: flex;
-  flex-wrap: wrap;       /* ważne: nie ukrywaj na PC */
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
   align-items: center;
 }
 
-/* PC: meta w jednej linii, liczniki mogą się łamać */
+:root { scroll-padding-top: 72px; }
+
+/* =========================
+   OGRANICZENIE SZEROKOŚCI NA PC (bez wpływu na mobile)
+========================= */
+.tabs,
+.accordion-container{
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* =========================
+   STOPKA: jedna linia na PC
+========================= */
 @media (min-width: 769px){
   .footerbar__inner{
     flex-direction: row;
@@ -446,65 +535,13 @@ em{
 
   .footerbar__meta{
     justify-content: flex-start;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap;     /* jedna linia */
     white-space: nowrap;
   }
 
   .footerbar__counters{
     justify-content: flex-end;
-    flex-wrap: wrap;
-    white-space: normal;
-    gap: 8px;
+    flex-wrap: nowrap;     /* jedna linia */
+    white-space: nowrap;
   }
 }
-
-/* =========================
-   CHIPY (dla licznika)
-========================= */
-.chip{
-  font-size: 12px;
-  padding: 7px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.08);
-  color: rgba(255,255,255,.85);
-  border: 1px solid rgba(255,255,255,.10);
-  white-space: nowrap;
-}
-
-.chip--soft{ background: rgba(255,255,255,.06); }
-
-/* =========================
-   PŁYWAJĄCY PRZEŁĄCZNIK JĘZYKA (krawędź kolumny)
-========================= */
-.lang-fab{
-  position: fixed;
-  right: max(14px, calc((100vw - min(100vw, var(--pageWidth))) / 2 + 14px));
-  bottom: 86px;
-  z-index: 9999;
-
-  height: 44px;
-  min-width: 56px;
-  padding: 0 14px;
-
-  border-radius: 999px;
-  border: 2px solid #bbb;
-  background: #ffffff;
-  color: #111;
-
-  font-weight: 800;
-  font-size: 0.95rem;
-  line-height: 1;
-
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.lang-fab:active{ transform: scale(0.98); }
-
-/* LISTA: tło kolumny = kolor stopki (przerwy między pastylkami też będą ciemne) */
-.app__content{ background:#0f172a; }
-
-/* KOMUNIKAT: po otwarciu akordeonu tło kolumny robi się białe */
-body.view-open .app__content{ background:#ffffff; }
-
