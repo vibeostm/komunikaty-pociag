@@ -571,3 +571,36 @@ html, body { height: 100%; }
   display: block;
   object-fit: contain;
 }
+
+/* =========================
+   TOPBAR + FOOTERBAR: zawężone do szerokości kontentu
+========================= */
+:root{
+  --pageWidth: 720px;
+}
+
+/* cała belka (tło) ma szerokość jak pastylki */
+.topbar,
+.footerbar{
+  width: min(100%, var(--pageWidth));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* topbar jest sticky, więc pilnujemy żeby nie było „full width” przez left/right */
+.topbar{
+  left: auto;
+  right: auto;
+}
+
+/* inner ma po prostu wypełniać belkę */
+.topbar__inner,
+.footerbar__inner{
+  max-width: 100%;
+}
+
+/* wariant logo w topbar */
+.topbar__inner--logo{
+  max-width: 100%;
+}
+
