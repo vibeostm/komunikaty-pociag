@@ -545,3 +545,61 @@ html, body { height: 100%; }
     white-space: nowrap;
   }
 }
+
+.brand__logo{
+  height: 22px;
+  width: auto;
+  max-width: 180px;
+  display: block;
+  object-fit: contain;
+}
+
+/* ===== NAGŁÓWEK: logo jak szerokość kontentu ===== */
+.topbar__inner--logo{
+  width: 100%;
+  max-width: 720px;      /* <-- ustaw na tę samą wartość co kontent/pastylki */
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.topbar__logo{
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* =========================
+   TOPBAR + FOOTERBAR: zawężone do szerokości kontentu
+========================= */
+:root{
+  --pageWidth: 720px;
+}
+
+/* cała belka (tło) ma szerokość jak pastylki */
+.topbar,
+.footerbar{
+  width: min(100%, var(--pageWidth));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* topbar jest sticky, więc pilnujemy żeby nie było „full width” przez left/right */
+.topbar{
+  left: auto;
+  right: auto;
+}
+
+/* inner ma po prostu wypełniać belkę */
+.topbar__inner,
+.footerbar__inner{
+  max-width: 100%;
+}
+
+/* wariant logo w topbar */
+.topbar__inner--logo{
+  max-width: 100%;
+}
