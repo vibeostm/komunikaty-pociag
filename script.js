@@ -16,17 +16,6 @@ async function loadSections() {
 
   // Po wstawieniu HTML aktywujemy akordeony (plusiki obsługujemy delegacją)
   activateAccordions();
-  updateViewMode(); // <<< DODANE
-}
-
-/* ========================
-   TRYB WIDOKU (LISTA vs KOMUNIKAT)
-   - LISTA: body bez klasy view-open
-   - KOMUNIKAT: body z klasą view-open, gdy jest otwarty .accordion-body.active w aktywnej sekcji
-======================== */
-function updateViewMode(){
-  const isOpen = !!document.querySelector('.section.active .accordion-body.active');
-  document.body.classList.toggle('view-open', isOpen);
 }
 
 function activateAccordions() {
@@ -49,8 +38,6 @@ function activateAccordions() {
           m.style.display = 'none';
         });
       }
-
-      updateViewMode(); // <<< DODANE
     };
   });
 
@@ -69,8 +56,6 @@ function activateAccordions() {
 
       btn.classList.toggle('active');
       body.classList.toggle('active');
-
-      updateViewMode(); // <<< DODANE (bezpiecznie)
     };
   });
 }
@@ -113,8 +98,7 @@ document.getElementById('tabPL').onclick = () => {
   document.getElementById('tabEN').classList.remove('active');
   document.getElementById('sectionPL').classList.add('active');
   document.getElementById('sectionEN').classList.remove('active');
-  loadSections();      // updateViewMode odpali się po loadSections()
-  updateViewMode();    // <<< DODANE (natychmiast po przełączeniu sekcji)
+  loadSections();
 };
 
 document.getElementById('tabEN').onclick = () => {
@@ -122,13 +106,11 @@ document.getElementById('tabEN').onclick = () => {
   document.getElementById('tabPL').classList.remove('active');
   document.getElementById('sectionEN').classList.add('active');
   document.getElementById('sectionPL').classList.remove('active');
-  loadSections();      // updateViewMode odpali się po loadSections()
-  updateViewMode();    // <<< DODANE (natychmiast po przełączeniu sekcji)
+  loadSections();
 };
 
 // Start
 loadSections();
-updateViewMode(); // <<< DODANE
 
 // ========================
 // PŁYWAJĄCY SWITCH PL/EN (wersja A+++) — z podzakładkami + mapowanie 7 i 6
@@ -193,11 +175,11 @@ function findAccordionHeaderFromElement(el) {
 function swapLangInId(id) {
   if (!id) return null;
 
-  // A) schemat "-pl-" <-> "-en-"
+  // A) schemat "-pl-" <-> "-en-" (np. gastronomy-pl-1, airports-pl-5, misc-pl-c4)
   if (id.includes('-pl-')) return id.replace('-pl-', '-en-');
   if (id.includes('-en-')) return id.replace('-en-', '-pl-');
 
-  // B) zakładka 6: delay-cat-* <-> delay-en-*
+  // B) zakładka 6: delay-cat-awarie <-> delay-en-awarie (i inne)
   if (id.startsWith('delay-cat-')) {
     const rest = id.replace('delay-cat-', '');
     return `delay-en-${rest}`;
@@ -209,7 +191,7 @@ function swapLangInId(id) {
 
   // C) zakładka 7: wypadek-pl-7-* <-> acc-en7-*
   if (id.startsWith('wypadek-pl-7-')) {
-    const rest = id.replace('wypadek-pl-7-', '');
+    const rest = id.replace('wypadek-pl-7-', ''); // np. "1", "b2", "b10"
     return `acc-en7-${rest}`;
   }
   if (id.startsWith('acc-en7-')) {
@@ -284,9 +266,11 @@ function captureViewportState() {
   const key = getHeaderKey(header.textContent);
   const wasOpen = body && body.classList && body.classList.contains('accordion-body') && body.classList.contains('active');
 
+  // Podzakładka: jeśli jesteśmy w środku .gastronomy-more.active
   const subPanel = el.closest('.gastronomy-more.active');
   const subId = subPanel ? subPanel.id : null;
 
+  // Proporcja przewinięcia wewnątrz body (głównego komunikatu)
   let ratio = 0;
   if (wasOpen && body) {
     const rect = body.getBoundingClientRect();
@@ -305,8 +289,10 @@ async function restoreViewportState(state) {
 
   const activeSection = document.getElementById(getActiveLang() === 'PL' ? 'sectionPL' : 'sectionEN');
 
+  // 1) znajdź docelowy główny komunikat po key (czekamy, bo może być jeszcze fetch)
   let targetHeader = await waitForHeaderByKey(activeSection, state.key);
 
+  // fallback: jeśli nie znaleziono po key, bierzemy pierwszy dostępny
   if (!targetHeader) {
     const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
     targetHeader = headers.length ? headers[0] : null;
@@ -315,12 +301,14 @@ async function restoreViewportState(state) {
 
   if (state.wasOpen) ensureOpenMain(targetHeader);
 
+  // 2) spróbuj otworzyć tę samą podzakładkę w drugim języku
   const mappedSubId = swapLangInId(state.subId);
   if (mappedSubId) {
     const subPanel = await waitForSelector(activeSection, `#${CSS.escape(mappedSubId)}`, 80);
     if (subPanel) ensureOpenSub(activeSection, mappedSubId);
   }
 
+  // 3) przewiń do podobnego miejsca
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       const targetBody = targetHeader.nextElementSibling;
@@ -336,8 +324,6 @@ async function restoreViewportState(state) {
 
       const targetY = baseTop + (state.wasOpen ? state.ratio * height : 0) - (window.innerHeight - state.thumbOffset);
       window.scrollTo({ top: Math.max(0, targetY), behavior: 'instant' });
-
-      updateViewMode(); // <<< DODANE (po przywróceniu stanu)
     });
   });
 }
@@ -364,11 +350,14 @@ document.addEventListener("click", (e) => {
   const group = details.closest(".k6-group");
   if (!group) return;
 
+  // przejmujemy toggle, żeby panować nad stanem
   e.preventDefault();
 
   const wasOpen = details.open;
 
+  // zamknij wszystkie w grupie
   group.querySelectorAll("details.k6-details[open]").forEach((d) => (d.open = false));
 
+  // jeśli kliknięty nie był otwarty – otwórz go
   if (!wasOpen) details.open = true;
 });
