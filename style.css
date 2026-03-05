@@ -6,26 +6,21 @@
   scroll-padding-top: 72px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body { height: 100%; }
 
-body {
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+body{
+  font-family: 'Segoe UI','Roboto','Helvetica Neue',sans-serif;
   font-size: 0.95rem;
   line-height: 1.6;
   background: #0f172a; /* tło strony jak stopka */
   color: #333;
-  padding: 0;
 }
 
-strong { font-weight: bold; }
+strong{ font-weight: bold; }
 
-em {
+em{
   font-style: italic;
   font-size: 0.8rem;
 }
@@ -39,26 +34,31 @@ em {
   flex-direction: column;
 }
 
-/* KARTA TREŚCI: wypełnia całą kolumnę + „między wierszami” */
+/* Kolumna (lista = jasno, komunikat = biało) */
 .app__content{
   flex: 1 0 auto;
-  background: #f9f9f9;
   width: min(100%, var(--pageWidth));
   margin: 0 auto;
+  background: #f9f9f9;     /* LISTA */
   padding-bottom: 24px;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+/* KOMUNIKAT: gdy jest otwarty akordeon -> białe tło kolumny */
+.app__content:has(.accordion-body.active){
+  background: #ffffff;
 }
 
 /* =========================
-   TABY
+   TABY (zawsze obok siebie)
 ========================= */
-.tabs {
+.tabs{
   display: flex;
+  flex-direction: row;     /* wymuszenie obok siebie */
   gap: 0.5rem;
   margin: 0.5rem;
 }
 
-.tab {
+.tab{
   flex: 1;
   padding: 0.6rem;
   text-align: center;
@@ -68,22 +68,21 @@ em {
   cursor: pointer;
 }
 
-.tab.active { background: #bbb; }
+.tab.active{ background: #bbb; }
 
 /* =========================
    GŁÓWNY KONTENER
 ========================= */
-.accordion-container {
-  max-width: 100%;
-  margin: 0;
+.accordion-container{
   width: 100%;
   padding: 0;
+  margin: 0;
 }
 
 /* =========================
    GŁÓWNE AKORDEONY
 ========================= */
-.accordion-header {
+.accordion-header{
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
@@ -99,7 +98,7 @@ em {
   background-image: none !important;
 }
 
-.accordion-body {
+.accordion-body{
   display: none;
   padding: 0;
   background: white;
@@ -109,12 +108,12 @@ em {
   overflow-x: auto;
 }
 
-.accordion-body.active { display: block; }
+.accordion-body.active{ display: block; }
 
 /* =========================
    JEDYNY PODAKORDEON – LOTNISKA
 ========================= */
-.connection-toggle {
+.connection-toggle{
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
@@ -130,7 +129,7 @@ em {
   background-image: none !important;
 }
 
-.connection-toggle + .accordion-subbody {
+.connection-toggle + .accordion-subbody{
   display: none;
   padding: 1rem;
   background: white;
@@ -139,31 +138,31 @@ em {
   margin-bottom: 1rem;
 }
 
-.connection-toggle.active + .accordion-subbody { display: block; }
+.connection-toggle.active + .accordion-subbody{ display: block; }
 
 /* ===== WYŁĄCZENIE WSZYSTKICH INNYCH POD-AKORDEONÓW ===== */
-.accordion-subheader { display: none !important; }
-.accordion-subbody { display: block !important; }
+.accordion-subheader{ display: none !important; }
+.accordion-subbody{ display: block !important; }
 
 /* =========================
    KOLOROWE BLOKI KOMUNIKATÓW
 ========================= */
-.green, .orange, .yellow, .cyan {
+.green, .orange, .yellow, .cyan{
   padding: 1rem 0.8rem;
   margin: 0.5rem 0;
   border-left: 5px solid;
   width: 100%;
 }
 
-.green { background: #e2f0d9; border-color: #a8d08d; }
+.green  { background: #e2f0d9; border-color: #a8d08d; }
 .orange { background: #fcd5b4; border-color: #f7931e; }
 .yellow { background: #fff9e5; border-color: #f4d35e; }
-.cyan { background: #d9f0ed; border-color: #7ab8b3; }
+.cyan   { background: #d9f0ed; border-color: #7ab8b3; }
 
 /* =========================
    BLOKI TEKSTOWE
 ========================= */
-.speech-box {
+.speech-box{
   background: #fff;
   border: none;
   padding: 0.8rem;
@@ -171,7 +170,7 @@ em {
   border-radius: 0;
 }
 
-.highlighted-info {
+.highlighted-info{
   background: #e6e6e6;
   padding: 0.8rem;
   margin: 0.5rem 0;
@@ -182,20 +181,20 @@ em {
 /* =========================
    TABELA LOTNISK
 ========================= */
-.airport-table-wrapper {
+.airport-table-wrapper{
   overflow-x: auto;
   margin: 1rem 0;
   width: 100%;
 }
 
-.airport-table {
+.airport-table{
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
 }
 
 .airport-table th,
-.airport-table td {
+.airport-table td{
   border: 1px solid #ccc;
   padding: 0.5rem 0.8rem;
   text-align: left;
@@ -205,21 +204,19 @@ em {
 /* =========================
    SEKCJE JĘZYKOWE
 ========================= */
-.section { display: none; }
-.section.active { display: block; }
+.section{ display: none; }
+.section.active{ display: block; }
 
 /* =========================
    RESPONSYWNOŚĆ OGÓLNA
 ========================= */
-@media (max-width: 768px) {
-  /* TABY OBOK SIEBIE + TA SAMA WYSOKOŚĆ */
-  .tabs {
-    flex-direction: row;
+@media (max-width: 768px){
+  .tabs{
     margin: 0.35rem;
     gap: 0.5rem;
   }
 
-  .tab {
+  .tab{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -227,19 +224,18 @@ em {
     font-size: 1rem;
   }
 
-  .green, .orange, .yellow, .cyan { padding: 0.8rem 0.6rem; }
-  .speech-box { padding: 0.6rem; }
+  .green, .orange, .yellow, .cyan{ padding: 0.8rem 0.6rem; }
+  .speech-box{ padding: 0.6rem; }
 }
 
-@media (max-width: 480px) {
-  .accordion-container { padding: 0; }
-  .accordion-body { padding: 0; }
-  .green, .orange, .yellow, .cyan { padding: 0.6rem 0.5rem; }
+@media (max-width: 480px){
+  .accordion-container{ padding: 0; }
+  .accordion-body{ padding: 0; }
+  .green, .orange, .yellow, .cyan{ padding: 0.6rem 0.5rem; }
 }
 
 /* =========================
    GASTRONOMIA / KATALOG – ROZWIJANIE
-   (używasz tego też w katalogu opóźnień)
 ========================= */
 .gastronomy-header{
   display: flex;
@@ -276,17 +272,11 @@ em {
   padding: 0;
 }
 
-.gastronomy-more {
-  display: none;
-  margin-top: 0.6rem;
-}
+.gastronomy-more{ display: none; margin-top: 0.6rem; }
+.gastronomy-more.active{ display: block; }
 
-.gastronomy-more.active { display: block; }
-
-/* =========================
-   GASTRONOMIA – KARTY / OPISY
-========================= */
-.gastronomy-comment-out {
+/* Gastronomia – karty / opisy */
+.gastronomy-comment-out{
   font-style: italic;
   font-size: 0.85rem;
   color: #444;
@@ -294,31 +284,31 @@ em {
   background: transparent;
 }
 
-.gastronomy-card {
+.gastronomy-card{
   background: #efe4a3;
   border-radius: 14px;
   padding: 1rem 1rem;
   margin: 0 0 0.9rem 0;
 }
 
-.gastronomy-text-strong {
+.gastronomy-text-strong{
   font-weight: 600;
   line-height: 1.55;
   font-size: 1rem;
 }
 
-.gastronomy-card--dashed { border: 2px dashed #c9b26a; }
+.gastronomy-card--dashed{ border: 2px dashed #c9b26a; }
 
-.gastronomy-comment-in {
+.gastronomy-comment-in{
   margin-top: 0.7rem;
   font-style: italic;
   font-size: 0.85rem;
   color: #4a4a4a;
 }
 
-.gastronomy-comment-in--right { margin-left: 2.2rem; }
+.gastronomy-comment-in--right{ margin-left: 2.2rem; }
 
-.gastronomy-graybox {
+.gastronomy-graybox{
   margin-top: 0.3rem;
   padding: 0.55rem 0.8rem;
   border: 2px solid #8f8f8f;
@@ -328,69 +318,30 @@ em {
   line-height: 1.4;
 }
 
-.gastronomy-graybox--right { margin-left: 2.2rem; }
+.gastronomy-graybox--right{ margin-left: 2.2rem; }
 
-/* =========================
-   CZYTELNOŚĆ W AKORDEONACH
-========================= */
+/* Czytelność w akordeonach */
 .accordion-body,
 .accordion-body p,
 .accordion-body li,
 .accordion-body strong,
 .accordion-body b,
 .accordion-body span,
-.accordion-body div {
-  color: #111;
-}
+.accordion-body div{ color: #111; }
 
 .accordion-body em,
-.accordion-body i {
-  color: #777;
-}
+.accordion-body i{ color: #777; }
 
 .accordion-body p,
 .accordion-body li,
-.accordion-body div {
+.accordion-body div{
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
-/* =========================
-   MOBILE: delikatnie węższe “pastylki” nagłówków (opcjonalnie)
-========================= */
+/* Mobile: delikatnie węższe “pastylki” nagłówków (opcjonalnie) */
 @media (max-width: 480px){
-  .gastronomy-header{
-    padding: 0.6rem 0.65rem;
-  }
-}
-
-/* ===== PŁYWAJĄCY PRZEŁĄCZNIK JĘZYKA (kciuk, prawy dół) ===== */
-.lang-fab{
-  position: fixed;
-  right: max(14px, calc((100vw - var(--pageWidth)) / 2 + 14px)); /* przy krawędzi kolumny */
-  bottom: 86px;
-  z-index: 9999;
-
-  height: 44px;
-  min-width: 56px;
-  padding: 0 14px;
-
-  border-radius: 999px;
-  border: 2px solid #bbb;
-  background: #ffffff;
-  color: #111;
-
-  font-weight: 800;
-  font-size: 0.95rem;
-  line-height: 1;
-
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.lang-fab:active{
-  transform: scale(0.98);
+  .gastronomy-header{ padding: 0.6rem 0.65rem; }
 }
 
 /* =========================
@@ -416,6 +367,22 @@ em {
   gap: 12px;
 }
 
+/* Logo w topbar */
+.topbar__inner--logo{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.topbar__logo{
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
 /* Stopka */
 .footerbar{
   flex: 0 0 auto;
@@ -436,7 +403,6 @@ em {
   gap: 10px;
 }
 
-/* Dyskretna linia meta */
 .footerbar__meta{
   display: flex;
   flex-wrap: wrap;
@@ -459,21 +425,17 @@ em {
   font-weight: 700;
 }
 
-.footerbar__dot{
-  color: rgba(255,255,255,.35);
-}
+.footerbar__dot{ color: rgba(255,255,255,.35); }
 
 .footerbar__counters{
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;       /* ważne: nie ukrywaj na PC */
   gap: 10px;
   justify-content: center;
   align-items: center;
 }
 
-/* =========================
-   STOPKA: jedna linia na PC (ale liczniki nie znikają)
-========================= */
+/* PC: meta w jednej linii, liczniki mogą się łamać */
 @media (min-width: 769px){
   .footerbar__inner{
     flex-direction: row;
@@ -488,7 +450,6 @@ em {
     white-space: nowrap;
   }
 
-  /* ważne: pozwól licznikom się zawinąć, żeby były widoczne na PC */
   .footerbar__counters{
     justify-content: flex-end;
     flex-wrap: wrap;
@@ -498,25 +459,8 @@ em {
 }
 
 /* =========================
-   OGRANICZENIE SZEROKOŚCI NA PC (tabs/pastylki)
+   CHIPY (dla licznika)
 ========================= */
-.tabs,
-.accordion-container{
-  max-width: var(--pageWidth);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* =========================
-   (opcjonalnie) STARE STYLE BRAND/CHIP
-   — zostawiam, bo mogą być używane w stopce/chipach
-========================= */
-.brand{ display: flex; align-items: center; gap: 12px; min-width: 0; }
-.brand__mark{ width: 44px; height: 32px; border-radius: 10px; flex: 0 0 auto; }
-.brand__text{ min-width: 0; }
-.brand__name{ font-size: 22px; line-height: 1.1; letter-spacing: .2px; color: #fff; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.brand__tagline{ margin-top: 2px; font-size: 12.5px; color: rgba(255,255,255,.70); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
 .chip{
   font-size: 12px;
   padding: 7px 10px;
@@ -526,108 +470,34 @@ em {
   border: 1px solid rgba(255,255,255,.10);
   white-space: nowrap;
 }
+
 .chip--soft{ background: rgba(255,255,255,.06); }
 
 /* =========================
-   LOGO W TOPBAR (wariant z img)
+   PŁYWAJĄCY PRZEŁĄCZNIK JĘZYKA (krawędź kolumny)
 ========================= */
-.topbar__inner--logo{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 12px;
-}
-
-.topbar__logo{
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-}
-
-/* =========================
-   TRYB LISTA vs TRYB KOMUNIKAT (bez JS) — OVERRIDE NA KOŃCU
-========================= */
-
-/* global: tło strony jak stopka */
-body{ background:#0f172a !important; }
-
-/* domyślnie (LISTA): kolumna nie ma własnego tła — widać ciemne tło strony */
-.app__content{
-  background: transparent !important;
-  width: min(100%, var(--pageWidth)) !important;
-  margin: 0 auto !important;
-  padding-bottom: 24px !important;
-  box-shadow: none !important;
-}
-
-/* LISTA: „przestrzenie między wierszami” wypełnij jasnym tłem W KOLUMNIE
-   (czyli to co widzisz jako obszar pod/między elementami listy) */
-.tabs,
-.accordion-container{
-  background: #f9f9f9 !important;
-}
-
-/* KOMUNIKAT: gdy jakikolwiek akordeon jest otwarty — kolumna ma być biała */
-.app__content:has(.accordion-body.active){
-  background: #ffffff !important;
-}
-
-/* KOMUNIKAT: przy otwartym akordeonie również tło pod tabs/listą ma być białe */
-.app__content:has(.accordion-body.active) .tabs,
-.app__content:has(.accordion-body.active) .accordion-container{
-  background: #ffffff !important;
-}
-
-/* FAB: przyklej do krawędzi KOLUMNY, nie ekranu */
 .lang-fab{
-  right: max(14px, calc((100vw - min(100vw, var(--pageWidth))) / 2 + 14px)) !important;
+  position: fixed;
+  right: max(14px, calc((100vw - min(100vw, var(--pageWidth))) / 2 + 14px));
+  bottom: 86px;
+  z-index: 9999;
+
+  height: 44px;
+  min-width: 56px;
+  padding: 0 14px;
+
+  border-radius: 999px;
+  border: 2px solid #bbb;
+  background: #ffffff;
+  color: #111;
+
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* PC: liczniki nie mogą znikać — pozwól im się łamać */
-@media (min-width: 769px){
-  .footerbar__counters{
-    flex-wrap: wrap !important;
-    white-space: normal !important;
-  }
-}
-/* ===== FIX: tło kolumny + przerwy między wierszami ===== */
-
-/* tło całej strony jak stopka */
-body{ background:#0f172a !important; }
-
-/* DOMYŚLNIE (lista): cała kolumna ma jasne tło aż do stopki */
-.app__content{
-  background:#f9f9f9 !important;
-  width:min(100%, var(--pageWidth)) !important;
-  margin:0 auto !important;
-  padding-bottom:24px !important;
-}
-
-/* gdy komunikat otwarty: tło białe */
-.app__content:has(.accordion-body.active){
-  background:#ffffff !important;
-}
-
-/* KLUCZ: zablokuj „zapadanie” marginesów, żeby przerwy też miały tło kolumny */
-.tabs,
-.accordion-container{
-  display: flow-root !important;   /* tworzy nowy kontekst blokowy -> brak margin-collapsing */
-  background: transparent !important; /* tło bierze z .app__content */
-}
-
-/* FAB ma być przy krawędzi kolumny */
-.lang-fab{
-  right: max(14px, calc((100vw - min(100vw, var(--pageWidth))) / 2 + 14px)) !important;
-}
-
-/* PC: liczniki nie mogą znikać */
-@media (min-width: 769px){
-  .footerbar__counters{
-    flex-wrap: wrap !important;
-    white-space: normal !important;
-  }
-}
-
-
+.lang-fab:active{ transform: scale(0.98); }
