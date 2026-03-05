@@ -553,3 +553,21 @@ html, body { height: 100%; }
   display: block;
   object-fit: contain;
 }
+
+/* ===== NAGŁÓWEK: logo jak szerokość kontentu ===== */
+.topbar__inner--logo{
+  width: 100%;
+  max-width: 720px;      /* <-- ustaw na tę samą wartość co kontent/pastylki */
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.topbar__logo{
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
