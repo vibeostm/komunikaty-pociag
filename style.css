@@ -489,3 +489,19 @@ em{
 .footerbar .chip strong{
   color: #000;
 }
+/* === STOPKA: jednolity styl tekstu (bez pogrubień) === */
+.footerbar__meta,
+.footerbar__metaName,
+.footerbar__meta span,
+.footerbar__meta strong{
+  font-weight: 600;
+}
+
+.footerbar__meta strong{ font-weight: inherit; } /* jeśli gdzieś zostały strong */
+
+/* chipy w stopce: bez pogrubień, jeden styl */
+.footerbar .chip,
+.footerbar .chip strong{
+  font-weight: 600;
+}
+
