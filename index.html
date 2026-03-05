@@ -23,7 +23,7 @@
     </div>
   </header>
 
-  <!-- Zawartość (wypychacz dla sticky footer) -->
+  <!-- Zawartość -->
   <main class="app__content">
     <div class="tabs">
       <div id="tabPL" class="tab active">🇵🇱 Polski</div>
@@ -61,20 +61,18 @@
     </div>
   </main>
 
-  <!-- STOPKA (sticky footer) -->
+  <!-- STOPKA -->
   <footer class="footerbar" id="gc-footer">
     <div class="footerbar__inner">
 
-      <!-- 1) linia meta -->
       <div class="footerbar__meta" aria-label="Informacje o wersji">
-        <span class="footerbar__metaName">Komunikaty</span>
+        <span class="footerbar__metaName">m.komunikaty</span>
         <span class="footerbar__dot" aria-hidden="true">•</span>
-        <span>powered by @B: <strong id="createdDate">2026-01-14</strong></span>
+        <span>powered by ab: <strong id="createdDate">2026-01-14</strong></span>
         <span class="footerbar__dot" aria-hidden="true">•</span>
         <span>Wersja: <strong id="appVersion">v1.2.0</strong></span>
       </div>
 
-      <!-- 2) liczniki -->
       <div class="footerbar__counters" aria-label="Statystyki odsłon">
         <span class="chip chip--soft">Odsłony: łącznie <strong id="gc-total">–</strong></span>
         <span class="chip chip--soft">dziś <strong id="gc-today">–</strong></span>
@@ -93,14 +91,12 @@
           async src="//gc.zgo.at/count.js"></script>
 
   <script>
-    // === Stałe do edycji ===
     const CREATED = "2026-01-14";
     const VERSION = "v1.2.0";
 
     document.getElementById("createdDate").textContent = CREATED;
     document.getElementById("appVersion").textContent = VERSION;
 
-    // === GoatCounter ===
     const GC = "https://komunikaty.goatcounter.com";
 
     function ymd(d) {
@@ -114,7 +110,7 @@
       const qs = [];
       if (start) qs.push(`start=${encodeURIComponent(start)}`);
       if (end)   qs.push(`end=${encodeURIComponent(end)}`);
-      qs.push(`_=${Date.now()}`); // cache-buster
+      qs.push(`_=${Date.now()}`);
       url += `?${qs.join("&")}`;
 
       const r = await fetch(url, {cache: "no-store"});
