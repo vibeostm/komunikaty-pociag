@@ -1,17 +1,24 @@
 /* =========================
    RESET / GLOBAL
 ========================= */
+:root{
+  --pageWidth: 720px;
+  scroll-padding-top: 72px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+html, body { height: 100%; }
+
 body {
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   font-size: 0.95rem;
   line-height: 1.6;
-  background: #f9f9f9;
+  background: #0f172a; /* tło strony jak stopka */
   color: #333;
   padding: 0;
 }
@@ -21,6 +28,23 @@ strong { font-weight: bold; }
 em {
   font-style: italic;
   font-size: 0.8rem;
+}
+
+/* =========================
+   LAYOUT APLIKACJI
+========================= */
+.app{
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__content{
+  flex: 1 0 auto;
+  background: #f9f9f9;              /* jasne tło pod treść */
+  width: min(100%, var(--pageWidth));
+  margin: 0 auto;
+  padding-bottom: 0;               /* bez zmian mechaniki */
 }
 
 /* =========================
@@ -368,32 +392,20 @@ em {
 }
 
 /* =========================
-   LAYOUT APLIKACJI + TOPBAR + FOOTER
-   (przeniesione z index.html)
+   TOPBAR + FOOTER (zawężone jak kontent)
 ========================= */
-html, body { height: 100%; }
-
-.app{
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.app__content{
-  flex: 1 0 auto;
-}
-
-/* Nagłówek (wariant A) */
 .topbar{
   position: sticky;
   top: 0;
   z-index: 50;
+  width: min(100%, var(--pageWidth));
+  margin: 0 auto;
   background: #0f172a;
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .topbar__inner{
-  max-width: 720px; /* <<< było 980px */
+  width: 100%;
   margin: 0 auto;
   padding: 14px 16px;
   display: flex;
@@ -402,72 +414,19 @@ html, body { height: 100%; }
   gap: 12px;
 }
 
-.brand{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.brand__mark{
-  width: 44px;
-  height: 32px;
-  border-radius: 10px;
-  background:
-    linear-gradient(#22c55e,#22c55e) 6px 9px/32px 2px no-repeat,
-    linear-gradient(#38bdf8,#38bdf8) 6px 21px/32px 2px no-repeat,
-    repeating-linear-gradient(90deg, rgba(255,255,255,.22) 0 6px, transparent 6px 12px) 6px 15px/32px 2px no-repeat;
-  box-shadow: 0 6px 20px rgba(0,0,0,.25);
-  flex: 0 0 auto;
-}
-
-.brand__text{ min-width: 0; }
-
-.brand__name{
-  font-size: 22px;
-  line-height: 1.1;
-  letter-spacing: .2px;
-  color: #fff;
-  font-weight: 800;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.brand__tagline{
-  margin-top: 2px;
-  font-size: 12.5px;
-  color: rgba(255,255,255,.70);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Chip (wspólny) */
-.chip{
-  font-size: 12px;
-  padding: 7px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.08);
-  color: rgba(255,255,255,.85);
-  border: 1px solid rgba(255,255,255,.10);
-  white-space: nowrap;
-}
-
-.chip--soft{
-  background: rgba(255,255,255,.06);
-}
-
 /* Stopka */
 .footerbar{
   flex: 0 0 auto;
   margin-top: 24px;
+  width: min(100%, var(--pageWidth));
+  margin-left: auto;
+  margin-right: auto;
   background: #0f172a;
   border-top: 1px solid rgba(255,255,255,.08);
 }
 
 .footerbar__inner{
-  max-width: 720px; /* <<< było 980px */
+  width: 100%;
   margin: 0 auto;
   padding: 10px 16px 12px;
   display: flex;
@@ -510,18 +469,6 @@ html, body { height: 100%; }
   align-items: center;
 }
 
-:root { scroll-padding-top: 72px; }
-
-/* =========================
-   OGRANICZENIE SZEROKOŚCI NA PC (bez wpływu na mobile)
-========================= */
-.tabs,
-.accordion-container{
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 /* =========================
    STOPKA: jedna linia na PC
 ========================= */
@@ -535,30 +482,53 @@ html, body { height: 100%; }
 
   .footerbar__meta{
     justify-content: flex-start;
-    flex-wrap: nowrap;     /* jedna linia */
+    flex-wrap: nowrap;
     white-space: nowrap;
   }
 
   .footerbar__counters{
     justify-content: flex-end;
-    flex-wrap: nowrap;     /* jedna linia */
+    flex-wrap: nowrap;
     white-space: nowrap;
   }
 }
 
-.brand__logo{
-  height: 22px;
-  width: auto;
-  max-width: 180px;
-  display: block;
-  object-fit: contain;
+/* =========================
+   OGRANICZENIE SZEROKOŚCI NA PC (tabs/pastylki)
+========================= */
+.tabs,
+.accordion-container{
+  max-width: var(--pageWidth);
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* ===== NAGŁÓWEK: logo jak szerokość kontentu ===== */
+/* =========================
+   (opcjonalnie) STARE STYLE BRAND/CHIP
+   — zostawiam, bo mogą być używane w stopce/chipach
+========================= */
+.brand{ display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand__mark{ width: 44px; height: 32px; border-radius: 10px; flex: 0 0 auto; }
+.brand__text{ min-width: 0; }
+.brand__name{ font-size: 22px; line-height: 1.1; letter-spacing: .2px; color: #fff; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand__tagline{ margin-top: 2px; font-size: 12.5px; color: rgba(255,255,255,.70); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.chip{
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.85);
+  border: 1px solid rgba(255,255,255,.10);
+  white-space: nowrap;
+}
+.chip--soft{ background: rgba(255,255,255,.06); }
+
+/* =========================
+   LOGO W TOPBAR (wariant z img)
+========================= */
 .topbar__inner--logo{
   width: 100%;
-  max-width: 720px;      /* <-- ustaw na tę samą wartość co kontent/pastylki */
-  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -571,36 +541,3 @@ html, body { height: 100%; }
   display: block;
   object-fit: contain;
 }
-
-/* =========================
-   TOPBAR + FOOTERBAR: zawężone do szerokości kontentu
-========================= */
-:root{
-  --pageWidth: 720px;
-}
-
-/* cała belka (tło) ma szerokość jak pastylki */
-.topbar,
-.footerbar{
-  width: min(100%, var(--pageWidth));
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* topbar jest sticky, więc pilnujemy żeby nie było „full width” przez left/right */
-.topbar{
-  left: auto;
-  right: auto;
-}
-
-/* inner ma po prostu wypełniać belkę */
-.topbar__inner,
-.footerbar__inner{
-  max-width: 100%;
-}
-
-/* wariant logo w topbar */
-.topbar__inner--logo{
-  max-width: 100%;
-}
-
