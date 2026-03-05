@@ -545,3 +545,51 @@ em {
   display: block;
   object-fit: contain;
 }
+
+/* =========================
+   TRYB LISTA vs TRYB KOMUNIKAT (bez JS) — OVERRIDE NA KOŃCU
+========================= */
+
+/* global: tło strony jak stopka */
+body{ background:#0f172a !important; }
+
+/* domyślnie (LISTA): kolumna nie ma własnego tła — widać ciemne tło strony */
+.app__content{
+  background: transparent !important;
+  width: min(100%, var(--pageWidth)) !important;
+  margin: 0 auto !important;
+  padding-bottom: 24px !important;
+  box-shadow: none !important;
+}
+
+/* LISTA: „przestrzenie między wierszami” wypełnij jasnym tłem W KOLUMNIE
+   (czyli to co widzisz jako obszar pod/między elementami listy) */
+.tabs,
+.accordion-container{
+  background: #f9f9f9 !important;
+}
+
+/* KOMUNIKAT: gdy jakikolwiek akordeon jest otwarty — kolumna ma być biała */
+.app__content:has(.accordion-body.active){
+  background: #ffffff !important;
+}
+
+/* KOMUNIKAT: przy otwartym akordeonie również tło pod tabs/listą ma być białe */
+.app__content:has(.accordion-body.active) .tabs,
+.app__content:has(.accordion-body.active) .accordion-container{
+  background: #ffffff !important;
+}
+
+/* FAB: przyklej do krawędzi KOLUMNY, nie ekranu */
+.lang-fab{
+  right: max(14px, calc((100vw - min(100vw, var(--pageWidth))) / 2 + 14px)) !important;
+}
+
+/* PC: liczniki nie mogą znikać — pozwól im się łamać */
+@media (min-width: 769px){
+  .footerbar__counters{
+    flex-wrap: wrap !important;
+    white-space: normal !important;
+  }
+}
+
