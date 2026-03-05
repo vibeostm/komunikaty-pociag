@@ -388,15 +388,19 @@ em{
   object-fit: contain;
 }
 
-/* Stopka */
+/* =========================
+   STOPKA — NOWY KOLOR + CZYTELNOŚĆ
+   (tło jak aktywna pastylka .tab.active = #bbb)
+========================= */
 .footerbar{
   flex: 0 0 auto;
   margin-top: 24px;
   width: min(100%, var(--pageWidth));
   margin-left: auto;
   margin-right: auto;
-  background: #0f172a;
-  border-top: 1px solid rgba(255,255,255,.08);
+
+  background: #bbb; /* NOWY kolor stopki */
+  border-top: 1px solid rgba(0,0,0,.18);
 }
 
 .footerbar__inner{
@@ -414,22 +418,23 @@ em{
   justify-content: center;
   align-items: center;
   font-size: 12px;
-  color: rgba(255,255,255,.72);
+
+  color: #000; /* czarny tekst */
   letter-spacing: .1px;
   line-height: 1.2;
 }
 
 .footerbar__meta strong{
-  color: rgba(255,255,255,.88);
-  font-weight: 700;
+  color: #000;
+  font-weight: 800;
 }
 
 .footerbar__metaName{
-  color: rgba(255,255,255,.82);
-  font-weight: 700;
+  color: #000;
+  font-weight: 800;
 }
 
-.footerbar__dot{ color: rgba(255,255,255,.35); }
+.footerbar__dot{ color: rgba(0,0,0,.45); }
 
 .footerbar__counters{
   display: flex;
@@ -461,7 +466,7 @@ em{
   }
 }
 
-/* Chipy */
+/* Chipy (global) */
 .chip{
   font-size: 12px;
   padding: 7px 10px;
@@ -473,3 +478,14 @@ em{
 }
 
 .chip--soft{ background: rgba(255,255,255,.06); }
+
+/* Chipy w stopce: czarny tekst + jaśniejsze tło dla czytelności */
+.footerbar .chip{
+  color: #000;
+  background: rgba(255,255,255,.40);
+  border-color: rgba(0,0,0,.18);
+}
+
+.footerbar .chip strong{
+  color: #000;
+}
