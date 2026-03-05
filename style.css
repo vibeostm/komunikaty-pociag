@@ -545,3 +545,11 @@ html, body { height: 100%; }
     white-space: nowrap;
   }
 }
+
+.brand__logo{
+  height: 22px;
+  width: auto;
+  max-width: 180px;
+  display: block;
+  object-fit: contain;
+}
