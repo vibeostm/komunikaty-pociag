@@ -68,7 +68,7 @@ em{
   background: transparent;
   border-radius: 999px;
   cursor: pointer;
-  transition: all 0.22s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
   user-select: none;
 }
 
@@ -107,6 +107,7 @@ em{
   -webkit-appearance: none;
   background-image: none !important;
   box-shadow: 0 8px 20px rgba(31,41,55,0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .accordion-body{
@@ -140,6 +141,7 @@ em{
   -webkit-appearance: none;
   background-image: none !important;
   box-shadow: 0 8px 20px rgba(59,130,246,0.10);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .connection-toggle + .accordion-subbody{
@@ -452,7 +454,7 @@ em{
 }
 
 .topbar__logo{
-  width: 100%;
+  width: 92%;
   height: auto;
   display: block;
   object-fit: contain;
@@ -461,6 +463,7 @@ em{
   box-shadow: none !important;
   filter: none !important;
   background: transparent !important;
+  margin: 0 auto;
 }
 
 /* =========================
@@ -610,5 +613,21 @@ em{
   .chip{
     font-size: 10.5px;
     padding: 5px 8px;
+  }
+}
+
+/* =========================
+   SUBTELNIEJSZE STANY INTERAKCJI
+========================= */
+.accordion-header:active,
+.connection-toggle:active,
+.tab:active{
+  transform: scale(0.995);
+}
+
+@media (hover: hover){
+  .accordion-header:hover,
+  .connection-toggle:hover{
+    box-shadow: 0 10px 24px rgba(31,41,55,0.09);
   }
 }
