@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Komunikaty</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 
   <link rel="icon" href="favicon.ico">
@@ -16,14 +20,14 @@
 
 <body class="app">
 
-  <!-- NAGŁÓWEK (logo bez ramki i bez tła) -->
+  <!-- NAGŁÓWEK -->
   <header class="topbar">
     <div class="topbar__inner topbar__inner--logo">
       <img class="topbar__logo" src="logo.webp?v=3" alt="m.komunikaty">
     </div>
   </header>
 
-  <!-- Zawartość -->
+  <!-- ZAWARTOŚĆ -->
   <main class="app__content">
     <div class="tabs">
       <div id="tabPL" class="tab active">🇵🇱 Polski</div>
@@ -82,17 +86,20 @@
     </div>
   </footer>
 
-  <!-- PŁYWAJĄCY PRZEŁĄCZNIK JĘZYKA (PL/EN) -->
+  <!-- PŁYWAJĄCY PRZEŁĄCZNIK JĘZYKA -->
   <button id="langFab" class="lang-fab" type="button" aria-label="Przełącz język">EN</button>
 
   <script src="script.js"></script>
 
-  <script data-goatcounter="https://komunikaty.goatcounter.com/count"
-          async src="https://gc.zgo.at/count.js"></script>
+  <script
+    data-goatcounter="https://komunikaty.goatcounter.com/count"
+    async
+    src="https://gc.zgo.at/count.js"></script>
 
   <script>
     const CREATED = "2026-01-14";
     const VERSION = "v1.2.0";
+
     document.getElementById("createdDate").textContent = CREATED;
     document.getElementById("appVersion").textContent = VERSION;
 
@@ -101,7 +108,7 @@
 
     function ymd(d) {
       const pad = (n) => String(n).padStart(2, "0");
-      return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+      return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
     }
 
     function setText(id, value) {
@@ -110,31 +117,40 @@
     }
 
     function loadCache() {
-      try { return JSON.parse(localStorage.getItem(KEY) || "null"); }
-      catch { return null; }
+      try {
+        return JSON.parse(localStorage.getItem(KEY) || "null");
+      } catch {
+        return null;
+      }
     }
 
     function saveCache(obj) {
-      try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {}
+      try {
+        localStorage.setItem(KEY, JSON.stringify(obj));
+      } catch {}
     }
 
-    async function gcCount(path, start=null, end=null) {
+    async function gcCount(path, start = null, end = null) {
       const p = encodeURIComponent(path);
       let url = `${GC}/counter/${p}.json`;
       const qs = [];
+
       if (start) qs.push(`start=${encodeURIComponent(start)}`);
       if (end) qs.push(`end=${encodeURIComponent(end)}`);
       qs.push(`_=${Date.now()}`);
+
       url += `?${qs.join("&")}`;
 
       const r = await fetch(url, { cache: "no-store", mode: "cors" });
       if (!r.ok) throw new Error("GoatCounter HTTP " + r.status);
+
       const data = await r.json();
       return data.count;
     }
 
     (async () => {
       const cached = loadCache();
+
       if (cached && typeof cached === "object") {
         if (cached.total != null) setText("gc-total", cached.total);
         if (cached.today != null) setText("gc-today", cached.today);
@@ -156,9 +172,15 @@
         setText("gc-today", todayCount);
         setText("gc-7d", d7Count);
 
-        saveCache({ total, today: todayCount, d7: d7Count, ts: Date.now() });
+        saveCache({
+          total,
+          today: todayCount,
+          d7: d7Count,
+          ts: Date.now()
+        });
       } catch (e) {
         console.warn("GoatCounter counter failed:", e);
+
         const cached2 = loadCache();
         if (!cached2) {
           setText("gc-total", "–");
