@@ -16,10 +16,10 @@
 
 <body class="app">
 
-  <!-- NAGŁÓWEK (logo wycentrowane) -->
+  <!-- NAGŁÓWEK (logo bez ramki i bez tła) -->
   <header class="topbar">
     <div class="topbar__inner topbar__inner--logo">
-      <img class="topbar__logo" src="logo.webp" alt="m.komunikaty">
+      <img class="topbar__logo" src="logo.webp?v=3" alt="m.komunikaty">
     </div>
   </header>
 
@@ -87,19 +87,15 @@
 
   <script src="script.js"></script>
 
-  <!-- WAŻNE: jawny https (unikasz mixed-content) -->
   <script data-goatcounter="https://komunikaty.goatcounter.com/count"
           async src="https://gc.zgo.at/count.js"></script>
 
   <script>
-    // === Stałe do edycji ===
     const CREATED = "2026-01-14";
     const VERSION = "v1.2.0";
     document.getElementById("createdDate").textContent = CREATED;
     document.getElementById("appVersion").textContent = VERSION;
 
-    // === GoatCounter (liczniki) ===
-    // Jeśli fetch nie zadziała (np. adblock/CORS), pokaż ostatnie znane wartości z localStorage.
     const GC = "https://komunikaty.goatcounter.com";
     const KEY = "gc_counts_cache_v1";
 
@@ -123,12 +119,11 @@
     }
 
     async function gcCount(path, start=null, end=null) {
-      // counter endpoint (publiczny) — cache-buster żeby odświeżało przy każdym reloadzie
       const p = encodeURIComponent(path);
       let url = `${GC}/counter/${p}.json`;
       const qs = [];
       if (start) qs.push(`start=${encodeURIComponent(start)}`);
-      if (end)   qs.push(`end=${encodeURIComponent(end)}`);
+      if (end) qs.push(`end=${encodeURIComponent(end)}`);
       qs.push(`_=${Date.now()}`);
       url += `?${qs.join("&")}`;
 
@@ -139,7 +134,6 @@
     }
 
     (async () => {
-      // 1) pokaż cache natychmiast (żeby zawsze coś było “po odświeżeniu”)
       const cached = loadCache();
       if (cached && typeof cached === "object") {
         if (cached.total != null) setText("gc-total", cached.total);
@@ -147,7 +141,6 @@
         if (cached.d7 != null) setText("gc-7d", cached.d7);
       }
 
-      // 2) spróbuj pobrać świeże dane
       try {
         const today = new Date();
         const startToday = ymd(today);
@@ -166,7 +159,6 @@
         saveCache({ total, today: todayCount, d7: d7Count, ts: Date.now() });
       } catch (e) {
         console.warn("GoatCounter counter failed:", e);
-        // jeśli brak cache i fetch padł:
         const cached2 = loadCache();
         if (!cached2) {
           setText("gc-total", "–");
