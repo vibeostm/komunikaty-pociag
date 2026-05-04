@@ -44,14 +44,12 @@ async function loadSections() {
   const activeSection = document.querySelector('.section.active');
   const inactiveSections = Array.from(document.querySelectorAll('.section:not(.active)'));
 
-  // 1. Najpierw ładujemy tylko widoczny język
+  // 1. Najpierw ładujemy aktualnie widoczny język
   if (activeSection) {
     await loadElements(activeSection.querySelectorAll('[data-load]'));
   }
 
-  // 2. Drugi język doładowujemy po chwili w tle
-  // Dzięki temu PL/EN później przełącza się szybciej,
-  // ale nie blokuje pierwszego użycia strony.
+  // 2. Drugi język doładowujemy później w tle
   if ('requestIdleCallback' in window) {
     requestIdleCallback(() => {
       inactiveSections.forEach(section => {
@@ -69,7 +67,7 @@ async function loadSections() {
 
 // ========================
 // GŁÓWNE AKORDEONY
-// delegacja klików — działa natychmiast po pojawieniu się HTML
+// delegacja klików — działa od razu po pojawieniu się HTML
 // ========================
 
 document.addEventListener('click', function (e) {
@@ -155,60 +153,26 @@ document.addEventListener('click', function (e) {
   });
 
   block.classList.toggle('active');
+
   const isActive = block.classList.contains('active');
   block.style.display = isActive ? 'block' : 'none';
 });
 
 // ========================
-// TABY — PRZEŁĄCZANIE JĘZYKA
+// TABY + PŁYWAJĄCY SWITCH PL/EN
+// stabilne przełączanie z zachowaniem miejsca
 // ========================
 
 const tabPL = document.getElementById('tabPL');
 const tabEN = document.getElementById('tabEN');
 const sectionPL = document.getElementById('sectionPL');
 const sectionEN = document.getElementById('sectionEN');
-
-if (tabPL) {
-  tabPL.onclick = () => {
-    tabPL.classList.add('active');
-    tabEN.classList.remove('active');
-
-    sectionPL.classList.add('active');
-    sectionEN.classList.remove('active');
-
-    updateLangFabLabel();
-    loadSections();
-  };
-}
-
-if (tabEN) {
-  tabEN.onclick = () => {
-    tabEN.classList.add('active');
-    tabPL.classList.remove('active');
-
-    sectionEN.classList.add('active');
-    sectionPL.classList.remove('active');
-
-    updateLangFabLabel();
-    loadSections();
-  };
-}
-
-// ========================
-// PŁYWAJĄCY SWITCH PL/EN
-// ========================
-
 const langFab = document.getElementById('langFab');
 
+let langSwitchBusy = false;
+
 function getActiveLang() {
-  return document.getElementById('sectionEN').classList.contains('active') ? 'EN' : 'PL';
-}
-
-function setLang(lang) {
-  if (lang === 'PL') document.getElementById('tabPL').click();
-  else document.getElementById('tabEN').click();
-
-  updateLangFabLabel();
+  return sectionEN.classList.contains('active') ? 'EN' : 'PL';
 }
 
 function updateLangFabLabel() {
@@ -218,10 +182,51 @@ function updateLangFabLabel() {
   langFab.textContent = active === 'PL' ? 'EN' : 'PL';
 }
 
+function applyLangVisualState(lang) {
+  if (lang === 'PL') {
+    tabPL.classList.add('active');
+    tabEN.classList.remove('active');
+
+    sectionPL.classList.add('active');
+    sectionEN.classList.remove('active');
+
+    document.documentElement.lang = 'pl';
+  } else {
+    tabEN.classList.add('active');
+    tabPL.classList.remove('active');
+
+    sectionEN.classList.add('active');
+    sectionPL.classList.remove('active');
+
+    document.documentElement.lang = 'en';
+  }
+
+  updateLangFabLabel();
+}
+
+async function setLangReady(lang) {
+  applyLangVisualState(lang);
+
+  // Czekamy aż aktywna sekcja realnie się załaduje
+  await loadSections();
+
+  const activeSection = lang === 'PL' ? sectionPL : sectionEN;
+
+  // Asekuracja: czekamy aż pojawią się nagłówki akordeonów
+  for (let i = 0; i < 60; i++) {
+    if (activeSection.querySelector('.accordion-header')) return;
+    await new Promise(r => setTimeout(r, 50));
+  }
+}
+
 function getHeaderKey(text) {
   const t = (text || '').trim();
   const m = t.match(/^([0-9]+\.|[A-Z][0-9]+\.|B[0-9]+\.|C[0-9]+\.)/i);
   return m ? m[1].toUpperCase() : null;
+}
+
+function getActiveSection() {
+  return getActiveLang() === 'PL' ? sectionPL : sectionEN;
 }
 
 function findAccordionHeaderFromElement(el) {
@@ -233,6 +238,7 @@ function findAccordionHeaderFromElement(el) {
   const body = el.closest('.accordion-body');
   if (body) {
     let prev = body.previousElementSibling;
+
     while (prev) {
       if (prev.classList && prev.classList.contains('accordion-header')) return prev;
       prev = prev.previousElementSibling;
@@ -248,12 +254,56 @@ function findAccordionHeaderFromElement(el) {
   return null;
 }
 
+function getVisibleReferenceElement() {
+  // Kilka punktów odniesienia zwiększa stabilność na telefonie
+  const points = [
+    { x: window.innerWidth * 0.50, y: window.innerHeight * 0.42 },
+    { x: window.innerWidth * 0.50, y: window.innerHeight * 0.55 },
+    { x: window.innerWidth * 0.75, y: window.innerHeight - 160 },
+    { x: window.innerWidth * 0.50, y: 120 }
+  ];
+
+  for (const p of points) {
+    const x = Math.max(1, Math.min(window.innerWidth - 2, p.x));
+    const y = Math.max(1, Math.min(window.innerHeight - 2, p.y));
+    const el = document.elementFromPoint(x, y);
+
+    if (el && el.closest('.section.active')) {
+      return { el, x, y };
+    }
+  }
+
+  return null;
+}
+
+function getHeaderIndex(section, header) {
+  const headers = Array.from(section.querySelectorAll('.accordion-header'));
+  return headers.indexOf(header);
+}
+
+function findHeaderByKeyOrIndex(section, key, index) {
+  const headers = Array.from(section.querySelectorAll('.accordion-header'));
+
+  if (key) {
+    const byKey = headers.find(h => getHeaderKey(h.textContent) === key);
+    if (byKey) return byKey;
+  }
+
+  if (index >= 0 && headers[index]) {
+    return headers[index];
+  }
+
+  return headers[0] || null;
+}
+
 function swapLangInId(id) {
   if (!id) return null;
 
+  // Uniwersalne mapowanie -pl- / -en-
   if (id.includes('-pl-')) return id.replace('-pl-', '-en-');
   if (id.includes('-en-')) return id.replace('-en-', '-pl-');
 
+  // Komunikat 6
   if (id.startsWith('delay-cat-')) {
     const rest = id.replace('delay-cat-', '');
     return `delay-en-${rest}`;
@@ -264,6 +314,7 @@ function swapLangInId(id) {
     return `delay-cat-${rest}`;
   }
 
+  // Komunikat 7
   if (id.startsWith('wypadek-pl-7-')) {
     const rest = id.replace('wypadek-pl-7-', '');
     return `acc-en7-${rest}`;
@@ -277,40 +328,56 @@ function swapLangInId(id) {
   return null;
 }
 
-function waitForSelector(root, selector, maxTries = 60) {
-  return new Promise((resolve) => {
-    let tries = 0;
+function captureViewportState() {
+  const activeSection = getActiveSection();
+  const ref = getVisibleReferenceElement();
 
-    const tick = () => {
-      tries++;
-      const el = root.querySelector(selector);
+  if (!ref) return null;
 
-      if (el) return resolve(el);
-      if (tries >= maxTries) return resolve(null);
+  const header = findAccordionHeaderFromElement(ref.el);
+  if (!header) return null;
 
-      setTimeout(tick, 50);
-    };
+  const body = header.nextElementSibling;
+  const key = getHeaderKey(header.textContent);
+  const index = getHeaderIndex(activeSection, header);
 
-    tick();
-  });
-}
+  const wasOpen =
+    body &&
+    body.classList &&
+    body.classList.contains('accordion-body') &&
+    body.classList.contains('active');
 
-async function waitForHeaderByKey(sectionEl, key) {
-  if (!key) return null;
+  let ratio = 0;
 
-  for (let i = 0; i < 60; i++) {
-    const headers = Array.from(sectionEl.querySelectorAll('.accordion-header'));
-    const found = headers.find(h => getHeaderKey(h.textContent) === key);
+  if (wasOpen && body) {
+    const rect = body.getBoundingClientRect();
+    const bodyTop = rect.top + window.scrollY;
+    const bodyHeight = Math.max(1, rect.height);
+    const refDocY = window.scrollY + ref.y;
 
-    if (found) return found;
-
-    await new Promise(r => setTimeout(r, 50));
+    ratio = (refDocY - bodyTop) / bodyHeight;
+    ratio = Math.max(0, Math.min(1, ratio));
   }
 
-  return null;
+  const activeSubPanel =
+    ref.el.closest('.gastronomy-more.active') ||
+    ref.el.closest('.accordion-subbody.active');
+
+  const subId = activeSubPanel ? activeSubPanel.id : null;
+
+  return {
+    key,
+    index,
+    wasOpen,
+    ratio,
+    refY: ref.y,
+    subId
+  };
 }
 
 function ensureOpenMain(header) {
+  if (!header) return;
+
   const body = header.nextElementSibling;
 
   if (!body || !body.classList || !body.classList.contains('accordion-body')) return;
@@ -323,120 +390,126 @@ function ensureOpenMain(header) {
 function ensureOpenSub(activeSection, targetId) {
   if (!targetId) return;
 
-  const toggler = activeSection.querySelector(`[data-target="${CSS.escape(targetId)}"]`);
-  const panel = activeSection.querySelector(`#${CSS.escape(targetId)}`);
+  const safeId = CSS.escape(targetId);
+  const toggler = activeSection.querySelector(`[data-target="${safeId}"]`);
+  const panel = activeSection.querySelector(`#${safeId}`);
 
   if (!toggler || !panel) return;
-  if (panel.classList.contains('active')) return;
 
-  toggler.click();
+  if (!panel.classList.contains('active')) {
+    toggler.click();
+  }
 }
 
-function captureViewportState() {
-  const thumbOffset = 160;
-  const x = Math.min(window.innerWidth - 30, window.innerWidth * 0.75);
-  const y = Math.max(10, window.innerHeight - thumbOffset);
+async function waitForTargetHeader(section, key, index) {
+  for (let i = 0; i < 80; i++) {
+    const header = findHeaderByKeyOrIndex(section, key, index);
+    if (header) return header;
 
-  const el = document.elementFromPoint(x, y);
-  if (!el) return null;
-
-  const header = findAccordionHeaderFromElement(el);
-  if (!header) return null;
-
-  const body = header.nextElementSibling;
-  const key = getHeaderKey(header.textContent);
-
-  const wasOpen =
-    body &&
-    body.classList &&
-    body.classList.contains('accordion-body') &&
-    body.classList.contains('active');
-
-  const subPanel = el.closest('.gastronomy-more.active');
-  const subId = subPanel ? subPanel.id : null;
-
-  let ratio = 0;
-
-  if (wasOpen && body) {
-    const rect = body.getBoundingClientRect();
-    const bodyTop = rect.top + window.scrollY;
-    const bodyH = Math.max(1, rect.height);
-    const thumbDocY = window.scrollY + y;
-
-    ratio = (thumbDocY - bodyTop) / bodyH;
-    ratio = Math.max(0, Math.min(1, ratio));
+    await new Promise(r => setTimeout(r, 50));
   }
 
-  return { key, wasOpen, ratio, thumbOffset, subId };
+  return null;
 }
 
 async function restoreViewportState(state) {
   if (!state) return;
 
-  const activeSection = document.getElementById(
-    getActiveLang() === 'PL' ? 'sectionPL' : 'sectionEN'
+  const activeSection = getActiveSection();
+
+  const targetHeader = await waitForTargetHeader(
+    activeSection,
+    state.key,
+    state.index
   );
-
-  let targetHeader = await waitForHeaderByKey(activeSection, state.key);
-
-  if (!targetHeader) {
-    const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
-    targetHeader = headers.length ? headers[0] : null;
-  }
 
   if (!targetHeader) return;
 
-  if (state.wasOpen) ensureOpenMain(targetHeader);
+  if (state.wasOpen) {
+    ensureOpenMain(targetHeader);
+  }
 
   const mappedSubId = swapLangInId(state.subId);
 
   if (mappedSubId) {
-    const subPanel = await waitForSelector(activeSection, `#${CSS.escape(mappedSubId)}`, 80);
-
-    if (subPanel) {
-      ensureOpenSub(activeSection, mappedSubId);
+    for (let i = 0; i < 40; i++) {
+      if (activeSection.querySelector(`#${CSS.escape(mappedSubId)}`)) break;
+      await new Promise(r => setTimeout(r, 50));
     }
+
+    ensureOpenSub(activeSection, mappedSubId);
   }
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const targetBody = targetHeader.nextElementSibling;
+  // Czekamy dwie klatki, żeby przeglądarka przeliczyła wysokości
+  await new Promise(resolve => requestAnimationFrame(resolve));
+  await new Promise(resolve => requestAnimationFrame(resolve));
 
-      const hasBody =
-        targetBody &&
-        targetBody.classList &&
-        targetBody.classList.contains('accordion-body');
+  const targetBody = targetHeader.nextElementSibling;
 
-      const baseTop =
-        state.wasOpen && hasBody
-          ? targetBody.getBoundingClientRect().top + window.scrollY
-          : targetHeader.getBoundingClientRect().top + window.scrollY;
+  const hasBody =
+    targetBody &&
+    targetBody.classList &&
+    targetBody.classList.contains('accordion-body');
 
-      const height =
-        state.wasOpen && hasBody
-          ? Math.max(1, targetBody.getBoundingClientRect().height)
-          : 1;
+  let targetY;
 
-      const targetY =
-        baseTop +
-        (state.wasOpen ? state.ratio * height : 0) -
-        (window.innerHeight - state.thumbOffset);
+  if (state.wasOpen && hasBody) {
+    const bodyTop = targetBody.getBoundingClientRect().top + window.scrollY;
+    const bodyHeight = Math.max(1, targetBody.getBoundingClientRect().height);
 
-      window.scrollTo({
-        top: Math.max(0, targetY),
-        behavior: 'instant'
-      });
-    });
+    targetY = bodyTop + state.ratio * bodyHeight - state.refY;
+  } else {
+    const headerTop = targetHeader.getBoundingClientRect().top + window.scrollY;
+    targetY = headerTop - 90;
+  }
+
+  window.scrollTo({
+    top: Math.max(0, targetY),
+    behavior: 'instant'
   });
+}
+
+async function switchLanguagePreservingPosition(nextLang) {
+  if (langSwitchBusy) return;
+
+  langSwitchBusy = true;
+
+  if (langFab) {
+    langFab.disabled = true;
+    langFab.style.opacity = '0.72';
+  }
+
+  const state = captureViewportState();
+
+  await setLangReady(nextLang);
+  await restoreViewportState(state);
+
+  if (langFab) {
+    langFab.disabled = false;
+    langFab.style.opacity = '';
+  }
+
+  langSwitchBusy = false;
+}
+
+if (tabPL) {
+  tabPL.onclick = async () => {
+    if (getActiveLang() === 'PL') return;
+    await switchLanguagePreservingPosition('PL');
+  };
+}
+
+if (tabEN) {
+  tabEN.onclick = async () => {
+    if (getActiveLang() === 'EN') return;
+    await switchLanguagePreservingPosition('EN');
+  };
 }
 
 if (langFab) {
   langFab.addEventListener('click', async () => {
-    const state = captureViewportState();
     const nextLang = getActiveLang() === 'PL' ? 'EN' : 'PL';
-
-    setLang(nextLang);
-    await restoreViewportState(state);
+    await switchLanguagePreservingPosition(nextLang);
   });
 }
 
@@ -469,5 +542,8 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// ========================
 // START
+// ========================
+
 loadSections();
