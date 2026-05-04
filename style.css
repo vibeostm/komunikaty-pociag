@@ -145,7 +145,7 @@ em{
 }
 
 .connection-toggle + .accordion-subbody{
-  display: none;
+  display: none !important;
   padding: 1rem;
   background: rgba(255,255,255,0.82);
   border: 1px solid rgba(36,50,74,0.08);
@@ -154,10 +154,31 @@ em{
   box-shadow: 0 8px 18px rgba(31,41,55,0.06);
 }
 
-.connection-toggle.active + .accordion-subbody{ display: block; }
+.connection-toggle.active + .accordion-subbody{
+  display: block !important;
+}
 
-.accordion-subheader{ display: none !important; }
-.accordion-subbody{ display: block !important; }
+/* =========================
+   WYŁĄCZENIE STARYCH PODAKORDEONÓW
+   ZOSTAWIAMY ROZWIJANE TYLKO LOTNISKA
+========================= */
+.accordion-subheader{
+  display: none !important;
+}
+
+/* Zwykłe stare podsekcje mają być widoczne jako normalna treść */
+.accordion-subheader + .accordion-subbody{
+  display: block !important;
+}
+
+/* Ale podsekcja po .connection-toggle ma działać jako prawdziwy podakordeon */
+.connection-toggle + .accordion-subbody{
+  display: none !important;
+}
+
+.connection-toggle.active + .accordion-subbody{
+  display: block !important;
+}
 
 /* =========================
    KOLOROWE BLOKI KOMUNIKATÓW
