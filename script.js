@@ -44,12 +44,10 @@ async function loadSections() {
   const activeSection = document.querySelector('.section.active');
   const inactiveSections = Array.from(document.querySelectorAll('.section:not(.active)'));
 
-  // 1. Najpierw ładujemy aktualnie widoczny język
   if (activeSection) {
     await loadElements(activeSection.querySelectorAll('[data-load]'));
   }
 
-  // 2. Drugi język doładowujemy później w tle
   if ('requestIdleCallback' in window) {
     requestIdleCallback(() => {
       inactiveSections.forEach(section => {
@@ -66,101 +64,7 @@ async function loadSections() {
 }
 
 // ========================
-// GŁÓWNE AKORDEONY
-// delegacja klików — działa od razu po pojawieniu się HTML
-// ========================
-
-document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.accordion-header');
-  if (!btn) return;
-
-  const body = btn.nextElementSibling;
-  if (!body || !body.classList.contains('accordion-body')) return;
-
-  e.preventDefault();
-
-  const isOpen = body.classList.contains('active');
-
-  // zamknij inne główne zakładki
-  document.querySelectorAll('.accordion-body').forEach(b => {
-    if (b !== body) b.classList.remove('active');
-  });
-
-  // jeśli kliknięta była zamknięta — otwórz
-  // jeśli była otwarta — zamknij
-  body.classList.toggle('active', !isOpen);
-
-  // po otwarciu zakładki zamknij plusiki gastronomii w jej wnętrzu
-  if (!isOpen) {
-    body.querySelectorAll('.gastronomy-more').forEach(m => {
-      m.classList.remove('active');
-      m.style.display = 'none';
-    });
-  }
-});
-
-// ========================
-// PODAKORDEON — PRZESIADKI / LOTNISKA
-// ========================
-
-document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.connection-toggle');
-  if (!btn) return;
-
-  const body = btn.nextElementSibling;
-  if (!body || !body.classList.contains('accordion-subbody')) return;
-
-  e.preventDefault();
-
-  const isOpen = btn.classList.contains('active');
-
-  document.querySelectorAll('.connection-toggle').forEach(o => {
-    if (o !== btn) o.classList.remove('active');
-  });
-
-  document.querySelectorAll('.connection-toggle + .accordion-subbody').forEach(b => {
-    if (b !== body) b.classList.remove('active');
-  });
-
-  btn.classList.toggle('active', !isOpen);
-  body.classList.toggle('active', !isOpen);
-});
-
-// ========================
-// PLUSIK GASTRONOMII
-// ========================
-
-document.addEventListener('click', function (e) {
-  const plus = e.target.closest('.gastronomy-plus');
-  if (!plus) return;
-
-  e.preventDefault();
-  e.stopPropagation();
-
-  const id = plus.getAttribute('data-target');
-  if (!id) return;
-
-  const block = document.getElementById(id);
-  if (!block) return;
-
-  const root = plus.closest('.accordion-body') || document;
-
-  root.querySelectorAll('.gastronomy-more').forEach(other => {
-    if (other !== block) {
-      other.classList.remove('active');
-      other.style.display = 'none';
-    }
-  });
-
-  block.classList.toggle('active');
-
-  const isActive = block.classList.contains('active');
-  block.style.display = isActive ? 'block' : 'none';
-});
-
-// ========================
-// TABY + PŁYWAJĄCY SWITCH PL/EN
-// stabilne przełączanie z zachowaniem miejsca
+// ELEMENTY STAŁE
 // ========================
 
 const tabPL = document.getElementById('tabPL');
@@ -171,8 +75,21 @@ const langFab = document.getElementById('langFab');
 
 let langSwitchBusy = false;
 
+// Nowość: pamięć ostatniego świadomego kliknięcia użytkownika
+let lastMainAccordionState = null;
+let lastDetailsState = null;
+let lastSubPanelId = null;
+
+// ========================
+// FUNKCJE POMOCNICZE
+// ========================
+
 function getActiveLang() {
   return sectionEN.classList.contains('active') ? 'EN' : 'PL';
+}
+
+function getActiveSection() {
+  return getActiveLang() === 'PL' ? sectionPL : sectionEN;
 }
 
 function updateLangFabLabel() {
@@ -207,13 +124,11 @@ function applyLangVisualState(lang) {
 async function setLangReady(lang) {
   applyLangVisualState(lang);
 
-  // Czekamy aż aktywna sekcja realnie się załaduje
   await loadSections();
 
   const activeSection = lang === 'PL' ? sectionPL : sectionEN;
 
-  // Asekuracja: czekamy aż pojawią się nagłówki akordeonów
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 80; i++) {
     if (activeSection.querySelector('.accordion-header')) return;
     await new Promise(r => setTimeout(r, 50));
   }
@@ -225,8 +140,53 @@ function getHeaderKey(text) {
   return m ? m[1].toUpperCase() : null;
 }
 
-function getActiveSection() {
-  return getActiveLang() === 'PL' ? sectionPL : sectionEN;
+function normalizeTextForMatch(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[–—-]/g, "-")
+    .replace(/[()]/g, "")
+    .trim();
+}
+
+function getDetailsSummaryText(details) {
+  if (!details) return "";
+
+  const summary = details.querySelector("summary");
+  return summary ? summary.textContent.trim() : "";
+}
+
+function getHeaderIndex(section, header) {
+  const headers = Array.from(section.querySelectorAll('.accordion-header'));
+  return headers.indexOf(header);
+}
+
+function findHeaderByKeyOrIndex(section, key, index) {
+  const headers = Array.from(section.querySelectorAll('.accordion-header'));
+
+  if (key) {
+    const byKey = headers.find(h => getHeaderKey(h.textContent) === key);
+    if (byKey) return byKey;
+  }
+
+  if (typeof index === "number" && index >= 0 && headers[index]) {
+    return headers[index];
+  }
+
+  return headers[0] || null;
+}
+
+function findAccordionHeaderFromBody(body) {
+  if (!body) return null;
+
+  let prev = body.previousElementSibling;
+
+  while (prev) {
+    if (prev.classList && prev.classList.contains('accordion-header')) return prev;
+    prev = prev.previousElementSibling;
+  }
+
+  return null;
 }
 
 function findAccordionHeaderFromElement(el) {
@@ -236,14 +196,7 @@ function findAccordionHeaderFromElement(el) {
   if (directHeader) return directHeader;
 
   const body = el.closest('.accordion-body');
-  if (body) {
-    let prev = body.previousElementSibling;
-
-    while (prev) {
-      if (prev.classList && prev.classList.contains('accordion-header')) return prev;
-      prev = prev.previousElementSibling;
-    }
-  }
+  if (body) return findAccordionHeaderFromBody(body);
 
   const wrapper = el.closest('.accordion');
   if (wrapper) {
@@ -255,7 +208,6 @@ function findAccordionHeaderFromElement(el) {
 }
 
 function getVisibleReferenceElement() {
-  // Kilka punktów odniesienia zwiększa stabilność na telefonie
   const points = [
     { x: window.innerWidth * 0.50, y: window.innerHeight * 0.42 },
     { x: window.innerWidth * 0.50, y: window.innerHeight * 0.55 },
@@ -276,34 +228,12 @@ function getVisibleReferenceElement() {
   return null;
 }
 
-function getHeaderIndex(section, header) {
-  const headers = Array.from(section.querySelectorAll('.accordion-header'));
-  return headers.indexOf(header);
-}
-
-function findHeaderByKeyOrIndex(section, key, index) {
-  const headers = Array.from(section.querySelectorAll('.accordion-header'));
-
-  if (key) {
-    const byKey = headers.find(h => getHeaderKey(h.textContent) === key);
-    if (byKey) return byKey;
-  }
-
-  if (index >= 0 && headers[index]) {
-    return headers[index];
-  }
-
-  return headers[0] || null;
-}
-
 function swapLangInId(id) {
   if (!id) return null;
 
-  // Uniwersalne mapowanie -pl- / -en-
   if (id.includes('-pl-')) return id.replace('-pl-', '-en-');
   if (id.includes('-en-')) return id.replace('-en-', '-pl-');
 
-  // Komunikat 6
   if (id.startsWith('delay-cat-')) {
     const rest = id.replace('delay-cat-', '');
     return `delay-en-${rest}`;
@@ -314,7 +244,6 @@ function swapLangInId(id) {
     return `delay-cat-${rest}`;
   }
 
-  // Komunikat 7
   if (id.startsWith('wypadek-pl-7-')) {
     const rest = id.replace('wypadek-pl-7-', '');
     return `acc-en7-${rest}`;
@@ -328,33 +257,30 @@ function swapLangInId(id) {
   return null;
 }
 
-// ========================
-// ZAPAMIĘTYWANIE PODZAKŁADEK DETAILS/SUMMARY
-// np. A1/A2/A3/A4 i katalog przyczyn
-// ========================
+function rememberMainAccordion(header) {
+  if (!header) return;
 
-function getDetailsSummaryText(details) {
-  if (!details) return "";
+  const section = getActiveSection();
 
-  const summary = details.querySelector("summary");
-  return summary ? summary.textContent.trim() : "";
+  lastMainAccordionState = {
+    lang: getActiveLang(),
+    key: getHeaderKey(header.textContent),
+    index: getHeaderIndex(section, header),
+    text: normalizeTextForMatch(header.textContent)
+  };
 }
 
-function normalizeTextForMatch(text) {
-  return (text || "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .replace(/[–—-]/g, "-")
-    .trim();
-}
+function rememberDetails(details) {
+  if (!details) return;
 
-function captureDetailsState(refEl, body) {
-  if (!refEl || !body) return null;
+  const body = details.closest('.accordion-body');
+  const header = findAccordionHeaderFromBody(body);
 
-  const details = refEl.closest("details[open]");
-  if (!details || !body.contains(details)) return null;
+  if (header) {
+    rememberMainAccordion(header);
+  }
 
-  const allDetails = Array.from(body.querySelectorAll("details"));
+  const allDetails = body ? Array.from(body.querySelectorAll("details")) : [];
   const detailsIndex = allDetails.indexOf(details);
 
   const group =
@@ -369,25 +295,14 @@ function captureDetailsState(refEl, body) {
   const groupIndex = groupDetails.indexOf(details);
 
   const summaryText = getDetailsSummaryText(details);
-  const summaryKey = getHeaderKey(summaryText);
 
-  const rect = details.getBoundingClientRect();
-  const detailsTop = rect.top + window.scrollY;
-  const detailsHeight = Math.max(1, rect.height);
-
-  const ref = getVisibleReferenceElement();
-  const refDocY = ref ? window.scrollY + ref.y : window.scrollY + window.innerHeight * 0.45;
-
-  let detailsRatio = (refDocY - detailsTop) / detailsHeight;
-  detailsRatio = Math.max(0, Math.min(1, detailsRatio));
-
-  return {
+  lastDetailsState = {
+    lang: getActiveLang(),
     id: details.id || null,
-    summaryKey,
+    summaryKey: getHeaderKey(summaryText),
     summaryText: normalizeTextForMatch(summaryText),
     detailsIndex,
-    groupIndex,
-    detailsRatio
+    groupIndex
   };
 }
 
@@ -397,7 +312,6 @@ function findMatchingDetails(targetBody, detailsState) {
   const allDetails = Array.from(targetBody.querySelectorAll("details"));
   if (!allDetails.length) return null;
 
-  // 1. Najpierw próbujemy po ID PL/EN, jeśli istnieje
   if (detailsState.id) {
     const mappedId = swapLangInId(detailsState.id);
 
@@ -410,7 +324,6 @@ function findMatchingDetails(targetBody, detailsState) {
     if (bySameId && bySameId.tagName === "DETAILS") return bySameId;
   }
 
-  // 2. Potem próbujemy po kluczu A1/A2/A3/A4/B1/C1 itd.
   if (detailsState.summaryKey) {
     const byKey = allDetails.find(d => {
       const txt = getDetailsSummaryText(d);
@@ -420,7 +333,6 @@ function findMatchingDetails(targetBody, detailsState) {
     if (byKey) return byKey;
   }
 
-  // 3. Potem próbujemy po znormalizowanym tekście summary
   if (detailsState.summaryText) {
     const byText = allDetails.find(d => {
       const txt = normalizeTextForMatch(getDetailsSummaryText(d));
@@ -430,8 +342,7 @@ function findMatchingDetails(targetBody, detailsState) {
     if (byText) return byText;
   }
 
-  // 4. Fallback: po indeksie wśród details w danym komunikacie
-  if (detailsState.detailsIndex >= 0 && allDetails[detailsState.detailsIndex]) {
+  if (typeof detailsState.detailsIndex === "number" && detailsState.detailsIndex >= 0 && allDetails[detailsState.detailsIndex]) {
     return allDetails[detailsState.detailsIndex];
   }
 
@@ -453,60 +364,6 @@ function openOnlyThisDetails(details) {
   }
 
   details.open = true;
-}
-
-// ========================
-// ZAPIS I ODTWARZANIE POZYCJI
-// ========================
-
-function captureViewportState() {
-  const activeSection = getActiveSection();
-  const ref = getVisibleReferenceElement();
-
-  if (!ref) return null;
-
-  const header = findAccordionHeaderFromElement(ref.el);
-  if (!header) return null;
-
-  const body = header.nextElementSibling;
-  const key = getHeaderKey(header.textContent);
-  const index = getHeaderIndex(activeSection, header);
-
-  const wasOpen =
-    body &&
-    body.classList &&
-    body.classList.contains('accordion-body') &&
-    body.classList.contains('active');
-
-  let ratio = 0;
-
-  if (wasOpen && body) {
-    const rect = body.getBoundingClientRect();
-    const bodyTop = rect.top + window.scrollY;
-    const bodyHeight = Math.max(1, rect.height);
-    const refDocY = window.scrollY + ref.y;
-
-    ratio = (refDocY - bodyTop) / bodyHeight;
-    ratio = Math.max(0, Math.min(1, ratio));
-  }
-
-  const activeSubPanel =
-    ref.el.closest('.gastronomy-more.active') ||
-    ref.el.closest('.accordion-subbody.active');
-
-  const subId = activeSubPanel ? activeSubPanel.id : null;
-
-  const detailsState = wasOpen ? captureDetailsState(ref.el, body) : null;
-
-  return {
-    key,
-    index,
-    wasOpen,
-    ratio,
-    refY: ref.y,
-    subId,
-    detailsState
-  };
 }
 
 function ensureOpenMain(header) {
@@ -536,7 +393,7 @@ function ensureOpenSub(activeSection, targetId) {
 }
 
 async function waitForTargetHeader(section, key, index) {
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 100; i++) {
     const header = findHeaderByKeyOrIndex(section, key, index);
     if (header) return header;
 
@@ -544,6 +401,220 @@ async function waitForTargetHeader(section, key, index) {
   }
 
   return null;
+}
+
+// ========================
+// GŁÓWNE AKORDEONY
+// ========================
+
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.accordion-header');
+  if (!btn) return;
+
+  const body = btn.nextElementSibling;
+  if (!body || !body.classList.contains('accordion-body')) return;
+
+  e.preventDefault();
+
+  rememberMainAccordion(btn);
+  lastDetailsState = null;
+  lastSubPanelId = null;
+
+  const isOpen = body.classList.contains('active');
+
+  document.querySelectorAll('.accordion-body').forEach(b => {
+    if (b !== body) b.classList.remove('active');
+  });
+
+  body.classList.toggle('active', !isOpen);
+
+  if (!isOpen) {
+    body.querySelectorAll('.gastronomy-more').forEach(m => {
+      m.classList.remove('active');
+      m.style.display = 'none';
+    });
+  }
+});
+
+// ========================
+// PODAKORDEON — PRZESIADKI / LOTNISKA
+// ========================
+
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.connection-toggle');
+  if (!btn) return;
+
+  const body = btn.nextElementSibling;
+  if (!body || !body.classList.contains('accordion-subbody')) return;
+
+  e.preventDefault();
+
+  const parentBody = btn.closest('.accordion-body');
+  const parentHeader = findAccordionHeaderFromBody(parentBody);
+  if (parentHeader) rememberMainAccordion(parentHeader);
+
+  lastSubPanelId = body.id || null;
+
+  const isOpen = btn.classList.contains('active');
+
+  document.querySelectorAll('.connection-toggle').forEach(o => {
+    if (o !== btn) o.classList.remove('active');
+  });
+
+  document.querySelectorAll('.connection-toggle + .accordion-subbody').forEach(b => {
+    if (b !== body) b.classList.remove('active');
+  });
+
+  btn.classList.toggle('active', !isOpen);
+  body.classList.toggle('active', !isOpen);
+});
+
+// ========================
+// PLUSIK GASTRONOMII
+// ========================
+
+document.addEventListener('click', function (e) {
+  const plus = e.target.closest('.gastronomy-plus');
+  if (!plus) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  const id = plus.getAttribute('data-target');
+  if (!id) return;
+
+  const block = document.getElementById(id);
+  if (!block) return;
+
+  const parentBody = plus.closest('.accordion-body');
+  const parentHeader = findAccordionHeaderFromBody(parentBody);
+  if (parentHeader) rememberMainAccordion(parentHeader);
+
+  lastSubPanelId = id;
+
+  const root = plus.closest('.accordion-body') || document;
+
+  root.querySelectorAll('.gastronomy-more').forEach(other => {
+    if (other !== block) {
+      other.classList.remove('active');
+      other.style.display = 'none';
+    }
+  });
+
+  block.classList.toggle('active');
+
+  const isActive = block.classList.contains('active');
+  block.style.display = isActive ? 'block' : 'none';
+});
+
+// ========================
+// ŚLEDZENIE DETAILS/SUMMARY
+// ważne dla komunikatów 6 i 7
+// ========================
+
+document.addEventListener('click', function (e) {
+  const summary = e.target.closest('summary');
+  if (!summary) return;
+
+  const details = summary.parentElement;
+  if (!details || details.tagName !== "DETAILS") return;
+
+  const body = details.closest('.accordion-body');
+  if (!body) return;
+
+  rememberDetails(details);
+  lastSubPanelId = null;
+});
+
+// ========================
+// ZAPIS I ODTWARZANIE POZYCJI
+// ========================
+
+function calculateDetailsRatio(details) {
+  if (!details) return 0;
+
+  const ref = getVisibleReferenceElement();
+  const refY = ref ? ref.y : window.innerHeight * 0.45;
+
+  const rect = details.getBoundingClientRect();
+  const detailsTop = rect.top + window.scrollY;
+  const detailsHeight = Math.max(1, rect.height);
+  const refDocY = window.scrollY + refY;
+
+  let ratio = (refDocY - detailsTop) / detailsHeight;
+  ratio = Math.max(0, Math.min(1, ratio));
+
+  return ratio;
+}
+
+function calculateBodyRatio(body) {
+  if (!body) return 0;
+
+  const ref = getVisibleReferenceElement();
+  const refY = ref ? ref.y : window.innerHeight * 0.45;
+
+  const rect = body.getBoundingClientRect();
+  const bodyTop = rect.top + window.scrollY;
+  const bodyHeight = Math.max(1, rect.height);
+  const refDocY = window.scrollY + refY;
+
+  let ratio = (refDocY - bodyTop) / bodyHeight;
+  ratio = Math.max(0, Math.min(1, ratio));
+
+  return ratio;
+}
+
+function captureViewportState() {
+  const activeSection = getActiveSection();
+
+  let header = null;
+
+  // 1. Najpierw bierzemy ostatnio kliknięty komunikat
+  if (lastMainAccordionState && lastMainAccordionState.lang === getActiveLang()) {
+    header = findHeaderByKeyOrIndex(
+      activeSection,
+      lastMainAccordionState.key,
+      lastMainAccordionState.index
+    );
+  }
+
+  // 2. Fallback: dopiero wtedy próbujemy po elemencie z ekranu
+  if (!header) {
+    const ref = getVisibleReferenceElement();
+    if (ref) header = findAccordionHeaderFromElement(ref.el);
+  }
+
+  if (!header) return null;
+
+  const body = header.nextElementSibling;
+  const key = getHeaderKey(header.textContent);
+  const index = getHeaderIndex(activeSection, header);
+
+  const wasOpen =
+    body &&
+    body.classList &&
+    body.classList.contains('accordion-body') &&
+    body.classList.contains('active');
+
+  let sourceDetails = null;
+
+  if (wasOpen && lastDetailsState && lastDetailsState.lang === getActiveLang()) {
+    sourceDetails = findMatchingDetails(body, lastDetailsState);
+  }
+
+  const ref = getVisibleReferenceElement();
+  const refY = ref ? ref.y : window.innerHeight * 0.45;
+
+  return {
+    key,
+    index,
+    wasOpen,
+    bodyRatio: wasOpen && body ? calculateBodyRatio(body) : 0,
+    refY,
+    subId: lastSubPanelId,
+    detailsState: lastDetailsState && lastDetailsState.lang === getActiveLang() ? lastDetailsState : null,
+    detailsRatio: sourceDetails ? calculateDetailsRatio(sourceDetails) : 0
+  };
 }
 
 async function restoreViewportState(state) {
@@ -568,7 +639,7 @@ async function restoreViewportState(state) {
   const mappedSubId = swapLangInId(state.subId);
 
   if (mappedSubId) {
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 50; i++) {
       if (activeSection.querySelector(`#${CSS.escape(mappedSubId)}`)) break;
       await new Promise(r => setTimeout(r, 50));
     }
@@ -586,7 +657,6 @@ async function restoreViewportState(state) {
     }
   }
 
-  // Czekamy dwie klatki, żeby przeglądarka przeliczyła wysokości
   await new Promise(resolve => requestAnimationFrame(resolve));
   await new Promise(resolve => requestAnimationFrame(resolve));
 
@@ -597,21 +667,22 @@ async function restoreViewportState(state) {
 
   let targetY;
 
-  // Jeśli byliśmy w konkretnej podzakładce details/summary,
-  // przewijamy względem tej podzakładki, nie względem całego komunikatu.
-  if (targetDetails && state.detailsState) {
+  if (targetDetails) {
     const detailsTop = targetDetails.getBoundingClientRect().top + window.scrollY;
     const detailsHeight = Math.max(1, targetDetails.getBoundingClientRect().height);
 
     targetY =
       detailsTop +
-      state.detailsState.detailsRatio * detailsHeight -
+      state.detailsRatio * detailsHeight -
       state.refY;
   } else if (state.wasOpen && hasBody) {
     const bodyTop = targetBody.getBoundingClientRect().top + window.scrollY;
     const bodyHeight = Math.max(1, targetBody.getBoundingClientRect().height);
 
-    targetY = bodyTop + state.ratio * bodyHeight - state.refY;
+    targetY =
+      bodyTop +
+      state.bodyRatio * bodyHeight -
+      state.refY;
   } else {
     const headerTop = targetHeader.getBoundingClientRect().top + window.scrollY;
     targetY = headerTop - 90;
@@ -645,6 +716,10 @@ async function switchLanguagePreservingPosition(nextLang) {
 
   langSwitchBusy = false;
 }
+
+// ========================
+// TABY
+// ========================
 
 if (tabPL) {
   tabPL.onclick = async () => {
@@ -684,6 +759,8 @@ document.addEventListener("click", (e) => {
   if (!group) return;
 
   e.preventDefault();
+
+  rememberDetails(details);
 
   const wasOpen = details.open;
 
