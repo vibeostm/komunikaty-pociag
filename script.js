@@ -328,6 +328,137 @@ function swapLangInId(id) {
   return null;
 }
 
+// ========================
+// ZAPAMIĘTYWANIE PODZAKŁADEK DETAILS/SUMMARY
+// np. A1/A2/A3/A4 i katalog przyczyn
+// ========================
+
+function getDetailsSummaryText(details) {
+  if (!details) return "";
+
+  const summary = details.querySelector("summary");
+  return summary ? summary.textContent.trim() : "";
+}
+
+function normalizeTextForMatch(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[–—-]/g, "-")
+    .trim();
+}
+
+function captureDetailsState(refEl, body) {
+  if (!refEl || !body) return null;
+
+  const details = refEl.closest("details[open]");
+  if (!details || !body.contains(details)) return null;
+
+  const allDetails = Array.from(body.querySelectorAll("details"));
+  const detailsIndex = allDetails.indexOf(details);
+
+  const group =
+    details.closest(".k6-group") ||
+    details.closest(".k7-group") ||
+    details.parentElement;
+
+  const groupDetails = group
+    ? Array.from(group.querySelectorAll("details"))
+    : allDetails;
+
+  const groupIndex = groupDetails.indexOf(details);
+
+  const summaryText = getDetailsSummaryText(details);
+  const summaryKey = getHeaderKey(summaryText);
+
+  const rect = details.getBoundingClientRect();
+  const detailsTop = rect.top + window.scrollY;
+  const detailsHeight = Math.max(1, rect.height);
+
+  const ref = getVisibleReferenceElement();
+  const refDocY = ref ? window.scrollY + ref.y : window.scrollY + window.innerHeight * 0.45;
+
+  let detailsRatio = (refDocY - detailsTop) / detailsHeight;
+  detailsRatio = Math.max(0, Math.min(1, detailsRatio));
+
+  return {
+    id: details.id || null,
+    summaryKey,
+    summaryText: normalizeTextForMatch(summaryText),
+    detailsIndex,
+    groupIndex,
+    detailsRatio
+  };
+}
+
+function findMatchingDetails(targetBody, detailsState) {
+  if (!targetBody || !detailsState) return null;
+
+  const allDetails = Array.from(targetBody.querySelectorAll("details"));
+  if (!allDetails.length) return null;
+
+  // 1. Najpierw próbujemy po ID PL/EN, jeśli istnieje
+  if (detailsState.id) {
+    const mappedId = swapLangInId(detailsState.id);
+
+    if (mappedId) {
+      const byMappedId = targetBody.querySelector(`#${CSS.escape(mappedId)}`);
+      if (byMappedId && byMappedId.tagName === "DETAILS") return byMappedId;
+    }
+
+    const bySameId = targetBody.querySelector(`#${CSS.escape(detailsState.id)}`);
+    if (bySameId && bySameId.tagName === "DETAILS") return bySameId;
+  }
+
+  // 2. Potem próbujemy po kluczu A1/A2/A3/A4/B1/C1 itd.
+  if (detailsState.summaryKey) {
+    const byKey = allDetails.find(d => {
+      const txt = getDetailsSummaryText(d);
+      return getHeaderKey(txt) === detailsState.summaryKey;
+    });
+
+    if (byKey) return byKey;
+  }
+
+  // 3. Potem próbujemy po znormalizowanym tekście summary
+  if (detailsState.summaryText) {
+    const byText = allDetails.find(d => {
+      const txt = normalizeTextForMatch(getDetailsSummaryText(d));
+      return txt === detailsState.summaryText;
+    });
+
+    if (byText) return byText;
+  }
+
+  // 4. Fallback: po indeksie wśród details w danym komunikacie
+  if (detailsState.detailsIndex >= 0 && allDetails[detailsState.detailsIndex]) {
+    return allDetails[detailsState.detailsIndex];
+  }
+
+  return null;
+}
+
+function openOnlyThisDetails(details) {
+  if (!details) return;
+
+  const group =
+    details.closest(".k6-group") ||
+    details.closest(".k7-group") ||
+    details.parentElement;
+
+  if (group) {
+    group.querySelectorAll("details[open]").forEach(d => {
+      if (d !== details) d.open = false;
+    });
+  }
+
+  details.open = true;
+}
+
+// ========================
+// ZAPIS I ODTWARZANIE POZYCJI
+// ========================
+
 function captureViewportState() {
   const activeSection = getActiveSection();
   const ref = getVisibleReferenceElement();
@@ -365,13 +496,16 @@ function captureViewportState() {
 
   const subId = activeSubPanel ? activeSubPanel.id : null;
 
+  const detailsState = wasOpen ? captureDetailsState(ref.el, body) : null;
+
   return {
     key,
     index,
     wasOpen,
     ratio,
     refY: ref.y,
-    subId
+    subId,
+    detailsState
   };
 }
 
@@ -429,6 +563,8 @@ async function restoreViewportState(state) {
     ensureOpenMain(targetHeader);
   }
 
+  const targetBody = targetHeader.nextElementSibling;
+
   const mappedSubId = swapLangInId(state.subId);
 
   if (mappedSubId) {
@@ -440,11 +576,19 @@ async function restoreViewportState(state) {
     ensureOpenSub(activeSection, mappedSubId);
   }
 
+  let targetDetails = null;
+
+  if (state.detailsState && targetBody) {
+    targetDetails = findMatchingDetails(targetBody, state.detailsState);
+
+    if (targetDetails) {
+      openOnlyThisDetails(targetDetails);
+    }
+  }
+
   // Czekamy dwie klatki, żeby przeglądarka przeliczyła wysokości
   await new Promise(resolve => requestAnimationFrame(resolve));
   await new Promise(resolve => requestAnimationFrame(resolve));
-
-  const targetBody = targetHeader.nextElementSibling;
 
   const hasBody =
     targetBody &&
@@ -453,7 +597,17 @@ async function restoreViewportState(state) {
 
   let targetY;
 
-  if (state.wasOpen && hasBody) {
+  // Jeśli byliśmy w konkretnej podzakładce details/summary,
+  // przewijamy względem tej podzakładki, nie względem całego komunikatu.
+  if (targetDetails && state.detailsState) {
+    const detailsTop = targetDetails.getBoundingClientRect().top + window.scrollY;
+    const detailsHeight = Math.max(1, targetDetails.getBoundingClientRect().height);
+
+    targetY =
+      detailsTop +
+      state.detailsState.detailsRatio * detailsHeight -
+      state.refY;
+  } else if (state.wasOpen && hasBody) {
     const bodyTop = targetBody.getBoundingClientRect().top + window.scrollY;
     const bodyHeight = Math.max(1, targetBody.getBoundingClientRect().height);
 
