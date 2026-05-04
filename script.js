@@ -1,68 +1,137 @@
-async function loadSections() {
-  const elements = document.querySelectorAll('[data-load]');
+// ========================
+// ŁADOWANIE SEKCJI
+// szybsze: aktywna sekcja najpierw, pliki równolegle
+// ========================
 
-  for (const el of elements) {
-    const url = el.getAttribute('data-load');
-    if (el.dataset.loaded === "true") continue;
+const loadedUrls = new Set();
+const loadingUrls = new Set();
 
-    try {
-      const response = await fetch(url);
-      el.innerHTML = await response.text();
-      el.dataset.loaded = "true";
-    } catch (e) {
-      el.innerHTML = `<p>Błąd ładowania: ${url}</p>`;
+async function loadOne(el) {
+  const url = el.getAttribute('data-load');
+  if (!url) return;
+
+  if (el.dataset.loaded === "true") return;
+  if (loadingUrls.has(url)) return;
+
+  loadingUrls.add(url);
+  el.dataset.loading = "true";
+
+  try {
+    const response = await fetch(url, { cache: "no-cache" });
+
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
     }
+
+    el.innerHTML = await response.text();
+    el.dataset.loaded = "true";
+    loadedUrls.add(url);
+  } catch (e) {
+    el.innerHTML = `<p>Błąd ładowania: ${url}</p>`;
+    console.warn("Błąd ładowania sekcji:", url, e);
+  } finally {
+    el.dataset.loading = "false";
+    loadingUrls.delete(url);
+  }
+}
+
+async function loadElements(elements) {
+  const tasks = Array.from(elements).map(el => loadOne(el));
+  await Promise.allSettled(tasks);
+}
+
+async function loadSections() {
+  const activeSection = document.querySelector('.section.active');
+  const inactiveSections = Array.from(document.querySelectorAll('.section:not(.active)'));
+
+  // 1. Najpierw ładujemy tylko widoczny język
+  if (activeSection) {
+    await loadElements(activeSection.querySelectorAll('[data-load]'));
   }
 
-  // Po wstawieniu HTML aktywujemy akordeony (plusiki obsługujemy delegacją)
-  activateAccordions();
-}
-
-function activateAccordions() {
-  // Główne nagłówki
-  document.querySelectorAll('.accordion-header').forEach(btn => {
-    btn.onclick = () => {
-      const body = btn.nextElementSibling;
-
-      // zamknij inne główne zakładki
-      document.querySelectorAll('.accordion-body').forEach(b => {
-        if (b !== body) b.classList.remove('active');
+  // 2. Drugi język doładowujemy po chwili w tle
+  // Dzięki temu PL/EN później przełącza się szybciej,
+  // ale nie blokuje pierwszego użycia strony.
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      inactiveSections.forEach(section => {
+        loadElements(section.querySelectorAll('[data-load]'));
       });
-
-      body.classList.toggle('active');
-
-      // po otwarciu innej zakładki zamknij wszystkie plusiki w niej
-      if (body.classList.contains('active')) {
-        body.querySelectorAll('.gastronomy-more').forEach(m => {
-          m.classList.remove('active');
-          m.style.display = 'none';
-        });
-      }
-    };
-  });
-
-  // Tylko przesiadki
-  document.querySelectorAll('.connection-toggle').forEach(btn => {
-    btn.onclick = () => {
-      const body = btn.nextElementSibling;
-
-      document.querySelectorAll('.connection-toggle').forEach(o => {
-        if (o !== btn) o.classList.remove('active');
+    });
+  } else {
+    setTimeout(() => {
+      inactiveSections.forEach(section => {
+        loadElements(section.querySelectorAll('[data-load]'));
       });
-
-      document.querySelectorAll('.accordion-subbody').forEach(b => {
-        if (b !== body) b.classList.remove('active');
-      });
-
-      btn.classList.toggle('active');
-      body.classList.toggle('active');
-    };
-  });
+    }, 400);
+  }
 }
 
 // ========================
-// PLUSIK (delegacja klików)
+// GŁÓWNE AKORDEONY
+// delegacja klików — działa natychmiast po pojawieniu się HTML
 // ========================
+
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.accordion-header');
+  if (!btn) return;
+
+  const body = btn.nextElementSibling;
+  if (!body || !body.classList.contains('accordion-body')) return;
+
+  e.preventDefault();
+
+  const isOpen = body.classList.contains('active');
+
+  // zamknij inne główne zakładki
+  document.querySelectorAll('.accordion-body').forEach(b => {
+    if (b !== body) b.classList.remove('active');
+  });
+
+  // jeśli kliknięta była zamknięta — otwórz
+  // jeśli była otwarta — zamknij
+  body.classList.toggle('active', !isOpen);
+
+  // po otwarciu zakładki zamknij plusiki gastronomii w jej wnętrzu
+  if (!isOpen) {
+    body.querySelectorAll('.gastronomy-more').forEach(m => {
+      m.classList.remove('active');
+      m.style.display = 'none';
+    });
+  }
+});
+
+// ========================
+// PODAKORDEON — PRZESIADKI / LOTNISKA
+// ========================
+
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.connection-toggle');
+  if (!btn) return;
+
+  const body = btn.nextElementSibling;
+  if (!body || !body.classList.contains('accordion-subbody')) return;
+
+  e.preventDefault();
+
+  const isOpen = btn.classList.contains('active');
+
+  document.querySelectorAll('.connection-toggle').forEach(o => {
+    if (o !== btn) o.classList.remove('active');
+  });
+
+  document.querySelectorAll('.connection-toggle + .accordion-subbody').forEach(b => {
+    if (b !== body) b.classList.remove('active');
+  });
+
+  btn.classList.toggle('active', !isOpen);
+  body.classList.toggle('active', !isOpen);
+});
+
+// ========================
+// PLUSIK GASTRONOMII
+// ========================
+
 document.addEventListener('click', function (e) {
   const plus = e.target.closest('.gastronomy-plus');
   if (!plus) return;
@@ -91,30 +160,44 @@ document.addEventListener('click', function (e) {
 });
 
 // ========================
-// TABY (przełączanie języka)
+// TABY — PRZEŁĄCZANIE JĘZYKA
 // ========================
-document.getElementById('tabPL').onclick = () => {
-  document.getElementById('tabPL').classList.add('active');
-  document.getElementById('tabEN').classList.remove('active');
-  document.getElementById('sectionPL').classList.add('active');
-  document.getElementById('sectionEN').classList.remove('active');
-  loadSections();
-};
 
-document.getElementById('tabEN').onclick = () => {
-  document.getElementById('tabEN').classList.add('active');
-  document.getElementById('tabPL').classList.remove('active');
-  document.getElementById('sectionEN').classList.add('active');
-  document.getElementById('sectionPL').classList.remove('active');
-  loadSections();
-};
+const tabPL = document.getElementById('tabPL');
+const tabEN = document.getElementById('tabEN');
+const sectionPL = document.getElementById('sectionPL');
+const sectionEN = document.getElementById('sectionEN');
 
-// Start
-loadSections();
+if (tabPL) {
+  tabPL.onclick = () => {
+    tabPL.classList.add('active');
+    tabEN.classList.remove('active');
+
+    sectionPL.classList.add('active');
+    sectionEN.classList.remove('active');
+
+    updateLangFabLabel();
+    loadSections();
+  };
+}
+
+if (tabEN) {
+  tabEN.onclick = () => {
+    tabEN.classList.add('active');
+    tabPL.classList.remove('active');
+
+    sectionEN.classList.add('active');
+    sectionPL.classList.remove('active');
+
+    updateLangFabLabel();
+    loadSections();
+  };
+}
 
 // ========================
-// PŁYWAJĄCY SWITCH PL/EN (wersja A+++) — z podzakładkami + mapowanie 7 i 6
+// PŁYWAJĄCY SWITCH PL/EN
 // ========================
+
 const langFab = document.getElementById('langFab');
 
 function getActiveLang() {
@@ -124,23 +207,23 @@ function getActiveLang() {
 function setLang(lang) {
   if (lang === 'PL') document.getElementById('tabPL').click();
   else document.getElementById('tabEN').click();
+
   updateLangFabLabel();
 }
 
 function updateLangFabLabel() {
   if (!langFab) return;
+
   const active = getActiveLang();
-  langFab.textContent = (active === 'PL') ? 'EN' : 'PL';
+  langFab.textContent = active === 'PL' ? 'EN' : 'PL';
 }
 
-// Wyciągnięcie “klucza” komunikatu: np. "1." / "5." / "B2." / "C1." itd.
 function getHeaderKey(text) {
   const t = (text || '').trim();
   const m = t.match(/^([0-9]+\.|[A-Z][0-9]+\.|B[0-9]+\.|C[0-9]+\.)/i);
   return m ? m[1].toUpperCase() : null;
 }
 
-// Znajdź nagłówek akordeonu z dowolnego elementu na ekranie
 function findAccordionHeaderFromElement(el) {
   if (!el) return null;
 
@@ -165,35 +248,27 @@ function findAccordionHeaderFromElement(el) {
   return null;
 }
 
-/**
- * Mapowanie ID podzakładek PL <-> EN
- * Obsługuje:
- * - schematy: *-pl-* <-> *-en-* (gastronomy, airports, misc itd.)
- * - zakładkę 6: delay-cat-* <-> delay-en-*
- * - zakładkę 7: wypadek-pl-7-* <-> acc-en7-*
- */
 function swapLangInId(id) {
   if (!id) return null;
 
-  // A) schemat "-pl-" <-> "-en-" (np. gastronomy-pl-1, airports-pl-5, misc-pl-c4)
   if (id.includes('-pl-')) return id.replace('-pl-', '-en-');
   if (id.includes('-en-')) return id.replace('-en-', '-pl-');
 
-  // B) zakładka 6: delay-cat-awarie <-> delay-en-awarie (i inne)
   if (id.startsWith('delay-cat-')) {
     const rest = id.replace('delay-cat-', '');
     return `delay-en-${rest}`;
   }
+
   if (id.startsWith('delay-en-')) {
     const rest = id.replace('delay-en-', '');
     return `delay-cat-${rest}`;
   }
 
-  // C) zakładka 7: wypadek-pl-7-* <-> acc-en7-*
   if (id.startsWith('wypadek-pl-7-')) {
-    const rest = id.replace('wypadek-pl-7-', ''); // np. "1", "b2", "b10"
+    const rest = id.replace('wypadek-pl-7-', '');
     return `acc-en7-${rest}`;
   }
+
   if (id.startsWith('acc-en7-')) {
     const rest = id.replace('acc-en7-', '');
     return `wypadek-pl-7-${rest}`;
@@ -202,42 +277,49 @@ function swapLangInId(id) {
   return null;
 }
 
-// Czekamy aż element pojawi się w DOM (fetch)
 function waitForSelector(root, selector, maxTries = 60) {
   return new Promise((resolve) => {
     let tries = 0;
+
     const tick = () => {
       tries++;
       const el = root.querySelector(selector);
+
       if (el) return resolve(el);
       if (tries >= maxTries) return resolve(null);
+
       setTimeout(tick, 50);
     };
+
     tick();
   });
 }
 
-// Czekamy aż w aktywnej sekcji pojawi się nagłówek o danym key (bo fetch)
 async function waitForHeaderByKey(sectionEl, key) {
   if (!key) return null;
-  const selector = '.accordion-header';
+
   for (let i = 0; i < 60; i++) {
-    const headers = Array.from(sectionEl.querySelectorAll(selector));
+    const headers = Array.from(sectionEl.querySelectorAll('.accordion-header'));
     const found = headers.find(h => getHeaderKey(h.textContent) === key);
+
     if (found) return found;
+
     await new Promise(r => setTimeout(r, 50));
   }
+
   return null;
 }
 
-// Otwórz główny akordeon (bez ryzyka, że go zamkniesz)
 function ensureOpenMain(header) {
   const body = header.nextElementSibling;
+
   if (!body || !body.classList || !body.classList.contains('accordion-body')) return;
-  if (!body.classList.contains('active')) header.click();
+
+  if (!body.classList.contains('active')) {
+    header.click();
+  }
 }
 
-// Otwórz podzakładkę (klik w element z data-target)
 function ensureOpenSub(activeSection, targetId) {
   if (!targetId) return;
 
@@ -250,7 +332,6 @@ function ensureOpenSub(activeSection, targetId) {
   toggler.click();
 }
 
-// Zapis “gdzie jestem” wg punktu pod kciukiem (prawy dół)
 function captureViewportState() {
   const thumbOffset = 160;
   const x = Math.min(window.innerWidth - 30, window.innerWidth * 0.75);
@@ -264,19 +345,24 @@ function captureViewportState() {
 
   const body = header.nextElementSibling;
   const key = getHeaderKey(header.textContent);
-  const wasOpen = body && body.classList && body.classList.contains('accordion-body') && body.classList.contains('active');
 
-  // Podzakładka: jeśli jesteśmy w środku .gastronomy-more.active
+  const wasOpen =
+    body &&
+    body.classList &&
+    body.classList.contains('accordion-body') &&
+    body.classList.contains('active');
+
   const subPanel = el.closest('.gastronomy-more.active');
   const subId = subPanel ? subPanel.id : null;
 
-  // Proporcja przewinięcia wewnątrz body (głównego komunikatu)
   let ratio = 0;
+
   if (wasOpen && body) {
     const rect = body.getBoundingClientRect();
     const bodyTop = rect.top + window.scrollY;
     const bodyH = Math.max(1, rect.height);
-    const thumbDocY = (window.scrollY + y);
+    const thumbDocY = window.scrollY + y;
+
     ratio = (thumbDocY - bodyTop) / bodyH;
     ratio = Math.max(0, Math.min(1, ratio));
   }
@@ -287,43 +373,59 @@ function captureViewportState() {
 async function restoreViewportState(state) {
   if (!state) return;
 
-  const activeSection = document.getElementById(getActiveLang() === 'PL' ? 'sectionPL' : 'sectionEN');
+  const activeSection = document.getElementById(
+    getActiveLang() === 'PL' ? 'sectionPL' : 'sectionEN'
+  );
 
-  // 1) znajdź docelowy główny komunikat po key (czekamy, bo może być jeszcze fetch)
   let targetHeader = await waitForHeaderByKey(activeSection, state.key);
 
-  // fallback: jeśli nie znaleziono po key, bierzemy pierwszy dostępny
   if (!targetHeader) {
     const headers = Array.from(activeSection.querySelectorAll('.accordion-header'));
     targetHeader = headers.length ? headers[0] : null;
   }
+
   if (!targetHeader) return;
 
   if (state.wasOpen) ensureOpenMain(targetHeader);
 
-  // 2) spróbuj otworzyć tę samą podzakładkę w drugim języku
   const mappedSubId = swapLangInId(state.subId);
+
   if (mappedSubId) {
     const subPanel = await waitForSelector(activeSection, `#${CSS.escape(mappedSubId)}`, 80);
-    if (subPanel) ensureOpenSub(activeSection, mappedSubId);
+
+    if (subPanel) {
+      ensureOpenSub(activeSection, mappedSubId);
+    }
   }
 
-  // 3) przewiń do podobnego miejsca
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       const targetBody = targetHeader.nextElementSibling;
-      const hasBody = targetBody && targetBody.classList && targetBody.classList.contains('accordion-body');
 
-      const baseTop = (state.wasOpen && hasBody)
-        ? (targetBody.getBoundingClientRect().top + window.scrollY)
-        : (targetHeader.getBoundingClientRect().top + window.scrollY);
+      const hasBody =
+        targetBody &&
+        targetBody.classList &&
+        targetBody.classList.contains('accordion-body');
 
-      const height = (state.wasOpen && hasBody)
-        ? Math.max(1, targetBody.getBoundingClientRect().height)
-        : 1;
+      const baseTop =
+        state.wasOpen && hasBody
+          ? targetBody.getBoundingClientRect().top + window.scrollY
+          : targetHeader.getBoundingClientRect().top + window.scrollY;
 
-      const targetY = baseTop + (state.wasOpen ? state.ratio * height : 0) - (window.innerHeight - state.thumbOffset);
-      window.scrollTo({ top: Math.max(0, targetY), behavior: 'instant' });
+      const height =
+        state.wasOpen && hasBody
+          ? Math.max(1, targetBody.getBoundingClientRect().height)
+          : 1;
+
+      const targetY =
+        baseTop +
+        (state.wasOpen ? state.ratio * height : 0) -
+        (window.innerHeight - state.thumbOffset);
+
+      window.scrollTo({
+        top: Math.max(0, targetY),
+        behavior: 'instant'
+      });
     });
   });
 }
@@ -331,7 +433,8 @@ async function restoreViewportState(state) {
 if (langFab) {
   langFab.addEventListener('click', async () => {
     const state = captureViewportState();
-    const nextLang = (getActiveLang() === 'PL') ? 'EN' : 'PL';
+    const nextLang = getActiveLang() === 'PL' ? 'EN' : 'PL';
+
     setLang(nextLang);
     await restoreViewportState(state);
   });
@@ -339,7 +442,10 @@ if (langFab) {
 
 updateLangFabLabel();
 
-// === komunikat6: tylko jeden wewnętrzny akordeon naraz (A1–A4) ===
+// ========================
+// KOMUNIKAT 6 — tylko jeden wewnętrzny akordeon naraz
+// ========================
+
 document.addEventListener("click", (e) => {
   const summary = e.target.closest("summary.k6-pill");
   if (!summary) return;
@@ -350,14 +456,18 @@ document.addEventListener("click", (e) => {
   const group = details.closest(".k6-group");
   if (!group) return;
 
-  // przejmujemy toggle, żeby panować nad stanem
   e.preventDefault();
 
   const wasOpen = details.open;
 
-  // zamknij wszystkie w grupie
-  group.querySelectorAll("details.k6-details[open]").forEach((d) => (d.open = false));
+  group.querySelectorAll("details.k6-details[open]").forEach((d) => {
+    d.open = false;
+  });
 
-  // jeśli kliknięty nie był otwarty – otwórz go
-  if (!wasOpen) details.open = true;
+  if (!wasOpen) {
+    details.open = true;
+  }
 });
+
+// START
+loadSections();
