@@ -447,6 +447,11 @@ em{
 
 .lang-fab:active{ transform: scale(0.98); }
 
+.lang-fab:disabled{
+  pointer-events: none;
+  opacity: 0.72;
+}
+
 /* =========================
    TOPBAR + LOGO
 ========================= */
